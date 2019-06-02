@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190528 更新/9）
+title: LeetCode 中等题汇总（20190601 更新/10）
 author: zansy
 tags: []
 categories:
@@ -439,7 +439,31 @@ class Solution {
 }
 ```
 #### 309
+[Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+
+给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以进行无限次交易，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。并且每次交易后的第二天不能交易
+
+动态规划好难啊…
+
 2019.06.01
+
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0)
+            return 0;
+        int sold = 0, hold = -prices[0], rest = 0;
+        for(int i = 0; i < prices.length; i++){
+            int prvSold = sold;
+            sold = hold + prices[i];//假设卖出当前股票后的余额
+            
+            hold = Math.max(hold, rest-prices[i]);//当前持有或是买入
+            rest = Math.max(rest, prvSold);//rest 特殊性，因此得比较前一天卖出的余额
+        }
+        return Math.max(sold, rest);
+    }
+}
+```
 
 ## 数学 Math
 ### 基础
