@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190601 更新/10）
+title: LeetCode 中等题汇总（20190604 更新/11）
 author: zansy
 tags: []
 categories:
@@ -464,6 +464,51 @@ class Solution {
     }
 }
 ```
+#### 11
+[Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+
+给出一组无序数height，表示在x轴上不同高度的线。两线可组成容器盛水，底是两线之间的距离，高是较短的一线，求能盛最多水的容器的长宽积。
+
+2019.06.04
+- 解一
+
+暴力进行一位一位比较
+
+```java
+class Solution {
+    public int maxArea(int[] height) {
+       int maxArea = 0;
+        for(int i = 0; i < height.length - 1; i++){
+            for(int j = 1; j < height.length; j++){
+                if((j - i)* Math.min(height[i],height[j]) > maxArea)
+                    maxArea = (j - i)* Math.min(height[i],height[j]);
+            }
+        }
+        return maxArea; 
+    }
+}
+```
+
+- 解二
+
+思路不算难，先从距离最远的两端开始，两端中选出最长的保留，另一端缩短距离再比较，重复操作，直到间距最小。
+
+```
+class Solution {
+    public int maxArea(int[] height) {
+       int left = 0, right = height.length - 1;
+        int maxArea = Math.min(height[left] , height[right]) * (right);
+        while (left < right){
+            if(height[left] > height[right])
+                right--;
+            else left++;
+            maxArea = Math.max(maxArea, Math.min(height[left] , height[right]) * (right - left));
+        }
+        return maxArea;
+    }
+}
+```
+
 
 ## 数学 Math
 ### 基础
