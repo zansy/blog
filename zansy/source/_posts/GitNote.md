@@ -5,67 +5,84 @@ categories:
   - 读薄专业书计划
 date: 2018-03-24 10:49:00
 ---
-<>表示其中名称可修改<!--more-->
+Git是分布式版本控制系统，没有“中央服务器”，每个人的电脑上都是一个完整的版本库。通常有一台充当“中央服务器”的电脑，但这个服务器的作用仅仅是用来方便“交换”大家的修改。
+<!--more-->
 
----
-### 命令
----
-创建版本库
 
-1.选择一个合适的地方，创建一个空目录：
-```
-$ mkdir learngit
-$ cd learngit
-$ pwd
-```
-2.通过git init命令把这个目录变成Git可以管理的仓库：`$ git init`
-3.在其中放入一个readme.txt文件
-```
-Git is a version control system.
-Git is free software.
-```
-4.把一个文件放到Git仓库
+## 命令
 
-- 4.1 把文件添加到仓库：`$ git add readme.txt`; 
-- 4.2 把文件提交到仓库：`git commit -m "wrote a readme file" #-m后面输入的是本次提交的说明`
-----
+### 创建版本库
+- 选择一个合适目录，通过git init命令把这个目录变成Git可以管理的仓库：`$ git init`
 
-5.`git status`命令提示文件是否被修改过，随时掌握工作区的状态。
+- 把一个文件放到Git仓库
+	- 把文件添加到仓库：`$ git add readme.txt`; 
+	- 把文件提交到仓库：`git commit -m "wrote a readme file" #-m后面输入的是本次提交的说明`
 
-6.`git diff readme.txt`查看具体修改了什么内容 //之后还想提交继续`git add <file>` 和 `git commit` 两步
+### 修改
+- `git status`命令提示文件是否被修改过，随时掌握工作区的状态。
+
+- `git diff readme.txt`查看具体修改了什么内容 //之后还想提交继续`git add <file>` 和 `git commit` 两步
 
 <font color="green">注意</font>：`git add`命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行`git commit`就可以一次性把暂存区的所有修改提交到分支。
 
-7.`git log`命令查看历史记录 //后加 `--pretty=oneline参数` 简化显示结果
+- `git log`命令查看历史记录 //后加 `--pretty=oneline` 简化显示结果
 
-8.回退版本：`git reset --hard HEAD^` 注意其中`^`的数量会变动，如上上一个版本就是`HEAD^^`； 或者把`HEAD^`直接改为目标版本的commit id。
+### 回退
+- 回退版本：`git reset --hard HEAD^` 注意其中`^`的数量会变动，如上上一个版本就是`HEAD^^`； 或者把`HEAD^`直接改为目标版本的commit id。
 
-9.`git reflog`用来记录用户的每一次命令
+- `git reflog`用来记录用户的每一次命令
 
-10.提交后，用`git diff HEAD -- <filename>`命令可以查看工作区和版本库里面最新版本的区别
+- 提交后，用`git diff HEAD -- <filename>`命令可以查看工作区和版本库里面最新版本的区别
 
-11.`git checkout -- file`可以丢弃工作区的修改
+### 撤销修改
+- `git checkout -- file`可以丢弃工作区的修改
 (让这个文件回到最近一次git commit或git add时的状态。)
 
-12.（已经提交到版本库但后续删除了的文件）
+- `git reset HEAD <file>`可以把暂存区的修改撤销掉（unstage），重新放回工作区：
+
+- （已经提交到版本库但后续删除了的文件）
 删除版本库中的该文件：1. `git rm <filename>`；2. `git commit -m "balabala"`
 根据版本库恢复该文件：`git checkout -- <filename>` （git checkout其实是用版本库里的版本替换工作区的版本）
 
-13.添加远程库： 
-1. 在Github上新建一个repo
-2. <font color="red">把创建好的SSH公钥放入Github账户设置中，私钥通过`ssh-agent`、`ssh-add <私钥名称>`添加，注意这里是教程中没有提过的。</font>
+### 远程仓库
+- Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。
+
+#### 创建ssh key
+- 在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+`$ ssh-keygen -t rsa -C "youremail@example.com"`
+一路回车，使用默认值即可
+之后把id_rsa.pub中的内容设置到GitHub账户设置中就行了
+
+#### 添加远程库
+1. 把创建好的SSH公钥放入Github账户设置中
+2. 在Github上新建一个repo
 3. 在本地想要推送的文件中：`git remote add <origin> git@github.com:<username>/<repo's name>.git`
 4. 关联后，使用命令`git push -u <origin> master`第一次推送master分支的所有内容；
 5. 之后`git push <origin> master`推送最新修改
 
-14.克隆远程库
-1. `git clone git@github.com:<username>/<repo's name>.git`
+### 参与开源项目
+- 访问它的项目GitHub主页，点“Fork”就在自己的账号下克隆了一个仓库，然后，从自己的账号下clone `git clone git@github.com:<username>/<repo's name>.git` <font color = "green">一定要从自己的账号下clone仓库，这样你才能推送修改。</font>
+- 如果希望官方库能接受自己的修改，可以在GitHub上发起一个pull request。当然，对方是否接受pull request就不一定了
 
-15.`git stash`保存当前工作现场；`git stash list`查看刚才存储工作现场的具体位置；`git stash pop`恢复工作现场
+- 已关联GitHub远程库的文件夹再关联码云
+1. 码云中添加ssh公钥
+2. 码云中创建项目
+3. 本地中先用git remote -v查看远程库信息
+4. 删除已有的GitHub远程库：`git remote rm origin`
+5. 在本地库上使用命令git remote add把它和码云的远程库连接：`git remote add origin git@gitee.com:<username>/<repo's name>.git`
+6. 通过`git push`命令就可以把本地库推送到Gitee上
 
-16.`git branch -D <name>` 强行删除一个没有合并过的分支
+- <font color = "green">一个本地库能既关联GitHub，又关联码云。如果有多个远程库，需要用不同的名称来标识不同的远程库</font>
+	1. 先删除已关联的名为origin的远程库 `git remote rm origin`
+	2. 先关联GitHub的远程库：`git remote add github git@github.com:<username>/<repo's name>.git`<font color = "green">注意，远程库的名称叫github，不叫origin了</font>
+	3. 再关联码云的远程库：git remote add gitee git@gitee.com:<username>/<repo's name>.git
+	4. 如果要推送到GitHub，使用命令：`git push github master`
 
-17.`git remote -v` 显示更详细的远程库信息
+- `git stash`保存当前工作现场；`git stash list`查看刚才存储工作现场的具体位置；`git stash pop`恢复工作现场
+
+### 分支
+
+- `git branch -D <name>` 强行删除一个没有合并过的分支
 
 18.`git push origin <分支名字>`把该分支上的所有本地提交推送到远程库
 
@@ -131,7 +148,3 @@ master分支和自建的feature1分支各自都分别有新的提交，此时可
 9. tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起
 
 10. 忽略某些文件时，需要编写.gitignore；.gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理；`-f`强制添加已忽略格式类型的文件：`git add -f <App>.<class>`
-
-
-
-
