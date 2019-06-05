@@ -34,7 +34,7 @@ Input | Output
 一个小细节：如果该数组是从1开始的连续正整数，那么直接输出它的长度+1。比如说[1,2]，输出3即可。
 
 2019.05.17
-```
+```java
 class Solution {
     public int firstMissingPositive(int[] nums) {
         int missedNumber = nums.length+1;
@@ -57,6 +57,87 @@ class Solution {
             }
         }
         return missedNumber;
+    }
+}
+```
+
+#### 42
+[Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+
+给出一组无序的非负整数代表山形图，问雨后能贮水多少
+
+2019.06.05
+
+- 解一
+
+考虑到数组中每一位数可能的情况：成为容器的左隔板/右隔板/底。
+如果是底的话，找到左边的最高位，右边的最高位，两者较小的一位就是该容器实际能存储的水位，再减去当前底的高度，就是当前作为底所能存储的水量。
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        for (int i = 1; i < height.length - 1; i++){
+            int maxLeft = 0, maxRight = 0;
+            for (int j = i; j >= 0; j--)//j = i 可能本身是左隔板
+                maxLeft = Math.max(height[j], maxLeft);
+            for (int j = i; j < height.length; j++) 
+                maxRight = Math.max(height[j], maxRight);
+            ans += Math.min(maxLeft, maxRight) - height[i];
+        }
+        return ans;
+    }
+}
+```
+
+- 解二
+
+双重循环会不会太耗时了？可以对应每一位，分别存储它的左边最高位和右边最高位，而不必在遍历中去求。
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        if(height.length == 0)
+            return 0;
+        int ans = 0;
+        int[] left_max = new int[height.length];int[] right_max = new int[height.length];
+        left_max[0] = height[0];right_max[height.length - 1] = height[height.length - 1];
+        for (int i = 1; i < height.length; i++) {
+            left_max[i] = Math.max(height[i], left_max[i - 1]);
+        }
+        for (int i = height.length - 2; i >= 0; i--) {
+            right_max[i] = Math.max(height[i], right_max[i + 1]);
+        }
+        for (int i = 1; i < height.length - 1; i++) {
+            ans += Math.min(left_max[i], right_max[i]) - height[i];
+        }
+        return ans;
+    }
+}
+```
+
+- 解三
+
+已经在解二中实现时间复杂度O(n)，但是空间复杂度也为O(n)，还能不能降低？可以，本题事实上是#11一题的引申。根据#11的思路，先从距离最远的两端开始，两端中选出最长的保留，另一端缩短距离再比较。同时再对两端分别设置最大值，不断更新这个最大值，不能更新的时候说明当前数作为容器的底，最大值减去当前数就是能贮水的高度。
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        while (left < right){
+            if(leftMax > height[left]){
+                ans += leftMax - height[left];
+            }else leftMax = height[left];
+
+            if(rightMax > height[right]){
+                ans += rightMax - height[right];
+            }else rightMax = height[right];
+
+            if(height[left] < height[right]) left++;
+            else right--;
+        }
+        return ans;
     }
 }
 ```
