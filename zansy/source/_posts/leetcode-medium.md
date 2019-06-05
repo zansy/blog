@@ -24,7 +24,7 @@ Given | Modified
 说是medium但其实也很水，保持两个数组概念，和#26 #27类似，设定变量，判定当前数组当前位和新数组前两位是否相同，不同则存入。覆盖原数组。
 
 2019.05.16
-```
+```java
 class Solution {
     public int removeDuplicates(int[] nums) {
         int flag = 2;
@@ -132,7 +132,7 @@ gas | 1|2|3|4|5|1|2|3
 cost| 3| 4| 5| 1| 2|3|4|5
 
 但因为是重复的，所以也不必再设立一个数组增加空间复杂度，只需要简单进行求余算index获得数值即可。
-```
+```java
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int station = -1;
@@ -167,7 +167,7 @@ run += (gas[i] - cost[i]);
     }
 ```
 这一步真的很巧妙，包含了“测试每一个起发点，如果无法去下一个站点即舍弃”的操作。同时还包含了一个解题关键：在确定能完成循环的前提下，目前的路程一旦出现无法去下一站的情况，则下一站一定是起发点，同时重新计算路程油量的收支情况，不行则再次舍弃。
-```
+```java
 class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int rest = 0, run = 0, start = 0;
@@ -396,7 +396,7 @@ class Solution {
 但这一题小陷阱很多，t是绝对值，肯定不能小于0。那么为了制作号码牌的时候设置除以t+1；数组中存在负数，那么每次先减去一个设定的最小值，即加上一个最大值。
 
 2019.05.21
-```
+```java
 class Solution {
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
         if (k == 0 || t < 0) return false;
@@ -427,7 +427,7 @@ class Solution {
 具体解法看这一篇博文：[从 LeetCode#55 入门动态规划](https://zansy.github.io/2019/05/23/LeetCode-55-DP/)
 
 2019.05.22
-```
+```java
 class Solution {
     public boolean canJump(int[] nums) {
         int lastCanJumpToTheEnd = nums.length-1;
@@ -493,7 +493,7 @@ class Solution {
 
 思路不算难，先从距离最远的两端开始，两端中选出最长的保留，另一端缩短距离再比较，重复操作，直到间距最小。
 
-```
+```java
 class Solution {
     public int maxArea(int[] height) {
        int left = 0, right = height.length - 1;
