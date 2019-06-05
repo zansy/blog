@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190604 更新/11）
+title: LeetCode 中等题汇总（20190605 更新/12）
 author: zansy
 tags: []
 categories:
@@ -505,6 +505,29 @@ class Solution {
             maxArea = Math.max(maxArea, Math.min(height[left] , height[right]) * (right - left));
         }
         return maxArea;
+    }
+}
+```
+
+#### 334
+[Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
+
+给出一组无序数nums，问其中是否存在三个数，nums[i] < nums[j] < nums[k],同时i < j < k。要求时间复杂度O(n)，空间复杂度O(1)。
+
+把整个数组的数分成三个层次，其中两个分界点，一层小于等于small，一层大于small但是小于等于medium，一层大于medium。small、medium没有固定的值，只要能起到分隔作用即可。一旦出现第三个数，返回true。
+
+2019.06.05
+
+```java
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int small = Integer.MAX_VALUE, medium = Integer.MAX_VALUE;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] <= small) small = nums[i];
+            else if (nums[i] <= medium) medium = nums[i];
+            else return true;
+        }
+        return false;
     }
 }
 ```
