@@ -23,7 +23,7 @@ Prim和Kruskal 思路 模版
 ![保存最小距离的数组](http://wx2.sinaimg.cn/mw690/b11f7046gy1fewva7y440j20li05awen.jpg)
 #### 模版代码
 <a href="http://acm.hdu.edu.cn/showproblem.php?pid=1863">查看原题</a>
-```
+```C++
 #include <iostream>
 using namespace std;
 int main(int argc, char *argv[])
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 ![Kruskal](http://www.xdwy.com.cn/DOWN/course/sffxysj/mnst/mnst1.files/image011.gif)
 #### 模版代码
 <a href="http://acm.hdu.edu.cn/showproblem.php?pid=5253">查看原题</a>
-```
+```C++
 #include <iostream>
 #include <stdio.h>
 #include <algorithm>
