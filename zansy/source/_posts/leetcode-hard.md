@@ -61,87 +61,6 @@ class Solution {
 }
 ```
 
-#### 42
-[Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
-
-给出一组无序的非负整数代表山形图，问雨后能贮水多少
-
-2019.06.05
-
-- 解一
-
-考虑到数组中每一位数可能的情况：成为容器的左隔板/右隔板/底。
-如果是底的话，找到左边的最高位，右边的最高位，两者较小的一位就是该容器实际能存储的水位，再减去当前底的高度，就是当前作为底所能存储的水量。
-```java
-class Solution {
-    public int trap(int[] height) {
-        int ans = 0;
-        for (int i = 1; i < height.length - 1; i++){
-            int maxLeft = 0, maxRight = 0;
-            for (int j = i; j >= 0; j--)//j = i 可能本身是左隔板
-                maxLeft = Math.max(height[j], maxLeft);
-            for (int j = i; j < height.length; j++) 
-                maxRight = Math.max(height[j], maxRight);
-            ans += Math.min(maxLeft, maxRight) - height[i];
-        }
-        return ans;
-    }
-}
-```
-
-- 解二
-
-双重循环会不会太耗时了？可以对应每一位，分别存储它的左边最高位和右边最高位，而不必在遍历中去求。
-
-```java
-class Solution {
-    public int trap(int[] height) {
-        if(height.length == 0)
-            return 0;
-        int ans = 0;
-        int[] left_max = new int[height.length];int[] right_max = new int[height.length];
-        left_max[0] = height[0];right_max[height.length - 1] = height[height.length - 1];
-        for (int i = 1; i < height.length; i++) {
-            left_max[i] = Math.max(height[i], left_max[i - 1]);
-        }
-        for (int i = height.length - 2; i >= 0; i--) {
-            right_max[i] = Math.max(height[i], right_max[i + 1]);
-        }
-        for (int i = 1; i < height.length - 1; i++) {
-            ans += Math.min(left_max[i], right_max[i]) - height[i];
-        }
-        return ans;
-    }
-}
-```
-
-- 解三
-
-已经在解二中实现时间复杂度O(n)，但是空间复杂度也为O(n)，还能不能降低？可以，本题事实上是#11一题的引申。根据#11的思路，先从距离最远的两端开始，两端中选出最长的保留，另一端缩短距离再比较。同时再对两端分别设置最大值，不断更新这个最大值，不能更新的时候说明当前数作为容器的底，最大值减去当前数就是能贮水的高度。
-
-```java
-class Solution {
-    public int trap(int[] height) {
-        int ans = 0;
-        int left = 0, right = height.length - 1;
-        int leftMax = 0, rightMax = 0;
-        while (left < right){
-            if(leftMax > height[left]){
-                ans += leftMax - height[left];
-            }else leftMax = height[left];
-
-            if(rightMax > height[right]){
-                ans += rightMax - height[right];
-            }else rightMax = height[right];
-
-            if(height[left] < height[right]) left++;
-            else right--;
-        }
-        return ans;
-    }
-}
-```
-
 #### 45
 [Jump Game II](https://leetcode.com/problems/jump-game-ii/)
 给出一组无序的非负整数，每个数字是指在其索引的位置上能往右走的最大步数，问在第一个位置上，最少走几步能走到最末位。（假设一定能走到最末位
@@ -249,6 +168,189 @@ class Solution {
         for (int i = 1; i < prices.length; i++)
             if (prices[i] > prices[i - 1]) profit += prices[i] - prices[i - 1];
         return profit;
+    }
+}
+```
+#### 42
+[Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+
+给出一组无序的非负整数代表山形图，问雨后能贮水多少
+
+2019.06.05
+
+- 解一
+
+考虑到数组中每一位数可能的情况：成为容器的左隔板/右隔板/底。
+如果是底的话，找到左边的最高位，右边的最高位，两者较小的一位就是该容器实际能存储的水位，再减去当前底的高度，就是当前作为底所能存储的水量。
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        for (int i = 1; i < height.length - 1; i++){
+            int maxLeft = 0, maxRight = 0;
+            for (int j = i; j >= 0; j--)//j = i 可能本身是左隔板
+                maxLeft = Math.max(height[j], maxLeft);
+            for (int j = i; j < height.length; j++) 
+                maxRight = Math.max(height[j], maxRight);
+            ans += Math.min(maxLeft, maxRight) - height[i];
+        }
+        return ans;
+    }
+}
+```
+
+- 解二
+
+双重循环会不会太耗时了？可以对应每一位，分别存储它的左边最高位和右边最高位，而不必在遍历中去求。
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        if(height.length == 0)
+            return 0;
+        int ans = 0;
+        int[] left_max = new int[height.length];int[] right_max = new int[height.length];
+        left_max[0] = height[0];right_max[height.length - 1] = height[height.length - 1];
+        for (int i = 1; i < height.length; i++) {
+            left_max[i] = Math.max(height[i], left_max[i - 1]);
+        }
+        for (int i = height.length - 2; i >= 0; i--) {
+            right_max[i] = Math.max(height[i], right_max[i + 1]);
+        }
+        for (int i = 1; i < height.length - 1; i++) {
+            ans += Math.min(left_max[i], right_max[i]) - height[i];
+        }
+        return ans;
+    }
+}
+```
+
+- 解三
+
+已经在解二中实现时间复杂度O(n)，但是空间复杂度也为O(n)，还能不能降低？可以，本题事实上是#11一题的引申。根据#11的思路，先从距离最远的两端开始，两端中选出最长的保留，另一端缩短距离再比较。同时再对两端分别设置最大值，不断更新这个最大值，不能更新的时候说明当前数作为容器的底，最大值减去当前数就是能贮水的高度。
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        while (left < right){
+            if(leftMax > height[left]){
+                ans += leftMax - height[left];
+            }else leftMax = height[left];
+
+            if(rightMax > height[right]){
+                ans += rightMax - height[right];
+            }else rightMax = height[right];
+
+            if(height[left] < height[right]) left++;
+            else right--;
+        }
+        return ans;
+    }
+}
+```
+
+#### 128
+[Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+给出一组无序数，要求返回这组数中存在的连续数组的最长长度。
+如{1,2,0,1}，存在连续数组012，返回3
+
+2019.06.06
+
+- 解一
+
+利用`Arrays.sort`函数排序，遍历排好序后的每一位，重复的略过，看和前一位是否是连续数组，是则目前连续数组长度++，直到出现不是的打断，更新目前最长连续数组长度，同时重新开始目前连续数组计数。
+```Java
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int longestStreak = 1;
+        int currentStreak = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i-1]) {
+                if (nums[i] == nums[i-1]+1) {
+                    currentStreak += 1;
+                }
+                else {
+                    longestStreak = Math.max(longestStreak, currentStreak);
+                    currentStreak = 1;
+                }
+            }
+        }
+        return Math.max(longestStreak, currentStreak);
+    }
+}
+```
+
+- 解二
+
+设立一个查找函数，寻找数组中的特定数字。当遍历数组的每一位时，设立一个while循环，查找当前位的连续数是否在原数组中存在，存在则继续++寻找，当前连续数组长度++，等不存在+1的数则跳出循环，更新最长连续数组长度。
+
+```Java
+class Solution {
+    private boolean arrayContains(int[] arr, int num) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public int longestConsecutive(int[] nums) {
+        int longestStreak = 0;
+
+        for (int num : nums) {
+            int currentNum = num;
+            int currentStreak = 1;
+
+            while (arrayContains(nums, currentNum + 1)) {
+                currentNum += 1;
+                currentStreak += 1;
+            }
+
+            longestStreak = Math.max(longestStreak, currentStreak);
+        }
+
+        return longestStreak;
+    }
+}
+```
+
+- 解三
+
+解二的方法是否时间复杂度过高了呢？如果只是查找一个数是否存在的话，最快捷的办法就是用哈希。
+HashSet不重复地存储数组中数字，遍历数组中每一位，while循环查找HashSet中该数的连续值是否存在，不存在了就跳出循环，更新最长连续数组长度。
+```Java
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> num_set = new HashSet<Integer>();
+        for (int num : nums) {
+            num_set.add(num);
+        }
+
+        int longestStreak = 0;
+
+        for (int num : num_set) {
+            if (!num_set.contains(num-1)) {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (num_set.contains(currentNum+1)) {
+                    currentNum += 1;
+                    currentStreak += 1;
+                }
+
+                longestStreak = Math.max(longestStreak, currentStreak);
+            }
+        }
+
+        return longestStreak;
     }
 }
 ```
