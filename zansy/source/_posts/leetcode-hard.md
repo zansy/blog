@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190605 更新/5）
+title: LeetCode 难题汇总（20190607 更新/7）
 author: zansy
 tags: []
 categories:
@@ -287,7 +287,7 @@ class Solution {
 }
 ```
 
-- 解二
+- 解二（超时）
 
 设立一个查找函数，寻找数组中的特定数字。当遍历数组的每一位时，设立一个while循环，查找当前位的连续数是否在原数组中存在，存在则继续++寻找，当前连续数组长度++，等不存在+1的数则跳出循环，更新最长连续数组长度。
 
@@ -324,7 +324,7 @@ class Solution {
 
 - 解三
 
-解二的方法是否时间复杂度过高了呢？如果只是查找一个数是否存在的话，最快捷的办法就是用哈希。
+解二的方法时间复杂度过高，如果只是查找一个数是否存在的话，最快捷的办法就是用哈希。
 HashSet不重复地存储数组中数字，遍历数组中每一位，while循环查找HashSet中该数的连续值是否存在，不存在了就跳出循环，更新最长连续数组长度。
 ```Java
 class Solution {
@@ -351,6 +351,66 @@ class Solution {
         }
 
         return longestStreak;
+    }
+}
+```
+#### 164
+[Maximum Gap](https://leetcode.com/problems/maximum-gap/)
+
+给出一组无序数，要求返回这组数排序后的最长的相邻间隔长度。
+如{3,6,9,1}，排序后{1,3,6,9}，(3,6)或(6,9)就是最长间隔长度，返回6 - 3 = 3。
+
+2019.06.07
+- 解一
+
+最普通思路，排序后比对
+```Java
+if (nums.length < 2)return 0;
+        int maxDiff = 0;
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length; i++){
+            maxDiff = Math.max(maxDiff, nums[i] - nums[i - 1]);
+        }
+        return maxDiff;
+```
+
+- 解二
+
+这感觉好难想到啊…
+
+主要是这么一个知识点：最大的最近间隔肯定大于 最大值-最小值/总间隔。
+
+想到这个之后，把所有数字分类，以整除该间隔后的数作为桶排序的索引。例如{3,9,21,25,29,37,43,49}，间隔为(49 - 3) / 7 ≈ 7，则其索引分别为{0,0,2,3,3,4,5,6}。相同索引的为一类，同类中的差值都比间隔小，因此最大间隔肯定不存在于其中。
+
+于是找出同类中最大数和最小数，然后遍历这个桶数组，找出相邻类别中，较小类的最大值和较大类的最小值，二者的差值就是最有可能成为最大间隔的数。
+
+```Java
+class Solution {
+    public int maximumGap(int[] nums) {
+        if (nums.length < 2)return 0;
+        int min = nums[0], max = nums[0];
+        for (int i : nums){
+            min = Math.min(min, i);
+            max = Math.max(max, i);
+        }
+        int gap = (int)Math.ceil((double)(max - min) / (nums.length - 1));
+        if (gap == 0)return 0;
+        int[] bucketMin = new int[nums.length]; int[] bucketMax = new int[nums.length];
+        Arrays.fill(bucketMax, Integer.MIN_VALUE); Arrays.fill(bucketMin,Integer.MAX_VALUE);
+        for(int i : nums){
+            int index = (i - min )/ gap;
+            bucketMin[index] = Math.min(bucketMin[index], i);
+            bucketMax[index] = Math.max(bucketMax[index], i);
+        }
+        int maxGap = Integer.MIN_VALUE;
+        int previousMax = min;
+        for (int i = 0; i < bucketMin.length; i++){
+            if(bucketMin[i] != Integer.MAX_VALUE){
+                maxGap = Math.max(maxGap, bucketMin[i] - previousMax);
+                previousMax = bucketMax[i];
+            }
+        }
+        return maxGap;
     }
 }
 ```
