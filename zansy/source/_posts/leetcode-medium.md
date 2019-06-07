@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190605 更新/12）
+title: LeetCode 中等题汇总（20190607 更新/13）
 author: zansy
 tags: []
 categories:
@@ -424,7 +424,7 @@ class Solution {
 
 给出一组无序的非负整数，每个数字是指在其索引的位置上能往右走的最大步数，问在第一位是否能走到数组最后一位。
 
-具体解法看这一篇博文：[从 LeetCode#55 入门动态规划](https://zansy.github.io/2019/05/23/LeetCode-55-DP/)
+具体解法看这一篇博文：[从 LeetCode#55 入门动态规划](https://zansy.github.io/2019/05/24/LeetCode-55-DP/)
 
 2019.05.22
 ```java
@@ -531,7 +531,61 @@ class Solution {
     }
 }
 ```
+#### 287
+[Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 
+给出n+1个无序数，数组中值为1-n，找出重复的数字（必存在也只存在一个）。
+
+约束如下：
+1. 不能改变原数组
+2. 空间复杂度O(1) 
+3. 时间复杂度最多O(n<sup>2</sup>)
+4. 重复数字可能不止重复一次
+
+2019.06.07
+- 解一
+
+<font color = 'green'>找出无序数组重复数字，最先想到的是Arrays.sort和HashSet。</font>
+
+这里有约束，那就先蠢办法遍历
+```Java
+class Solution {
+    public int findDuplicate(int[] nums) {
+       int duplicate = 0;
+        for( int i = 0; i < nums.length - 1; i++){
+            for (int j = i + 1; j < nums.length; j++){
+                if(nums[j] == nums[i]) return nums[i];
+            }
+        }
+        return duplicate; 
+    }
+}
+```
+
+- 解二
+
+用到的是龟兔赛跑算法，具体解法看这里：[Floyd Cycle Detection Algorithm](https://zansy.github.io/2019/06/07/Floyd-Cycle-Detection-Algorithm/)
+
+```Java
+class Solution {
+    public int findDuplicate(int[] nums) {
+       int tortoise = nums[0];
+        int hare = nums[0];
+        do {
+            tortoise = nums[tortoise];//每次走一步
+            hare = nums[nums[hare]];//每次走两步
+        } while (tortoise != hare);
+
+        // Find the "entrance" to the cycle.
+        int finder = nums[0];
+        while (finder != tortoise) {
+            finder = nums[finder];
+            tortoise = nums[tortoise];
+        }
+        return finder;
+    }
+}
+```
 
 ## 数学 Math
 ### 基础
