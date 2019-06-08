@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190607 更新/7）
+title: LeetCode 难题汇总（20190608 更新/8）
 author: zansy
 tags: []
 categories:
@@ -411,6 +411,46 @@ class Solution {
             }
         }
         return maxGap;
+    }
+}
+```
+
+#### 135
+[Candy](https://leetcode.com/problems/candy/)
+
+给出一组无序数，视为一群要糖吃的小朋友的等级，要求等级较高的小朋友要比等级较低的身边小朋友有更多的糖，另外每个小朋友都至少要有一颗糖。
+
+2019.06.08
+
+遍历，对每个小朋友，先看后一位的等级数，如果没有自己高但是糖比自己多，就要求有比他们多一颗的糖。再看前一位的等级数，同样的情况的话也要求比他们多一颗糖，因为前位的糖的数量较早沉淀下，因此放在后面能进行准确覆盖更新。
+
+例题：{1,2,87,87,87,2,1}，第一次遍历下来各自得到的糖是1，2，3，1，2，2，1，不准确，索引为5的小朋友少得了糖，因此需要多次遍历确认，直到糖分配数组不再更新为止。
+
+这题解法有很多，推荐看一下题解：[135. Candy](https://leetcode.com/articles/candy/) 和 [力扣评论区](https://leetcode-cn.com/problems/candy/comments/)
+```Java
+class Solution {
+    public int candy(int[] ratings) {
+        int[] candies = new int[ratings.length];
+        Arrays.fill(candies, 1);
+        boolean flag = true;
+        int sum = 0;
+        while (flag) {
+            flag = false;
+            for (int i = 0; i < ratings.length; i++) {
+                if (i != ratings.length - 1 && ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1]) {
+                    candies[i] = candies[i + 1] + 1;
+                    flag = true;
+                }
+                if (i > 0 && ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1]) {
+                    candies[i] = candies[i - 1] + 1;
+                    flag = true;
+                }
+            }
+        }
+        for (int candy : candies) {
+            sum += candy;
+        }
+        return sum;
     }
 }
 ```
