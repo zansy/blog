@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190608 更新/8）
+title: LeetCode 难题汇总（20190609 更新/9）
 author: zansy
 tags: []
 categories:
@@ -451,6 +451,44 @@ class Solution {
             sum += candy;
         }
         return sum;
+    }
+}
+```
+
+#### 330
+[Patching Array](https://leetcode.com/problems/patching-array/)
+
+给出一组有序正整数nums和一个数n，要求在数组中插入几个数后，数组中的不同数通过相加能够获得1-n中的任意一个数字。问最少插入多少个数才行。
+
+2019.06.09
+
+设置一个miss作为1-n中 目前数组组合相加无法获得的数中的最小值。这说明我们现在已经可以组合[0,miss)了，注意是开区间。
+
+<font color = 'red'>接下去在遍历目前数组的过程中，碰到任意一个num，如果小于等于miss，说明可以通过加入它来组合出[0,miss+num)</font>，例如1，2 和 5，5大于3，无法组合出3+5-1的7；而1，2，3 和 2，2小于等于4，可以通过加入2组合出4+2-1的5。
+
+如果我们没有遇到这样一个数，说明要把它插入到目前数组中。
+
+举例说明，现在有数组{2,3}，要求组合出10以内的所有数字，问最少要插入多少个数。
+
+1. 遍历之前，已知不可组合出任意数，则miss设为1，即能组合的数为0。
+2. 遍历到的第一个数为2，2大于miss1，因此added计数+1，把缺失的1加入，miss因此可以加上这个缺失的num成为2。
+3. 此时，nums[0] = 2 <= miss, 已有数组序列为{1,2}，miss可以为miss+=nums[0] = 4，组成0~3的任意一个数。
+3. nums[1] = 3 <= 4，目前序列{1,2,3}，可组成4+3 = 7，6以内任意一个数字。
+4. 6仍然不够，缺失7，需要加入7，miss = miss+7 = 14，即{1,2,3,7}能组合13以内的任何一个数字，此时满足10，退出循环。
+```Java
+class Solution {
+    public int minPatches(int[] nums, int n) {
+        long miss = 1;int added = 0;int i = 0;
+        while (miss <= n) {
+            if (i < nums.length && nums[i] <= miss) {
+                miss += nums[i];
+                i++;
+            } else {
+                miss += miss;
+                added++;
+            }
+        }
+        return added;
     }
 }
 ```
