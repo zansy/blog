@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190527 更新/13）
+title: LeetCode 简单题汇总（20190610 更新/16）
 author: zansy
 tags:
   - 水
@@ -19,7 +19,7 @@ Easy练手感题，分类/题意/思路/代码。
 和#27差不多，设定变量，判定当前位和前一位是否相同，不同则存入，覆盖原数组。
 
 2019.05.04
-```
+```Java
 class Solution {
     public int removeDuplicates(int[] nums) {
         int flag = 1;
@@ -42,7 +42,7 @@ class Solution {
 那么设定一个变量为数组长度计数，遇到和给定值相同的就跳过去，不同的则覆盖原数组。
 
 2019.05.04
-```
+```Java
 class Solution {
     public int removeElement(int[] nums, int val) {
         int flag = 0;
@@ -67,7 +67,7 @@ class Solution {
 
 存储最后一位数，从后往前分别读取本身的前一位进行覆盖，第一位放入存储的原最后一位数。
 
-```
+```Java
 class Solution {
     public void rotate(int[] nums, int k) {
         for(int i = 0;i < k;i++){
@@ -85,7 +85,7 @@ class Solution {
 
 非常基础的用另一个数组作中介存储一次变化后的数组，再用递归完成n次操作
 
-```
+```Java
 class Solution {
     public void rotate(int[] nums, int k) {
         if(k == 0){
@@ -115,7 +115,7 @@ Input | k | Output
 可以发现本质上k就是需要提到前面的数字位数，即需要把后三位提到前面来。但这个思路涉及到一个问题——k大于数组本身长度的话需要注意。因此有`k%=nums.size();`的前要补充。
 这时候就可以扩展开很多解法，比如说“用一个数组保留后k位数组，将前面的数组向后移动k位，再写入前面的数组”等，简单的这里不再赘述。
 “原地”的话，可以考虑反转。即先整体反转，[7,6,5,4,3,2,1]，再将数组分为两部分，分为0——k-1（即[7,6,5]）和k——nums.size()-1（即[4,3,2,1]）; 最后两部分分别反转，就能得到正确的结果。 
-```
+```Java
 class Solution {
     public void rotate(int[] nums, int k) {
         k%=nums.length;
@@ -176,7 +176,7 @@ public class Solution {
 
 2018.05.18
 
-```
+```Java
 class Solution {
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> allrows = new ArrayList<List<Integer>>();
@@ -225,7 +225,7 @@ class Solution {
 - 解一 排序找中位数
 
 既然能在数组中占二分之一以上，那么排好序以后直接返回数组中间的数即可
-```
+```Java
 class Solution {
     public int majorityElement(int[] nums) {
         for(int i=0; i<nums.length; i++){//表示n次排序过程。
@@ -246,7 +246,7 @@ class Solution {
 
 既然题目里说肯定存在答案嘛，那就遍历数组，设立一个变量存数组中的数字并计数，遍历时遇到相同则+1，不同则-1，计数到0了，说明该数字并不符合“存在多于二分之一”条件，舍弃，存入当前值继续进行计数操作。
 其实这个方法意义不太大。
-```
+```Java
 public class Solution {
     public int majorityElement(int[] nums) {
         int major = nums[0], count = 1;
@@ -269,7 +269,7 @@ public class Solution {
 没什么好说的…桶排也可以；Hash也可以`Set<Integer> set = new HashSet<>(nums.length)`，然后遍历数组添加/判断set.contains就行。这里用了一个自带sort。
 
 2019.05.20
-```
+```Java
 class Solution {
     public boolean containsDuplicate(int[] nums) {
         Arrays.sort(nums);
@@ -291,7 +291,7 @@ class Solution {
 - 解一
 
 普通思路，遍历数组中除最后一位的每一位数，将它们分别和自己之后的数值比较，有相同的话直接用后数的序号-当前序号，符合条件就返回true，否则false
-```
+```Java
 class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         for(int i = 0; i < nums.length-1; i++){
@@ -308,7 +308,7 @@ class Solution {
 
 就算是简单题也要思考：有没有别的方法？时间复杂度是不是有点高？
 可以做一个模拟，只遍历一次。假设有一个只能存下k个数的容器，一边向其中存入新的数舍去旧的数，一边看该k-1个数中有没有相等的
-```
+```Java
 class Solution {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         Set<Integer> set = new HashSet<Integer>();
@@ -330,7 +330,7 @@ class Solution {
 这里只用了一个循环，每次先看最小值可不可以更新，不可以的话看最大值可不可以更新，判断依据是最大利润值获得了更新。
 
 2019.05.23
-```
+```Java
 class Solution {
     public int maxProfit(int[] prices) {
        int minPrice = Integer.MAX_VALUE;
@@ -355,7 +355,7 @@ class Solution {
 
 2019.05.24
 
-```
+```Java
 class Solution {
     public int maxProfit(int[] prices) {
         int maxProfit = 0;
@@ -376,7 +376,7 @@ class Solution {
 字符串匹配
 
 2019.05.25
-```
+```Java
 class Solution {
     public int strStr(String haystack, String needle) {
         for (int i = 0; ; i++) {
@@ -389,6 +389,126 @@ class Solution {
     }
 }
 ```
+#### 14
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+如果不存在公共前缀，返回空字符串 ""。
+
+2019.06.10
+
+- 解一
+
+前缀字符串嘛，那就遍历字符串数组中每一位开始比对，从第一位开始，后面对不上的就删除。这种称为横向比对。
+```Java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0)return "";
+        String prefix = strs[0];
+        for (String str : strs){
+            while (str.indexOf(prefix) != 0){//第一位不匹配
+                prefix = prefix.substring(0, prefix.length() - 1);//舍去最后一位
+                if (prefix.isEmpty())return "";//为空则无匹配
+            }
+        }
+        return prefix;
+    }
+}
+```
+
+- 解二
+
+纵向比对就是用charAt先取每个字符串的第一个字母，再取第二个，以此类推，直到对不上了为止，就从第一位到对不上的这一位进行切割。
+```Java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        for (int i = 0; i < strs[0].length() ; i++){
+            char c = strs[0].charAt(i);
+            for (int j = 1; j < strs.length; j ++) {
+                if (i == strs[j].length() || strs[j].charAt(i) != c)
+                    return strs[0].substring(0, i);
+            }
+        }
+        return strs[0];
+    }
+}
+```
+
+- 解三
+
+二分查找，找到终点。每次切割一半，如果前一半在所有字符串中都存在，则终点扩大范围，否则将前一半再进行二分。
+
+```Java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+
+        int minLength = Integer.MAX_VALUE;
+        for (String str : strs){
+            minLength = Math.min(minLength, str.length());
+        }
+
+        int low = 1; int high = minLength;
+        while (low <= high){
+            int middle = (low + high) / 2;
+            if (isCommonPrefix(strs, middle))
+                low = middle + 1;
+            else high = middle - 1;
+        }
+        return strs[0].substring(0, (low + high) / 2);
+    }
+    private  boolean isCommonPrefix(String[] strs, int length){
+        String prefix = strs[0].substring(0, length);
+        for (int i = 1; i < strs.length; i++){
+            if (!strs[i].startsWith(prefix))return false;
+        }
+        return true;
+    }
+}
+```
+- 解四
+
+还有一种堆排也很有趣，详情可看官方题解：[14. Longest Common Prefix](https://leetcode.com/articles/longest-common-prefix/)
+
+#### 58
+给定一个仅包含大小写字母和空格 ' ' 的字符串，返回其最后一个单词的长度。
+
+如果不存在最后一个单词，请返回 0 。
+
+说明：一个单词是指由字母组成，但不包含任何空格的字符串。
+"a" 返回1
+" " 返回0
+"a " 返回1
+剪枝处理，剩下纯粹的需要考虑的"a b c"etc，找到最后一个空格出现的位置，把包括空格在内的长度都去除即是所求长度。
+2019.06.10
+```Java
+class Solution {
+    public int lengthOfLastWord(String s) {
+        return s.trim().length()-s.trim().lastIndexOf(" ")-1;
+    }
+}
+```
+
+#### 387
+给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+HashMap存储每个字母出现的次数，再次遍历输出第一个只出现过一次的字母。
+
+2019.06.10
+```Java
+class Solution {
+    public int firstUniqChar(String s) {
+       HashMap<Character,Integer> lettersCount = new HashMap<>();
+        for ( int i = 0; i < s.length(); i++){
+            lettersCount.put(s.charAt(i),lettersCount.getOrDefault(s.charAt(i),0)+1);
+        }
+        for ( int i = 0; i < s.length(); i++){
+            if (lettersCount.get(s.charAt(i)) == 1) return i;
+        }
+        return -1; 
+    }
+}
+```
+
 ## 数学 Math
 ### 基础
 #### 7
@@ -400,7 +520,7 @@ class Solution {
 >Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−2<sup>31</sup>,  2<sup>31</sup> − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
 
 2019.05.26
-```
+```Java
 class Solution {
     public int reverse(int x) {
         long result = 0;
