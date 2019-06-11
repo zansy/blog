@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190607 更新/13）
+title: LeetCode 中等题汇总（20190611 更新/15）
 author: zansy
 tags: []
 categories:
@@ -601,6 +601,9 @@ class Solution {
 
 先剪枝，再用正则替换掉多余的空格，最后split切割。时空复杂度都有点高，去看了一下高票的解答代码[Clean Java two-pointers solution (no trim( ), no split( ), no StringBuilder)
 ](https://leetcode.com/problems/reverse-words-in-a-string/discuss/47720/Clean-Java-two-pointers-solution-(no-trim(-)-no-split(-)-no-StringBuilder))，用while降低复杂度，先反转整个字符串，再分别反转单词，最后清除开头和中间多余的空格，感觉思路还挺独特的。
+
+2019.06.11
+
 ```Java
 class Solution {
     public String reverseWords(String s) {
@@ -612,6 +615,39 @@ class Solution {
         }
         result += words[0];
         return result;
+    }
+}
+```
+
+#### 345
+[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
+编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
+
+惊了翻了一下高票解答程序，思路竟然和我一样…莫名其妙感觉很荣幸
+但是高票答案用char数组存储，我用的原字符的charAt，然后以subString字符串切割代替数组转换成字符串的功能。不过高票解答里的String vowels真的有点妙…我很蠢用HashSet存的，学习了！
+
+不过这解答的时空复杂度都不低诶…有没有办法再简化呢？好困先睡
+
+2019.06.11
+```Java
+class Solution {
+    public String reverseVowels(String s) {
+        String vowels = "aeiouAEIOU";
+        char[] chars = s.toCharArray();
+        int start = 0, end = s.length() - 1;
+        while (start < end){
+            while (!vowels.contains(chars[start]+"") && start < end){
+                start++;
+            }
+            while (!vowels.contains(chars[end]+"") && start < end){
+                end--;
+            }
+            char temp = chars[start];
+            chars[start] = chars[end];
+            chars[end] = temp;
+            start++; end--;
+        }
+        return new String(chars);
     }
 }
 ```
