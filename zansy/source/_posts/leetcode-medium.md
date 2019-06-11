@@ -587,6 +587,35 @@ class Solution {
 }
 ```
 
+##  字符串 String
+### 基础
+#### 151
+[Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
+
+给定一个字符串，逐个翻转字符串中的每个单词。
+
+说明：
+- 无空格字符构成一个单词。
+- 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+- 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+
+先剪枝，再用正则替换掉多余的空格，最后split切割。时空复杂度都有点高，去看了一下高票的解答代码[Clean Java two-pointers solution (no trim( ), no split( ), no StringBuilder)
+](https://leetcode.com/problems/reverse-words-in-a-string/discuss/47720/Clean-Java-two-pointers-solution-(no-trim(-)-no-split(-)-no-StringBuilder))，用while降低复杂度，先反转整个字符串，再分别反转单词，最后清除开头和中间多余的空格，感觉思路还挺独特的。
+```Java
+class Solution {
+    public String reverseWords(String s) {
+        String sTrim = s.trim(); String result = "";
+        sTrim = sTrim.replaceAll(" +"," ");
+        String[] words = sTrim.split(" ");
+        for (int i = words.length - 1; i > 0; i--){
+            result += words[i] + " ";
+        }
+        result += words[0];
+        return result;
+    }
+}
+```
+
 ## 数学 Math
 ### 基础
 #### 165

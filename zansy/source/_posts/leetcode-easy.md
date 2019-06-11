@@ -471,6 +471,8 @@ class Solution {
 还有一种堆排也很有趣，详情可看官方题解：[14. Longest Common Prefix](https://leetcode.com/articles/longest-common-prefix/)
 
 #### 58
+[Length of Last Word](https://leetcode.com/problems/length-of-last-word/)
+
 给定一个仅包含大小写字母和空格 ' ' 的字符串，返回其最后一个单词的长度。
 
 如果不存在最后一个单词，请返回 0 。
@@ -490,6 +492,8 @@ class Solution {
 ```
 
 #### 387
+[First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/)
+
 给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
 HashMap存储每个字母出现的次数，再次遍历输出第一个只出现过一次的字母。
 
@@ -509,6 +513,8 @@ class Solution {
 }
 ```
 #### 383
+[Ransom Note](https://leetcode.com/problems/ransom-note/)
+
 给定一个赎金信 (ransom) 字符串和一个杂志(magazine)字符串，判断第一个字符串ransom能不能由第二个字符串magazines里面的字符构成。如果可以构成，返回 true ；否则返回 false。
 
 (题目说明：为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思。)
@@ -536,6 +542,8 @@ class Solution {
 }
 ```
 #### 344
+[Reverse String](https://leetcode.com/problems/reverse-string/)
+
 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
 
 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
