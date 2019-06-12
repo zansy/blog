@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190613 更新/20）
+title: LeetCode 简单题汇总（20190613 更新/21）
 author: zansy
 tags:
   - 水
@@ -640,6 +640,59 @@ class Solution {
         for (Integer i=0; i<words.length; ++i)
             if (index.put(pattern.charAt(i), i) != index.put(words[i], i))
                 return false;
+        return true;
+    }
+}
+```
+
+#### 242
+[Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+2019.06.13
+
+- 解一
+
+第一反应就是字母排序…将两个字符串转换成字符组，对其中字母进行排序，比对排好序的字符组。
+
+一个补充！Array.equals()可以直接作为返回结果返回！
+```Java
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) return false;
+        char[] sArray = s.toCharArray();
+        char[] tArray = t.toCharArray();
+        Arrays.sort(sArray);
+        Arrays.sort(tArray);
+        for (int i = 0; i < s.length(); i++){
+            if(sArray[i] != tArray[i]) return false;
+        }
+        return true;
+    }
+}
+```
+- 解二
+
+用字母表做，先遍历一个字符串，存储每个字母对应出现的次数。在遍历第二个字符串的时候，在字母表中减去出现的次数。最后遍历字母表，如果有不等于0的就说明两个字符串不相同，返回false
+
+（或者在遍历第二个字符串的时候就判断，如果出现的次数减到了-1，说明两者不同，直接返回false就行了
+```Java
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int[] counter = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            counter[s.charAt(i) - 'a']++;
+            counter[t.charAt(i) - 'a']--;
+        }
+        for (int count : counter) {
+            if (count != 0) {
+                return false;
+            }
+        }
         return true;
     }
 }
