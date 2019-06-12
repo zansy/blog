@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190611 更新/18）
+title: LeetCode 简单题汇总（20190612 更新/19）
 author: zansy
 tags:
   - 水
@@ -565,6 +565,37 @@ class Solution {
             s[s.length - 1 - i] = temp;
         }
         return s.toString();
+    }
+}
+```
+
+#### 205
+[Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+
+给定两个字符串 s 和 t，判断它们是否是同构的。
+
+如果 s 中的字符可以被替换得到 t ，那么这两个字符串是同构的。
+
+所有出现的字符都必须用另一个字符替换，同时保留字符的顺序。两个字符不能映射到同一个字符上，但字符可以映射自己本身。
+
+很常规的思路…HashMap存储s当前值和t上对应的值，如果发现已经存过了，再进行判断，如果结果不一样直接返回false，否则就揭过。
+注意“ab” “aa”的例子，此时需要再判断是否已存在该value。
+
+2019.06.12
+```Java
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        HashMap<Character,Character> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++){
+            if (map.containsKey(s.charAt(i))){
+                if(map.get(s.charAt(i)) != t.charAt(i))return false;
+            }
+            else {
+                if(map.containsValue(t.charAt(i))) return false;
+                map.put(s.charAt(i), t.charAt(i));
+            }
+        }
+        return true;
     }
 }
 ```
