@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190612 更新/19）
+title: LeetCode 简单题汇总（20190613 更新/20）
 author: zansy
 tags:
   - 水
@@ -599,6 +599,52 @@ class Solution {
     }
 }
 ```
+#### 290
+[Word Pattern](https://leetcode.com/problems/word-pattern/)
+给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。
+
+这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应规律。
+
+2019.06.13
+- 解一
+
+普通思路…解法和#205差不多，就是对应着两组分别放入HashMap的键值中，如果已有的话，判断一下是不是一致的，一致的话就放过。没有的话，判断一下值是否出现过。这本质上就是看键值对是否唯一。
+```Java
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        HashMap<Character,String> map = new HashMap<>();
+        if (str.split(" ").length != pattern.length()) return false;
+        for (int i = 0; i < pattern.length(); i++){
+            if(map.containsKey(pattern.charAt(i))){
+                if(map.get(pattern.charAt(i)).equals(str.split(" ")[i]) == false) return false;
+            }else {
+                if (map.containsValue(str.split(" ")[i]))return false;
+                map.put(pattern.charAt(i), str.split(" ")[i]);
+            }
+        }
+        return true;
+    }
+}
+```
+- 解二
+
+这是看的高票解答代码…惊了 原来HashMap的put方法会返回最后一次出现的索引！
+这个答案就是并行查看模式字母和单词，并比较它们最后出现的索引
+```Java
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[] words = str.split(" ");
+        if (words.length != pattern.length())
+            return false;
+        Map index = new HashMap();
+        for (Integer i=0; i<words.length; ++i)
+            if (index.put(pattern.charAt(i), i) != index.put(words[i], i))
+                return false;
+        return true;
+    }
+}
+```
+
 ## 数学 Math
 ### 基础
 #### 7
