@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190613 更新/16）
+title: LeetCode 中等题汇总（20190613 更新/15）
 author: zansy
 tags: []
 categories:
@@ -619,38 +619,6 @@ class Solution {
 }
 ```
 
-#### 345
-[Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
-编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
-
-惊了翻了一下高票解答程序，思路竟然和我一样…莫名其妙感觉很荣幸
-但是高票答案用char数组存储，我用的原字符的charAt，然后以subString字符串切割代替数组转换成字符串的功能。不过高票解答里的String vowels真的有点妙…我很蠢用HashSet存的，学习了！
-
-不过这解答的时空复杂度都不低诶…有没有办法再简化呢？好困先睡
-
-2019.06.11
-```Java
-class Solution {
-    public String reverseVowels(String s) {
-        String vowels = "aeiouAEIOU";
-        char[] chars = s.toCharArray();
-        int start = 0, end = s.length() - 1;
-        while (start < end){
-            while (!vowels.contains(chars[start]+"") && start < end){
-                start++;
-            }
-            while (!vowels.contains(chars[end]+"") && start < end){
-                end--;
-            }
-            char temp = chars[start];
-            chars[start] = chars[end];
-            chars[end] = temp;
-            start++; end--;
-        }
-        return new String(chars);
-    }
-}
-```
 #### 49
 [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
