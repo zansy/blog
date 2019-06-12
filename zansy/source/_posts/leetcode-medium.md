@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190611 更新/15）
+title: LeetCode 中等题汇总（20190613 更新/16）
 author: zansy
 tags: []
 categories:
@@ -648,6 +648,34 @@ class Solution {
             start++; end--;
         }
         return new String(chars);
+    }
+}
+```
+#### 49
+[Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+
+思路和242差不多，但这里把排序好后的字符组设为HashMap的键，值为List。如果HashMap中没有见过这个字符串排列好后的字符组，就新建一个ArrayList，然后新增入当前字符串。
+
+最后将HashMap的值返回即可。
+
+还有一种办法，直接以26个字母出现次数数组 组成一个string作为键。具体可以看官方题解：[49. Group Anagrams](https://leetcode.com/articles/group-anagrams/)
+
+2019.06.13
+```Java
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs.length == 0) return new ArrayList<>();
+        HashMap<String, List<String>> sortBychars = new HashMap<>();
+        for (String str : strs){
+            char[] strArray = str.toCharArray();
+            Arrays.sort(strArray);
+            if (!sortBychars.containsKey(String.valueOf(strArray)))
+                sortBychars.put(String.valueOf(strArray), new ArrayList<>());
+            sortBychars.get(String.valueOf(strArray)).add(str);
+        }
+        return new ArrayList<>(sortBychars.values());
     }
 }
 ```
