@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190609 更新/9）
+title: LeetCode 难题汇总（20190614 更新/10）
 author: zansy
 tags: []
 categories:
@@ -489,6 +489,60 @@ class Solution {
             }
         }
         return added;
+    }
+}
+```
+
+## 字符串 String
+### 基础
+#### 87
+[Scramble String](https://leetcode.com/problems/scramble-string/)
+
+给定一个字符串 s1，我们可以把它递归地分割成两个非空子字符串，从而将其表示为二叉树。
+
+在扰乱这个字符串的过程中，我们可以挑选任何一个非叶节点，然后交换它的两个子节点。
+
+例如，如果我们挑选非叶节点 "gr" ，交换它的两个子节点，将会产生扰乱字符串 "rgeat" 。
+
+我们将 "rgeat” 称作 "great" 的一个扰乱字符串。
+
+同样地，如果我们继续将其节点 "eat" 和 "at" 进行交换，将会产生另一个新的扰乱字符串 "rgtae" 。
+
+我们将 "rgtae” 称作 "great" 的一个扰乱字符串。
+
+给出两个长度相等的字符串 s1 和 s2，判断 s2 是否是 s1 的扰乱字符串。
+
+2019.06.14
+```Java
+class Solution {
+    public boolean isScramble(String s1, String s2) {
+        if(s1.length() != s2.length())return false;
+        //pruning
+        if (s1.equals(s2)) return true;
+        //判断是否不是同字母异构
+        int[] count = new int[256];
+        for (int i = 0; i < s1.length(); i++){
+            count[s1.charAt(i)]++;
+            count[s2.charAt(i)]--;
+        }
+        for (int i = 0; i < s1.length(); i++){
+            if(count[s1.charAt(i)] != 0)return false;
+        }
+        for (int i = 1; i < s1.length(); i++){
+            String s1Left = s1.substring(0, i);
+            String s2Left = s2.substring(0, i);
+            String s1Right = s1.substring(i);
+            String s2Right = s2.substring(i);
+            //在当前分割处没有交换
+            if(isScramble(s1Left, s2Left) && isScramble(s1Right, s2Right))
+                return true;
+            //在当前分割处左右交换
+            s2Left = s2.substring(0, s2.length() - i);
+            s2Right = s2.substring(s2.length() - i);
+            if(isScramble(s1Left, s2Right) && isScramble(s1Right, s2Left))
+                return true;
+        }
+        return false;
     }
 }
 ```
