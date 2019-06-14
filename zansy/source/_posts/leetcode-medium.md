@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190613 更新/15）
+title: LeetCode 中等题汇总（20190614 更新/16）
 author: zansy
 tags: []
 categories:
@@ -644,6 +644,56 @@ class Solution {
             sortBychars.get(String.valueOf(strArray)).add(str);
         }
         return new ArrayList<>(sortBychars.values());
+    }
+}
+```
+
+#### 179
+[Largest Number](https://leetcode.com/problems/largest-number/)
+
+给定一组非负整数，重新排列它们的顺序使之组成一个最大的整数。
+
+>Input: [3,30,34,5,9]
+>Output: "9534330"
+
+首先要把输入的整数{3,30,34,5,9}换成字符串，然后首位数字大的排在前面。例如5应该排在34的前面。但这要怎么排呢？这里有一个很巧妙的办法，当5和34进行比较的时候，实质上比较的是534和345，双方各把对方加入末尾，保证位数相同，只比较了高位。
+
+这个方法可以通过重写comparator interface 里面的compare方法实现，然后使用method Arrays.sort(array[], new Comparator<String>());
+
+sort完了就是降序排列。
+
+2019.06.14
+```Java
+class Solution {
+    public String largestNumber(int[] nums) {
+        //Get input intergers as strings
+        String[] asStrs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++)
+            asStrs[i] = String.valueOf(nums[i]);
+
+        //Sort strings according to custom comparator
+        Arrays.sort(asStrs, new LargerNumberComparator());
+
+        // If after being sorted, the largest number is `0`, the entire number is zero.
+        if (asStrs[0].equals("0")) {
+            return "0";
+        }
+
+        // Build largest number from sorted array.
+        String largestNumberStr = new String();
+        for (String numAsStr : asStrs) {
+            largestNumberStr += numAsStr;
+        }
+
+        return largestNumberStr;
+    }
+    private class LargerNumberComparator implements Comparator<String>{
+        @Override
+        public int compare(String a, String b){
+            String order1 = a + b;
+            String order2 = b + a;
+            return order2.compareTo(order1);
+        }
     }
 }
 ```
