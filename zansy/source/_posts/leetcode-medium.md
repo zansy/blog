@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190614 更新/16）
+title: LeetCode 中等题汇总（20190615 更新/17）
 author: zansy
 tags: []
 categories:
@@ -694,6 +694,65 @@ class Solution {
             String order2 = b + a;
             return order2.compareTo(order1);
         }
+    }
+}
+```
+#### 6
+[ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
+
+将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
+
+比如输入字符串为 "LEETCODEISHIRING"行数为 3 时，输出需要从左往右逐行读取，产生出一个新的字符串，比如："LCIRETOESIIGEDHN"。
+
+思路大概就是根据给定的行数，为每一行内容设立一个字符串组，比如说题目中行数为3，就设立3个字符串组。第一步先将字符串组初始化。然后读取原给定字符串的每一个字符，分别读入到3个字符串组中，最开始逐行下移，则行数++，读完一整列后逐行上升，则行数--，最后把这三行内容直接拼接整合起来就可以了。
+
+还有一种思路是根据数学规律：
+- Characters in row 0 are located at indexes k(2⋅numRows−2)
+- Characters in row numRows−1 are located at indexes k(2⋅numRows−2)+numRows−1
+- Characters in inner row i are located at indexes k(2⋅numRows−2)+i and (*k*+1)(2⋅numRows−2)−i.
+
+2019.06.15
+- 解一
+```Java
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1) return s;
+        List<StringBuilder> rows = new ArrayList<>();
+        for (int i = 0; i < Math.min(numRows, s.length()); i++)
+            rows.add(new StringBuilder());
+        int curRow = 0;
+        boolean goingDown = false;
+        for (char c : s.toCharArray()){
+            rows.get(curRow).append(c);
+            if(curRow == 0 || curRow == numRows - 1)
+                goingDown = !goingDown;
+            curRow += goingDown ? 1 : -1;
+        }
+        StringBuilder ret = new StringBuilder();
+        for (StringBuilder row : rows)ret.append(row);
+        return ret.toString();
+    }
+}
+```
+这是官方题解里给出来的代码，思路不变，修改了一下，使可读性更高
+```Java
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1 || numRows >= s.length()) return s;
+        String[] rows = new String[numRows];
+        for (int i = 0; i < numRows; i++){
+            rows[i] = "";
+        }
+        int curRow = 0, direction = 1;
+        for (char c : s.toCharArray()){
+            rows[curRow] += c;
+            if(curRow == 0)direction = 1;
+            else if (curRow == numRows - 1) direction = -1;
+            curRow += direction;
+        }
+        String result = "";
+        for (String row : rows) result += row;
+        return result;
     }
 }
 ```
