@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190613 更新/22）
+title: LeetCode 简单题汇总（20190616 更新/23）
 author: zansy
 tags:
   - 水
@@ -726,6 +726,49 @@ class Solution {
             }
         }
         return true;
+    }
+}
+```
+#### 38
+[Count and Say](https://leetcode.com/problems/count-and-say/)
+
+报数序列是一个整数序列，按照其中的整数的顺序进行报数，得到下一个数。其前五项如下：
+
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+1 被读作  "one 1"  ("一个一") , 即 11。
+11 被读作 "two 1s" ("两个一"）, 即 21。
+21 被读作 "one 2",  "one 1" （"一个二" ,  "一个一") , 即 1211。
+
+给定一个正整数 n（1 ≤ n ≤ 30），输出报数序列的第 n 项。
+
+注意：整数顺序将表示为一个字符串。
+
+2019.06.16
+
+这题明明不简单？？？首先要意识到用递归，接着想到遍历前字符串的每一个字符。通过观察可以发现，如果前后有重复的，压缩重复的并在前面插入重复次数；如果没有重复的，在前面插入1。
+
+转换成程序思想就是：遇到相同的就跳过相同的这一段，同时记录下相同的次数，作为前缀，带上当前相同的字符本身，记入结果字符串中。
+
+```Java
+class Solution {
+    public String countAndSay(int n) {
+        if (n == 1) return "1";
+        String prev = countAndSay(n - 1);
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 0;
+        while (i < prev.length()){
+            int same = 0, cur = i;
+            while ((cur + same) < prev.length() && prev.charAt(cur + same) == prev.charAt(cur) )
+                same++;
+            stringBuilder.append(same);
+            stringBuilder.append(prev.charAt(cur));
+            i += same;
+        }
+        return stringBuilder.toString();
     }
 }
 ```
