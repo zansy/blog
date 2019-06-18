@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190614 更新/10）
+title: LeetCode 难题汇总（20190618 更新/11）
 author: zansy
 tags: []
 categories:
@@ -543,6 +543,48 @@ class Solution {
                 return true;
         }
         return false;
+    }
+}
+```
+#### 316
+[Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
+
+给定一个仅包含小写字母的字符串，去除字符串中重复的字母，使得每个字母只出现一次。需保证返回结果的字典序最小（要求不能打乱其他字符的相对位置）。
+
+>输入: "cbacdcbc"
+>输出: "acdb"
+
+递归，先常规用数组记录每个字母的重复次数，再遍历字符串，对每一位进行“消除重复”的操作，即舍去重复的每一位，同时把重复的字母计数-1，直到遇到第一位后续无自身重复的时候停下。
+
+将这一位作为字符串的分界点，查看前部分重复的字符中，出现的字典序最小的是什么字母，然后在字符串的后部分中将这一字母清除。
+
+在字符串后部分中重复上述操作，不断找到分界点和其前半段的最小字典序字母，清除再对后部分进行下一步。
+
+举例说明：
+例题中字母的重复计数数组为c3b2a1d1，在进行消除重复的遍历过程中，在a部分停下，因为a之后的字符串cdcbc不存在它本身。看a前面的字符串，得到a是前部分最小的，答案的第一位可以定下来了，于是在a为分界点的后部分将最小的a删去。
+
+对消除最小字母的后半部分（以之前的最小字母为分界点）进行再操作，重复计数数组为c3d1b1，在d的部分停下，查看d前最小字母为c。最小的c作为分界点，在后部分cbc中将c清除，同时得到答案的第二位c。
+
+c的后部分只有db，d无重复且最小，得到其本身；b无重复且最小，得到其本身。得到答案acdb
+
+2019.06.18
+```Java
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        if (s.length() == 0)return "";
+        int[] count = new int[26];
+        int smallestPosition = 0;
+        for (int i = 0; i < s.length(); i++){
+            count[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++){
+            if (s.charAt(i) < s.charAt(smallestPosition)) smallestPosition = i;//在前置中找出最小的
+            if (--count[s.charAt(i) - 'a'] == 0){//消除前置重复，剩余的字符串的第一位在剩余字符串中无重复
+                break;
+            }
+        }
+        return s.charAt(smallestPosition) + removeDuplicateLetters(s.substring(smallestPosition + 1)
+                .replaceAll("" + s.charAt(smallestPosition), ""));//在后置字符串中清除目前遇到的最小字符串
     }
 }
 ```
