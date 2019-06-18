@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190619 更新/24）
+title: LeetCode 简单题汇总（20190619 更新/25）
 author: zansy
 tags:
   - 水
@@ -806,6 +806,39 @@ class Solution {
     }
 }
 ```
+#### 171
+[Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/)
+给定一个Excel表格中的列名称，返回其相应的列序号。
+
+例如，
+
+    A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+    ...
+
+看了一下好像基本思路都是一个for循环？其实这题比168简单，应该先写这一题来着…
+突破口仍然是观察找规律，A是1，AA是26+1，AAA是26<sup>2</sup>+1。我这里用了Math里的指数函数，但其实也可以result直接自乘，看了一下运行时间差别不大。
+
+2019.06.19
+
+```Java
+class Solution {
+    public int titleToNumber(String s) {
+        int result = 0;
+        for (int i = 0; i < s.length(); i++){
+            result += Math.pow(26, s.length() - i - 1) * (s.charAt(i) - 'A' + 1);
+            //result = result * 26 + (s.charAt(i) - 'A' + 1), i++);
+        }
+        return result;
+    }
+}
+```
+
 
 ## 数学 Math
 ### 基础
