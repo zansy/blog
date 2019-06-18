@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190616 更新/23）
+title: LeetCode 简单题汇总（20190619 更新/24）
 author: zansy
 tags:
   - 水
@@ -769,6 +769,40 @@ class Solution {
             i += same;
         }
         return stringBuilder.toString();
+    }
+}
+```
+
+#### 168
+[Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/)
+给定一个正整数，返回它在 Excel 表中相对应的列名称。
+
+例如，
+
+    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+    ...
+
+找规律题，A是1，AA是26*1+1，AAA是26(26+1)+1，因此每次n需要先--，再进行`/26`操作层层剥开。
+
+子问题相关，很容易想到递归，所以高票答案里有一行代码解决本题的：`return n == 0 ? "" : convertToTitle(--n / 26) + (char)('A' + (n % 26));`，参见[My 1 lines code in Java, C++, and Python](https://leetcode.com/problems/excel-sheet-column-title/discuss/51398/My-1-lines-code-in-Java-C%2B%2B-and-Python)
+
+2019.06.19
+```Java
+class Solution {
+    public String convertToTitle(int n) {
+        StringBuilder result = new StringBuilder();
+        while (n > 0){
+            n--;
+            result.insert(0,(char)('A' + n % 26));
+            n /= 26;
+        }
+        return result.toString();
     }
 }
 ```
