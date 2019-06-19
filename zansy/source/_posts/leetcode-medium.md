@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190615 更新/17）
+title: LeetCode 中等题汇总（20190619 更新/18）
 author: zansy
 tags: []
 categories:
@@ -21,6 +21,7 @@ Given | Modified
 [0,0,1,1,1,1,2,3,3]|[0,0,1,1,2,3,3]
 [0,0,0,0,0]|[0,0]
 
+---
 说是medium但其实也很水，保持两个数组概念，和#26 #27类似，设定变量，判定当前数组当前位和新数组前两位是否相同，不同则存入。覆盖原数组。
 
 2019.05.16
@@ -358,6 +359,7 @@ class Solution {
 
 题意如#274，但这次给出的是升序数组，要求时间复杂度对数级。
 
+---
 既然是对数级，就用二分查找。
 举例[0,1,4,5,6]，数组中每个值和它的h值有这样的对应关系：
 
@@ -387,6 +389,7 @@ class Solution {
 
 给出一组无序数nums，一个k，一个t，要求存在nums[i]和nums[j]，使得二者绝对值小于等于t，同时i与j的绝对值小于等于k。
 
+---
 思路如219，设置一个长度为k+1的窗口，例如[1,5,9,1,5,9]，k=2，t=3时，则需要设置一个长度为3的窗口，在窗口中观察是否有这样的两个数字满足绝对值小于等于t的情况。不满足则窗口往后平移一位。159，591，915，159，这样平移。
 
 但是窗口中的数字要怎样方便快捷地判断其绝对值呢？想办法排序，但是桶排的话需要的空间太大了，要怎么样尽可能地压缩空间呢？压缩空间，就是减小排序后差值最小的两个数的距离。这里的思路是把当前数除以t，例如[1,5,9,1,5,9]，除以t = 3得到的号码牌就是[0,1,3,0,1,3]，可见1和5之间的距离被压缩了。
@@ -424,6 +427,7 @@ class Solution {
 
 给出一组无序的非负整数，每个数字是指在其索引的位置上能往右走的最大步数，问在第一位是否能走到数组最后一位。
 
+---
 具体解法看这一篇博文：[从 LeetCode#55 入门动态规划](https://zansy.github.io/2019/05/24/LeetCode-55-DP/)
 
 2019.05.22
@@ -443,6 +447,7 @@ class Solution {
 
 给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以进行无限次交易，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。并且每次交易后的第二天不能交易
 
+---
 动态规划好难啊…
 
 2019.06.01
@@ -514,6 +519,7 @@ class Solution {
 
 给出一组无序数nums，问其中是否存在三个数，nums[i] < nums[j] < nums[k],同时i < j < k。要求时间复杂度O(n)，空间复杂度O(1)。
 
+---
 把整个数组的数分成三个层次，其中两个分界点，一层小于等于small，一层大于small但是小于等于medium，一层大于medium。small、medium没有固定的值，只要能起到分隔作用即可。一旦出现第三个数，返回true。
 
 2019.06.05
@@ -599,6 +605,8 @@ class Solution {
 - 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
 - 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
 
+---
+
 先剪枝，再用正则替换掉多余的空格，最后split切割。时空复杂度都有点高，去看了一下高票的解答代码[Clean Java two-pointers solution (no trim( ), no split( ), no StringBuilder)
 ](https://leetcode.com/problems/reverse-words-in-a-string/discuss/47720/Clean-Java-two-pointers-solution-(no-trim(-)-no-split(-)-no-StringBuilder))，用while降低复杂度，先反转整个字符串，再分别反转单词，最后清除开头和中间多余的空格，感觉思路还挺独特的。
 
@@ -624,6 +632,7 @@ class Solution {
 
 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
 
+---
 思路和242差不多，但这里把排序好后的字符组设为HashMap的键，值为List。如果HashMap中没有见过这个字符串排列好后的字符组，就新建一个ArrayList，然后新增入当前字符串。
 
 最后将HashMap的值返回即可。
@@ -656,6 +665,7 @@ class Solution {
 >Input: [3,30,34,5,9]
 >Output: "9534330"
 
+---
 首先要把输入的整数{3,30,34,5,9}换成字符串，然后首位数字大的排在前面。例如5应该排在34的前面。但这要怎么排呢？这里有一个很巧妙的办法，当5和34进行比较的时候，实质上比较的是534和345，双方各把对方加入末尾，保证位数相同，只比较了高位。
 
 这个方法可以通过重写comparator interface 里面的compare方法实现，然后使用method Arrays.sort(array[], new Comparator<String>());
@@ -704,6 +714,7 @@ class Solution {
 
 比如输入字符串为 "LEETCODEISHIRING"行数为 3 时，输出需要从左往右逐行读取，产生出一个新的字符串，比如："LCIRETOESIIGEDHN"。
 
+---
 思路大概就是根据给定的行数，为每一行内容设立一个字符串组，比如说题目中行数为3，就设立3个字符串组。第一步先将字符串组初始化。然后读取原给定字符串的每一个字符，分别读入到3个字符串组中，最开始逐行下移，则行数++，读完一整列后逐行上升，则行数--，最后把这三行内容直接拼接整合起来就可以了。
 
 还有一种思路是根据数学规律：
@@ -757,6 +768,105 @@ class Solution {
 }
 ```
 
+#### 12
+[Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
+
+罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
+```
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+```
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个整数，将其转为罗马数字。输入确保在 1 到 3999 的范围内。
+
+2019.06.19
+- 解一
+
+仍然是用的HashMap，从最后一位开始向前遍历，每位看一下是不是在特殊情况中存在，不存在的话就再分情况获得当前位数上的结果。
+
+通过insert把每位的结果添加到最终结果中。
+
+这个办法的代码实在是太难看了…
+```Java
+class Solution {
+    public String intToRoman(int num) {
+        StringBuilder result = new StringBuilder();
+        HashMap<Integer, String> map = new HashMap<>();
+        map.put(1, "I");
+        map.put(4, "IV");
+        map.put(5, "V");
+        map.put(9, "IX");
+        map.put(10, "X");
+        map.put(40, "XL");
+        map.put(50, "L");
+        map.put(90, "XC");
+        map.put(100, "C");
+        map.put(400, "CD");
+        map.put(500, "D");
+        map.put(900, "CM");
+        map.put(1000, "M");
+        int digits = 0;
+        while (num > 0){
+            int current = num % 10;
+            if(map.containsKey((int)(Math.pow(10, digits) * current))){
+                result.insert(0, map.get((int)(Math.pow(10, digits) * current)));
+                System.out.println(result);
+            }else {
+                if(current > 5){
+                    String temp = map.get((int)(Math.pow(10, digits) * 5));
+                    for (int i = 0; i < current - 5; i++){
+                        temp += map.get((int)(Math.pow(10, digits) * 1));
+                    }
+                    result.insert(0, temp);
+                }else{
+                    String temp = "";
+                    for (int i = 0; i < current; i++){
+                        temp += map.get((int)(Math.pow(10, digits) * 1));
+                    }
+                    result.insert(0, temp);
+                }
+            }
+            digits++;
+            num /= 10;
+        }
+        return result.toString();
+    }
+}
+```
+- 解二
+
+设立两个对应的数组，遍历特殊情况values数组，给定的不断减去当前遍历到的数字，同时输出对应的字母。
+```Java
+class Solution {
+    public String intToRoman(int num) {
+        int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+        String[] strs = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i=0;i<values.length;i++) {
+            while(num >= values[i]) {
+                num -= values[i];
+                sb.append(strs[i]);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 ## 数学 Math
 ### 基础
 #### 165
@@ -764,6 +874,7 @@ class Solution {
 
 两个字符串，比较版本号，前者比后者新返回1，否则返回-1。当相等时返回0。注意1.0和1比较，1.001和1.01比较的情况。
 
+---
 思路很简单，字符串以正则拆分，对每一位数字进行二者比较，位数不足的以0补足。比较到不同的时候返回结果，相同的话跳出循环返回0。
 
 2019.05.28

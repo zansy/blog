@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190619 更新/25）
+title: LeetCode 简单题汇总（20190619 更新/26）
 author: zansy
 tags:
   - 水
