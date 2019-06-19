@@ -16,6 +16,7 @@ Easy练手感题，分类/题意/思路/代码。
 
 给出一组排好序的数，要求去除数组里重复的数值，返回数组长度。对空间有要求。
 
+---
 和#27差不多，设定变量，判定当前位和前一位是否相同，不同则存入，覆盖原数组。
 
 2019.05.04
@@ -39,6 +40,7 @@ class Solution {
 
 给出一个数组和一个指定的数，要求从数组中删除所有该数并返回数组长度。对空间有要求。
 
+---
 那么设定一个变量为数组长度计数，遇到和给定值相同的就跳过去，不同的则覆盖原数组。
 
 2019.05.04
@@ -196,7 +198,10 @@ class Solution {
 #### 119
 [Pascal's Triangle II](https://leetcode.com/problems/pascals-triangle-ii/)
 
-根据输入的行数，输出杨辉三角指定的行数。把118的改一下就行，注意这里的0行是1而非空白。
+根据输入的行数，输出杨辉三角指定的行数。
+
+---
+把#118的改一下就行，注意这里的0行是1而非空白。
 
 2018.05.19
 
@@ -266,6 +271,7 @@ public class Solution {
 [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
 判断一组无序数中是否有重复数字，有则返回true，否则false
 
+---
 没什么好说的…桶排也可以；Hash也可以`Set<Integer> set = new HashSet<>(nums.length)`，然后遍历数组添加/判断set.contains就行。这里用了一个自带sort。
 
 2019.05.20
@@ -325,6 +331,8 @@ class Solution {
 [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/submissions/)
 给出一组无序数prices，要求得出prices[j] - prices[i]最大值是多少，且prices[j] > prices[i]，j > i
 
+---
+
 暴力方法不多说，两个for循环一个maxProfit变量，一组组比对即可。
 
 这里只用了一个循环，每次先看最小值可不可以更新，不可以的话看最大值可不可以更新，判断依据是最大利润值获得了更新。
@@ -350,6 +358,8 @@ class Solution {
 [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
 
 给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以多次买入卖出，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。
+
+---
 
 通过价格波动图可以看见，每次在谷底的时候买入，在峰值卖出，对应代码就是只计算上升阶段的高低差值
 
@@ -481,7 +491,10 @@ class Solution {
 "a" 返回1
 " " 返回0
 "a " 返回1
+
+---
 剪枝处理，剩下纯粹的需要考虑的"a b c"etc，找到最后一个空格出现的位置，把包括空格在内的长度都去除即是所求长度。
+
 2019.06.10
 ```Java
 class Solution {
@@ -519,10 +532,11 @@ class Solution {
 
 (题目说明：为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思。)
 
-2019.06.10
+---
 
 仍然是HashMap，存储杂志中的字母计数，再从HashMap中取赎金信所需的字母并-1，如果本身没有的话就置为0再-1。这样一来只要遍历看一次是不是计数小于0，是的话就说明不能构成。
 
+2019.06.10
 ```Java
 class Solution {
     public boolean canConstruct(String ransomNote, String magazine) {
@@ -550,6 +564,8 @@ class Solution {
 
 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
 
+---
+
 取中位，把中位两边的分别置换即可。
 
 关于这一题更需要思考的是多种解法：[[JAVA] Simple and Clean with Explanations [6 Solutions]](https://leetcode.com/problems/reverse-string/discuss/80937/JAVA-Simple-and-Clean-with-Explanations-6-Solutions)
@@ -571,6 +587,8 @@ class Solution {
 #### 345
 [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
+
+---
 
 惊了翻了一下高票解答程序，思路竟然和我一样…莫名其妙感觉很荣幸
 但是高票答案用char数组存储，我用的原字符的charAt，然后以subString字符串切割代替数组转换成字符串的功能。不过高票解答里的String vowels真的有点妙…我很蠢用HashSet存的，学习了！
@@ -609,6 +627,8 @@ class Solution {
 如果 s 中的字符可以被替换得到 t ，那么这两个字符串是同构的。
 
 所有出现的字符都必须用另一个字符替换，同时保留字符的顺序。两个字符不能映射到同一个字符上，但字符可以映射自己本身。
+
+---
 
 很常规的思路…HashMap存储s当前值和t上对应的值，如果发现已经存过了，再进行判断，如果结果不一样直接返回false，否则就揭过。
 注意“ab” “aa”的例子，此时需要再判断是否已存在该value。
@@ -733,7 +753,7 @@ class Solution {
 [Count and Say](https://leetcode.com/problems/count-and-say/)
 
 报数序列是一个整数序列，按照其中的整数的顺序进行报数，得到下一个数。其前五项如下：
-
+```
 1.     1
 2.     11
 3.     21
@@ -742,17 +762,19 @@ class Solution {
 1 被读作  "one 1"  ("一个一") , 即 11。
 11 被读作 "two 1s" ("两个一"）, 即 21。
 21 被读作 "one 2",  "one 1" （"一个二" ,  "一个一") , 即 1211。
+```
 
 给定一个正整数 n（1 ≤ n ≤ 30），输出报数序列的第 n 项。
 
 注意：整数顺序将表示为一个字符串。
 
-2019.06.16
+---
 
 这题明明不简单？？？首先要意识到用递归，接着想到遍历前字符串的每一个字符。通过观察可以发现，如果前后有重复的，压缩重复的并在前面插入重复次数；如果没有重复的，在前面插入1。
 
 转换成程序思想就是：遇到相同的就跳过相同的这一段，同时记录下相同的次数，作为前缀，带上当前相同的字符本身，记入结果字符串中。
 
+2019.06.16
 ```Java
 class Solution {
     public String countAndSay(int n) {
@@ -778,7 +800,7 @@ class Solution {
 给定一个正整数，返回它在 Excel 表中相对应的列名称。
 
 例如，
-
+```
     1 -> A
     2 -> B
     3 -> C
@@ -787,6 +809,8 @@ class Solution {
     27 -> AA
     28 -> AB 
     ...
+```
+---
 
 找规律题，A是1，AA是26*1+1，AAA是26(26+1)+1，因此每次n需要先--，再进行`/26`操作层层剥开。
 
@@ -811,7 +835,7 @@ class Solution {
 给定一个Excel表格中的列名称，返回其相应的列序号。
 
 例如，
-
+```
     A -> 1
     B -> 2
     C -> 3
@@ -820,6 +844,8 @@ class Solution {
     AA -> 27
     AB -> 28 
     ...
+```
+---
 
 看了一下好像基本思路都是一个for循环？其实这题比168简单，应该先写这一题来着…
 突破口仍然是观察找规律，A是1，AA是26+1，AAA是26<sup>2</sup>+1。我这里用了Math里的指数函数，但其实也可以result直接自乘，看了一下运行时间差别不大。
@@ -833,6 +859,60 @@ class Solution {
         for (int i = 0; i < s.length(); i++){
             result += Math.pow(26, s.length() - i - 1) * (s.charAt(i) - 'A' + 1);
             //result = result * 26 + (s.charAt(i) - 'A' + 1), i++);
+        }
+        return result;
+    }
+}
+```
+
+#### 13
+[Roman to Integer](https://leetcode.com/problems/roman-to-integer/submissions/)
+
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+```
+    字符          数值
+    I             1
+    V             5
+    X             10
+    L             50
+    C             100
+    D             500
+    M             1000
+```
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+----
+
+看了一圈觉得我的答案真是又快又好……其他的大概有用一个数组直接加然后剔除掉特殊情况的。
+我这边的思路大概就是按序遍历，基本上每位代表的数字都应该比前一位小的，如果出现特殊情况就说明出现4和9这类需要减的数字了，那就在答案中加上由当前数和它后一位数进行减法操作得到的数字，同时在下一次遍历的时候跳过它的后一位字母。
+
+2019.06.19
+```Java
+class Solution {
+    public int romanToInt(String s) {
+        int result = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+        for (int i = 0; i < s.length(); i++){
+            if(i + 1 < s.length() && map.get(s.charAt(i)) < map.get(s.charAt(i + 1))){
+                result += map.get(s.charAt(i + 1)) - map.get(s.charAt(i));
+                i++;
+            }else {
+                result += map.get(s.charAt(i));
+            }
         }
         return result;
     }
@@ -869,6 +949,8 @@ class Solution {
 [Plus One](https://leetcode.com/problems/plus-one/)
 
 给出一组数，其表示一个正整数。要求这个正整数+1后的数仍然以数组的形式展示。
+
+---
 
 从后向前遍历数组，小于9就+1返回，等于9就置为0，不返回等到遍历的前一位+1再返回。
 在这一轮中还没有返回结果的，说明是9s，则直接新建一个长度+1的数组前置为1即可。
