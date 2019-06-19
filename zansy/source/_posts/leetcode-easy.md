@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190619 更新/26）
+title: LeetCode 简单题汇总（20190620 更新/27）
 author: zansy
 tags:
   - 水
@@ -974,6 +974,56 @@ class Solution {
         int[] newNumber = new int [n+1];
         newNumber[0] = 1;
         return newNumber;
+    }
+}
+```
+#### 258
+[Add Digits](https://leetcode.com/problems/add-digits/)
+
+给定一个非负整数 num，反复将各个位上的数字相加，直到结果为一位数。
+
+2019.06.20
+
+- 解一
+
+普通思路 使用递归不断相加
+```Java
+class Solution {
+    public int addDigits(int num) {
+        if (num < 10) return num;
+        int sum  = 0;
+        while (num > 0){
+            sum += num % 10;
+            num /= 10;
+        }
+        return addDigits(sum);
+    }
+}
+```
+- 解二
+
+>10^k % 9 = 1; 
+a*10^k % 9 = a % 9 
+
+理解了上述基本后，举例说明：
+x = 23456; 
+x = 2* 10000 + 3 * 1000 + 4 * 100 + 5 * 10 + 6
+
+2 * 10000 % 9 = 2 % 9; 
+3 * 1000 % 9 = 3 % 9; 
+4 * 100 % 9 = 4 % 9; 
+5 * 10 % 9 = 5 % 9; 
+
+ x % 9 = (2 + 3 + 4 + 5 + 6) % 9
+
+所以 23456 % 9 = (2 + 3 + 4 + 5 + 6) % 9
+
+```Java
+class Solution {
+    public int addDigits(int num) {
+        if (num == 0) return 0;
+        if (num % 9 == 0) return 9;
+        else return num % 9;
     }
 }
 ```
