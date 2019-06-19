@@ -588,3 +588,42 @@ class Solution {
     }
 }
 ```
+
+#### 273
+[Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
+将非负整数转换为其对应的英文表示。可以保证给定输入小于 2<sup>31</sup> - 1 。
+```
+输入: 1234567891
+输出: "One Billion Two Hundred Thirty Four Million Five Hundred Sixty Seven Thousand Eight Hundred Ninety One"
+```
+
+---
+从末三位开始取，窗口为3依次向前。第一次的三位不需要千数组后位，第二次千后位，第三次百万后位，第四次千万后位
+
+专门设定一个方法，获得这三位的英文表示。
+
+2019.06.19
+```Java
+private final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    private final String[] TENS = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    private final String[] THOUSANDS = {"", "Thousand", "Million", "Billion"};
+    public String numberToWords(int num) {
+        if (num == 0)return "Zero";
+        int i = 0; String result = "";
+        while (num > 0){
+            if(num % 1000 != 0){
+                result = extractEndThree(num % 1000) + THOUSANDS[i] +" "+ result;
+            }
+            num /= 1000;
+            i++;
+        }
+        return result.trim();
+    }
+    private String extractEndThree(int num){
+        if(num == 0) return "";
+        else if (num < 20)return LESS_THAN_20[num] + " ";
+        else if (num < 100) return TENS[num / 10] + " " + extractEndThree(num % 10);
+        else
+            return LESS_THAN_20[num / 100] + " Hundred " + extractEndThree(num % 100);
+    }
+```
