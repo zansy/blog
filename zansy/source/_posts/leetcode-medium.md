@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190619 更新/18）
+title: LeetCode 中等题汇总（20190620 更新/19）
 author: zansy
 tags: []
 categories:
@@ -900,6 +900,75 @@ class Solution {
             if(singleNumberCompare != 0) return singleNumberCompare;
         }
         return 0;
+    }
+}
+```
+#### 8
+[String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
+
+实现一个 atoi 函数，使其能将字符串转换成整数。
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
+
+当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
+
+该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。
+
+注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。
+
+在任何情况下，若函数不能进行有效的转换时，请返回 0。
+
+假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−2<sup>31</sup>,  2<sup>31</sup> − 1]。如果数值超过这个范围，qing返回  INT_MAX (2<sup>31</sup> − 1) 或 INT_MIN (−2<sup>31</sup>) 。
+```
+输入: "4193 with words"
+输出: 4193
+解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
+
+输入: "words and 987"
+输出: 0
+解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
+     因此无法执行有效的转换。
+
+输入: "-91283472332"
+输出: -2147483648
+解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
+     因此返回 INT_MIN 
+
+```
+
+---
+过滤出字符串中的数字部分，数字包括正负数。注意数字之前只能为空格，否则返回0。超过能表示的最小值或者最大值时返回最小值或最大值。注意要先trim去除前后空格，否则会出现输入`" "`出错的情况。
+
+再用while循环清除掉空格，默认正数，用symbol表示正负号。遍历每个数字，通过*10+下一位进行字符串转换成int型。注意如果当前数比最大值2147483648 / 10 = 214748364 更大或者相等时要进行判断，说明将会溢出，这个时候根据参考正负数的类型返回最大值或最小值。
+
+如果没有溢出，最后只要返回转换后的int型就行。
+
+
+2019.06.20
+```Java
+class Solution {
+    public int myAtoi(String str) {
+        str = str.trim();
+        if (str.isEmpty()) return 0;
+        int symbol = 1, i = 0;
+        while (str.charAt(i) == ' ')i++;
+        if (str.charAt(i) == '-'){
+            symbol = -1;
+            i++;
+        }else if (str.charAt(i) == '+'){
+            symbol = 1;
+            i++;
+        }
+
+        int temp = 0;
+        while (i < str.length() && str.charAt(i) >= '0' && str.charAt(i) <= '9'){
+            if (temp > Integer.MAX_VALUE / 10 || (temp == Integer.MAX_VALUE / 10 && str.charAt(i) - '0' > 7)){
+                if (symbol == 1)return Integer.MAX_VALUE;
+                else return Integer.MIN_VALUE;
+            }
+            temp = 10 * temp + (str.charAt(i++) - '0');
+        }
+        return symbol * temp;
     }
 }
 ```
