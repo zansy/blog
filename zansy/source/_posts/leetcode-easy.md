@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190620 更新/27）
+title: LeetCode 简单题汇总（20190620 更新/28）
 author: zansy
 tags:
   - 水
@@ -1024,6 +1024,76 @@ class Solution {
         if (num == 0) return 0;
         if (num % 9 == 0) return 9;
         else return num % 9;
+    }
+}
+```
+#### 67
+[Add Binary](https://leetcode.com/problems/add-binary/)
+
+给定两个二进制字符串，返回他们的和（用二进制表示）。
+
+输入为非空字符串且只包含数字 1 和 0。
+
+2019.06.20
+- 解一
+
+普通思路，用StringBuilder进行二进制先补足后进位，分四种情况讨论。在编写这四种情况的时候，可以明显感觉到可以简化，简化部分在解二给出。
+```Java
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder aStrB = new StringBuilder(a);
+        aStrB.reverse();
+        StringBuilder bStrB = new StringBuilder(b);
+        bStrB.reverse();
+        StringBuilder result = new StringBuilder();
+        int aStrBLength = aStrB.length(), bStrBLength = bStrB.length();
+        while(aStrBLength > bStrBLength){
+            bStrB.append("0");
+            aStrBLength--;
+        }
+        while(bStrBLength > aStrBLength){
+            aStrB.append("0");
+            bStrBLength--;
+        }
+        int nextAdd = 0;
+        int i = 0;
+        for (i = 0; i < aStrB.length(); i++){
+            if ((aStrB.charAt(i) - '0') + (bStrB.charAt(i) - '0') + nextAdd == 2){
+                nextAdd = 1;
+                result.append("0");
+            }else if ((aStrB.charAt(i) - '0') + (bStrB.charAt(i) - '0') + nextAdd == 1){
+                result.append("1");
+                nextAdd = 0;
+            }else if ((aStrB.charAt(i) - '0') + (bStrB.charAt(i) - '0') + nextAdd == 3){
+                result.append("1");
+                nextAdd = 1;
+            }else {
+                result.append("0");
+                nextAdd = 0;
+            }
+        }
+        if (nextAdd == 1)result.append("1");
+        return result.reverse().toString();
+    }
+}
+```
+- 解二
+
+思路同上，仍然是二进制倒置、从下至上每位添加、进位。
+```Java
+class Solution {
+    public String addBinary(String a, String b) {
+        StringBuilder sb = new StringBuilder();
+        int i = a.length() - 1, j = b.length() -1, carry = 0;
+        while (i >= 0 || j >= 0) {
+            int sum = carry;
+            if (j >= 0) sum += b.charAt(j--) - '0';
+            if (i >= 0) sum += a.charAt(i--) - '0';
+            sb.append(sum % 2);
+            carry = sum / 2;
+        }
+        if (carry != 0) sb.append(carry);
+        return sb.reverse().toString();
     }
 }
 ```
