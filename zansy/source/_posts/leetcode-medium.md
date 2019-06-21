@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190620 更新/19）
+title: LeetCode 中等题汇总（20190622 更新/20）
 author: zansy
 tags: []
 categories:
@@ -969,6 +969,35 @@ class Solution {
             temp = 10 * temp + (str.charAt(i++) - '0');
         }
         return symbol * temp;
+    }
+}
+```
+#### 43
+[Multiply Strings](https://leetcode.com/problems/multiply-strings/)
+
+给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+
+---
+根据实际中的多位数乘法步骤来，从最后一位起，例如123*456，3和6先进行相乘，得到18，但是这个数存在哪儿呢？根据经验我们可以看到，结果得到的数字长度最多比两数长度和再多1，因此设立末位相乘得到的结果存入索引为2+2+1=5的数组中，18存8，进位1，计入索引为4的数组元素中。事实上这一过程就是把过程中得到的数字分别存入数组中，并对元素不断更新相乘。最终得到最后结果。
+```Java
+class Solution {
+    public String multiply(String num1, String num2) {
+        int m = num1.length(), n = num2.length();
+        int[] process = new int[m + n];
+
+        for(int i = m - 1; i >= 0; i--) {
+            for(int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int pre = i + j, cur = i + j + 1;
+                int sum = mul + process[cur];
+
+                process[pre] += sum / 10;
+                process[cur] = (sum) % 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int p : process) if(!(sb.length() == 0 && p == 0)) sb.append(p);
+        return sb.length() == 0 ? "0" : sb.toString();
     }
 }
 ```
