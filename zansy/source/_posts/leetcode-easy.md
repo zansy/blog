@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190620 更新/28）
+title: LeetCode 简单题汇总（20190623 更新/29）
 author: zansy
 tags:
   - 水
@@ -1094,6 +1094,43 @@ class Solution {
         }
         if (carry != 0) sb.append(carry);
         return sb.reverse().toString();
+    }
+}
+```
+#### 69
+[Sqrt(x)](https://leetcode.com/problems/sqrtx/)
+
+实现 int sqrt(int x) 函数。
+
+计算并返回 x 的平方根，其中 x 是非负整数。
+
+由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。
+
+2019.06.23
+- 解一
+
+最普通思路
+```Java
+class Solution {
+    public int mySqrt(int x) {
+        for (int i = 1; i <= x; i++) {
+            if (Math.pow(i + 1, 2) > x && Math.pow(i, 2) <= x) return i;
+        }
+        return 0;
+    }
+}
+```
+- 解二
+
+用了Newton证明，在我这个外行眼里差不多就是二分…
+[Algorithm using Newton's method](https://en.wikipedia.org/wiki/Integer_square_root#Using_only_integer_division)
+```Java
+class Solution {
+    public int mySqrt(int x) {
+        long r = x;
+        while (r*r > x)
+            r = (r + x/r) / 2;
+        return (int) r;
     }
 }
 ```
