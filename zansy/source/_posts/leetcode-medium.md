@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190623 更新/21）
+title: LeetCode 中等题汇总（20190623 更新/22）
 author: zansy
 tags: []
 categories:
@@ -1007,6 +1007,7 @@ class Solution {
 
 返回被除数 dividend 除以除数 divisor 得到的商。
 
+---
 本质思路是移位，更通俗一点，设立两个数组。
 
 拿100 -3举例，先把二者全化成正数100和3，两个数组分别是
@@ -1033,6 +1034,31 @@ class Solution {
             }
         }
         return negative ? -result : result;
+    }
+}
+```
+#### 50
+[Pow(x, n)](https://leetcode.com/problems/powx-n/)
+
+实现 pow(x, n) ，即计算 x 的 n 次幂函数。
+
+---
+递归！看到这种可分解的小问题，就应该要想到递归！主要是用了一点指数的基础公式，把x<sup>n</sup>换成(x<sup>2</sup>)<sup>n/2</sup>，同时再考虑到奇偶指数的问题就行了。注意如果指数是负数，把指数调正，x可以变成1/x。
+
+2019.06.23
+```Java
+class Solution {
+    public double myPow(double x, int n) {
+        if (n == 0) return 1;
+        if (n == Integer.MIN_VALUE){
+            x = x * x;
+            n = n / 2;
+        }
+        if (n < 0){
+            n = -n;
+            x = 1/x;
+        }
+        return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
     }
 }
 ```
