@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190622 更新/20）
+title: LeetCode 中等题汇总（20190623 更新/21）
 author: zansy
 tags: []
 categories:
@@ -998,6 +998,41 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         for(int p : process) if(!(sb.length() == 0 && p == 0)) sb.append(p);
         return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
+```
+#### 29
+[Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+本质思路是移位，更通俗一点，设立两个数组。
+
+拿100 -3举例，先把二者全化成正数100和3，两个数组分别是
+ 3, 6,12,24,48,96,192
+ 1, 2, 4, 8,16,32,64
+索引也分别对应。先减去96，96对应32，即3 * 32 = 96，结果中已得到32，但是100-96还有4，4再在第一个数组中找，找到3，对应1，则结果为32+1=33。
+
+但这个方法有一点不足的地方是用了long。不用long的可以看这一篇，通过用递归消除用long：[把正数通通转为求负数](https://leetcode.wang/leetCode-29-Divide-Two-Integers.html)
+也可以更好地理解第一个数组的数字设置。
+
+2019.06.23
+```Java
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0)return 0;
+        if (dividend == Integer.MIN_VALUE && divisor == -1)return Integer.MAX_VALUE;
+        boolean negative = (dividend ^ divisor) < 0;
+        long dividendLong = Math.abs((long)dividend); long divisorLong = Math.abs((long)divisor);
+        int result = 0;
+        for (int i = 31; i >= 0; i--){
+            if ((dividendLong >> i) >= divisorLong){//找出足够大的数2^n*divisor
+                result += 1 << i; //将结果加上2^n
+                dividendLong -= divisorLong << i;//将被除数减去2^n*divisor
+            }
+        }
+        return negative ? -result : result;
     }
 }
 ```
