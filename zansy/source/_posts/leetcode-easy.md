@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190623 更新/29）
+title: LeetCode 简单题汇总（20190623 更新/30）
 author: zansy
 tags:
   - 水
@@ -1124,6 +1124,8 @@ class Solution {
 
 用了Newton证明，在我这个外行眼里差不多就是二分…
 [Algorithm using Newton's method](https://en.wikipedia.org/wiki/Integer_square_root#Using_only_integer_division)
+
+![Proof](https://discuss.leetcode.com/assets/uploads/files/1502465638921-95f6f6f0-a1b8-4f19-919d-1a0b53e18aac-image.png)
 ```Java
 class Solution {
     public int mySqrt(int x) {
@@ -1131,6 +1133,30 @@ class Solution {
         while (r*r > x)
             r = (r + x/r) / 2;
         return (int) r;
+    }
+}
+```
+#### 367
+[Valid Perfect Square](https://leetcode.com/problems/valid-perfect-square/)
+
+给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。
+
+说明：不要使用任何内置的库函数，如  sqrt。
+
+---
+直接用了#69的方法，但看了一下好像用一个挺基础的数学概念也能做：[A square number is 1+3+5+7+..., JAVA code](https://leetcode.com/problems/valid-perfect-square/discuss/83874/A-square-number-is-1%2B3%2B5%2B7%2B...-JAVA-code)
+
+2019.06.23
+```Java
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        long r = num;
+        if (num == 1)return true;
+        while (r*r > num) {
+            r = (r + num / r) / 2;
+            if (r * r == num) return true;
+        }
+        return false;
     }
 }
 ```
