@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190619 更新/12）
+title: LeetCode 难题汇总（20190625 更新/13）
 author: zansy
 tags: []
 categories:
@@ -626,4 +626,88 @@ private final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five"
         else
             return LESS_THAN_20[num / 100] + " Hundred " + extractEndThree(num % 100);
     }
+```
+## 树 Tree
+### 基础
+#### 145
+[Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
+
+给定一个二叉树，返回它的 后序 遍历。
+
+2019.06.25
+- 解一 递归
+
+后序遍历，用递归的话直接先左子树后右子树最后放入根。
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> postOrder = new LinkedList<Integer>();
+        if (root != null) {
+            postOrder.addAll(postorderTraversal(root.left));
+            postOrder.addAll(postorderTraversal(root.right));
+            postOrder.add(root.val);
+        }
+        return postOrder;
+    }
+}
+```
+- 解二 非递归
+
+利用LinkedList中的add(0,root)函数，将读取到的根结点设置到最后。先从左子树读起，如果左子树是叶子结点，就再读右子树，如果右子树是叶子结点就输出。整个队列是把新的添加到最开始的一位。
+
+思路是 后序其实就是先序的颠倒。
+```
+[3,9,20,null,null,15,7]
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+例如如上的一棵二叉树，它的后序序列构造过程应该是这样的：
+```
+3 
+ left = null
+20 3 
+ left = null
+7 20 3 
+15 7 20 3 
+9 15 7 20 3 
+```
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> postOrder = new LinkedList<Integer>();
+        Stack<TreeNode> stack = new Stack<>();
+        if(root == null) return postOrder;
+        stack.push(root);
+        while (!stack.isEmpty()){
+            TreeNode current = stack.pop();
+            postOrder.add(0, current.val);
+            if (current.left != null)
+                stack.push(current.left);
+            if (current.right != null)
+                stack.push(current.right);
+        }
+        return postOrder;
+    }
+}
 ```
