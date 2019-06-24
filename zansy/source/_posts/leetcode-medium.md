@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190624 更新/24）
+title: LeetCode 中等题汇总（20190624 更新/25）
 author: zansy
 tags: []
 categories:
@@ -1167,6 +1167,71 @@ class Solution {
             if (root == null && !rights.isEmpty())root = rights.pop();
         }
         return list;
+    }
+}
+```
+#### 94
+[Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+
+给定一个二叉树，返回它的中序 遍历。
+
+2019.06.24
+- 解一 递归
+
+思路清晰
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> inOrder = new LinkedList<Integer>();
+        if (root != null){
+            inOrder.addAll(inorderTraversal(root.left));
+            inOrder.add(root.val);
+            inOrder.addAll(inorderTraversal(root.right));
+        }
+        return inOrder;
+    }
+}
+```
+- 解二
+
+其实和#144的思路差不多，用栈存储左子树，然后一步步往左子树方向走。当走到叶子结点的时候，从栈顶取出左子树的左叶子结点。
+
+判断左节点是否存在且未遍历过，是则进入输出当前节点，出栈。
+接着判断右节点是否存在且未遍历过，是则进入。如果栈无元素则退出。
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> inOrder = new LinkedList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode current = root;
+        while (current != null || !stack.isEmpty()){
+            while (current != null){
+                stack.push(current);
+                current = current.left;
+            }
+            current = stack.pop();
+            inOrder.add(current.val);
+            current = current.right;
+        }
+        return inOrder;
     }
 }
 ```
