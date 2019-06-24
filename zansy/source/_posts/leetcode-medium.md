@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190624 更新/23）
+title: LeetCode 中等题汇总（20190624 更新/24）
 author: zansy
 tags: []
 categories:
@@ -1097,6 +1097,76 @@ class Solution {
             a = temp;
         }
         return a;
+    }
+}
+```
+## 树 Tree
+### 基础
+#### 144
+[Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/)
+
+给定一个二叉树，返回它的 前序 遍历。
+```
+输入: [1,null,2,3]  
+   1
+    \
+     2
+    /
+   3 
+
+输出: [1,2,3]
+```
+2019.06.24
+
+- 解一 递归方法
+
+本科算法课基础内容。先序遍历，先根后左子树右子树，用递归的话思路很清晰。
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> pre = new LinkedList<Integer>();
+        if (root != null){
+            pre.add(root.val);
+            pre.addAll(preorderTraversal(root.left));
+            pre.addAll(preorderTraversal(root.right));
+        }
+        return pre;
+    }
+}
+```
+- 解二 非递归方法
+
+非递归的话就用栈把暂时不用的右子树先存入。优先读取左子树，同时把它对应的每一个右子树存入先进后出的栈中，这样的话，当左子树为空的时候，栈顶就是离它最近的右子树，依次取出即可。
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> list = new LinkedList<Integer>();
+        Stack<TreeNode> rights = new Stack<TreeNode>();
+        while (root != null){
+            list.add(root.val);
+            if (root.right != null)rights.push(root.right);
+            root = root.left;
+            if (root == null && !rights.isEmpty())root = rights.pop();
+        }
+        return list;
     }
 }
 ```
