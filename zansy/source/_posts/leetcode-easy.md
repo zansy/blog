@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190623 更新/30）
+title: LeetCode 简单题汇总（20190624 更新/31）
 author: zansy
 tags:
   - 水
@@ -1157,6 +1157,34 @@ class Solution {
             if (r * r == num) return true;
         }
         return false;
+    }
+}
+```
+#### 204
+[Count Primes](https://leetcode.com/problems/count-primes/)
+
+统计所有小于非负整数 n 的质数的数量。
+
+---
+反向思维，先从2开始，设立双重循环，先设置n以内所有的非质数，再在n的范围内看有几个非质数。亮点应该是boolean数组，一次读取。
+
+2019.06.24
+
+```Java
+class Solution {
+    public int countPrimes(int n) {
+        if (n <= 1) return 0;
+        boolean[] notPrime = new boolean[n];
+        for (int i = 2; i < Math.sqrt(n); i++){
+            for (int j = 2; i * j < n; j++){
+                notPrime[i * j] = true;
+            }
+        }
+        int result = 0;
+        for (int i = 2; i < n; i++) {
+            if (!notPrime[i]) result++;
+        }
+        return result;
     }
 }
 ```
