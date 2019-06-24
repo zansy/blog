@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190623 更新/22）
+title: LeetCode 中等题汇总（20190624 更新/23）
 author: zansy
 tags: []
 categories:
@@ -1059,6 +1059,44 @@ class Solution {
             x = 1/x;
         }
         return (n % 2 == 0) ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
+    }
+}
+```
+#### 365
+[Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/)
+
+有两个容量分别为 x升 和 y升 的水壶以及无限多的水。请判断能否通过使用这两个水壶，从而可以得到恰好 z升 的水？
+
+如果可以，最后请用以上水壶中的一或两个来盛放取得的 z升 水。
+
+你允许：
+
+- 装满任意一个水壶
+- 清空任意一个水壶
+- 从一个水壶向另外一个水壶倒水，直到装满或者倒空
+
+---
+纯粹的数学题。有兴趣可以看这个维基百科：[Bézout's identity](https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity)
+
+两个桶容量分别为xy，要得到z，从描述中可以获得这样一个公式：ax+by=z。同时桶可以倒空装满，说明a和b可以是正数也可以是负数。那么接下去要做的就是找到两数的最大公约数，然后看z是不是这个最大公约数的倍数就行了。
+
+具体证明看维基。
+
+2019.06.24
+```Java
+class Solution {
+    public boolean canMeasureWater(int x, int y, int z) {
+        if (x + y < z)return false;
+        if (x == z || y == z || x + y == z) return true;
+        return z % greatestCommonDivisor(x, y) == 0;
+    }
+    public int greatestCommonDivisor(int a, int b){
+        while (b != 0){
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
     }
 }
 ```
