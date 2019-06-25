@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190624 更新/25）
+title: LeetCode 中等题汇总（20190625 更新/26）
 author: zansy
 tags: []
 categories:
@@ -1232,6 +1232,94 @@ class Solution {
             current = current.right;
         }
         return inOrder;
+    }
+}
+```
+#### 104
+[Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+
+给定一个二叉树，返回其按层次遍历的节点值。 （即逐层地，从左到右访问所有节点）。
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回其层次遍历结果：
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+2019.06.25
+
+- 解一 DFS
+
+通过递归实现深度优先搜索，一层一层加入结点。
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        levelHelper(result, root, 0);
+        return result;
+    }
+    public void levelHelper(List<List<Integer>> result, TreeNode root, int levelNumber){
+        if (root == null) return;
+        if (levelNumber >= result.size()){
+            result.add(new LinkedList<Integer>());
+        }
+        result.get(levelNumber).add(root.val);
+        levelHelper(result, root.left, levelNumber + 1);
+        levelHelper(result, root.right, levelNumber + 1);
+    }
+}
+```
+- 解二 BFS
+
+广度优先搜索，一次性把接下去要遍历的左右子树放入到一个LinkedList中，等稍后分别遍历其左右树
+```Java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (root == null) return result;
+        List<TreeNode> currentNode = new LinkedList<>();
+        currentNode.add(root);
+        while (!currentNode.isEmpty()){
+            List<TreeNode> nextNode = new LinkedList<>();
+            List<Integer> level = new LinkedList<>();
+            for (TreeNode node : currentNode){
+                level.add(node.val);
+                if (node.left != null) nextNode.add(node.left);
+                if (node.right != null) nextNode.add(node.right);
+            }
+            result.add(level);
+            currentNode = nextNode;
+        }
+        return result;
     }
 }
 ```
