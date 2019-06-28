@@ -1,4 +1,4 @@
-title: Algorithms-Part1
+title: Algorithms-Part1(last update:2019.06.28)
 author: zansy
 tags: 
 
@@ -209,4 +209,286 @@ Given a set of n*n* integers S = { 0, 1, ... , n-1 } and a sequence of requests 
 design a data type so that all operations (except construction) take logarithmic time or better in the worst case.
 
 ---
+
+*Hint:* use the modification of the union−find data discussed in the previous question.
+
+#  Stacks and Queues
+
+## Stacks
+
+### linked-list implementation
+
+```Java
+//inner class
+private class Node{
+  String item;
+  Node next;
+}
+```
+
+- Stack pop
+
+```Java
+public String pop(){
+  String item = first.item;
+  first = first.next;
+  return item;
+}
+```
+
+- Stack push
+
+```Java
+public void push(String item){
+  Node oldfirst = first;
+  first = new Node();
+  first.item = item;
+  first.next = oldfirst;
+}
+```
+
+![Stack push-linked-list implementation](/images/image-20190626140827899.png)
+
+### array implementation
+
+- **push()**: add new item at s[N].
+
+- **pop()**: remove item from s[N-1].
+
+![Use array s[] to store N items on stack](/images/image-20190626141049901.png)
+
+## Queue
+
+### linked-list implementation
+
+```java
+//inner class
+private class Node{
+  String item;
+  Node next;
+}
+```
+
+- enqueue
+
+```Java
+public void enqueue(String item){
+  Node oldlast = last;
+  last = new Node();
+  last.item = item;
+  last.next = null;
+  if (isEmpty()) first = last;
+  else oldlast.next = last;
+}
+```
+
+- dequeue
+
+```Java
+public String dequeue(){
+  String item = first.item;
+  first = first.next;
+  if (isEmpty()) last = null;
+  return item;
+}
+```
+
+### resizing array implementation
+
+- Use array q[] to store items in queue.
+- **enqueue():** add new item at q[tail].
+- **dequeue():** remove item from q[head].
+- Update head and tail modulo the capacity.
+- Add resizing array.
+
+## applications
+
+- Stack applications
+  - Parsing in a compiler.
+  - Java virtual machine.
+  - Undo in a word processor.
+  - Back button in a Web browser.
+  - PostScript language for printers.
+  - Implementing function calls in a compiler.
+
+### Evaluate infix expressions
+
+- **Two-stack algorithm**. [E. W. Dijkstra]
+  - Value: push onto the<u> value stack</u>.
+  - Operator: push onto the<u> operator stack</u>.
+  - <font color = 'red'>Left parenthesis: ignore</font>.
+  - Right parenthesis: <font color = 'red'>pop operator and two values; push the result</font> of applying that operator to those values onto the operand stack
+
+![Arithmetic expression evaluation](/images/image-20190627132425839.png)
+
+```java
+public class Evaluate{
+    public static void main(String[] args){
+        Stack<String> ops = new Stack<String>();
+        Stack<Double> vals = new Stack<Double>();
+        while (!StdIn.isEmpty()) {
+            String s = StdIn.readString();
+            if (s.equals("(")) ;
+            else if (s.equals("+")) ops.push(s);
+            else if (s.equals("*")) ops.push(s);
+            else if (s.equals(")")){
+                String op = ops.pop();
+                if (op.equals("+")) vals.push(vals.pop() + vals.pop());
+                else if (op.equals("*")) vals.push(vals.pop() * vals.pop());
+            }
+            else vals.push(Double.parseDouble(s));
+        }
+        StdOut.println(vals.pop());
+    }
+}
+```
+
+# Elementary Sorts
+
+## selection sort
+
+- selection sort
+  - In iteration i, find index min of <font color ='red'>smallest remaining</font> entry.
+  - <font color = 'red'>Swap</font> a[i] and a[min].
+
+```Java
+for (int i = 0; i < N; i++){
+    int min = i;
+    for (int j = i+1; j < N; j++)
+        if (less(a[j], a[min])) min = j;
+    exch(a, i, min);
+}
+```
+
+![Selection sort](/images/image-20190628002123641.png)
+
+根据位置 在数集合中找位置对应的数放入
+
+- Running time **insensitive to input**: <font color = 'green'>Quadratic time, even if input is sorted</font>.
+- Data movement is minimal: <u>Linear number of exchanges</u>.
+
+## insertion sort
+
+- insertion sort: In iteration i, swap a[i] with each larger entry to its left.
+
+```Java
+public static void sort(Comparable[] a){
+    int N = a.length;
+    //Moving from right to left, exchange a[i] with each larger entry to its left.
+    for (int i = 0; i < N; i++)
+        for (int j = i; j > 0; j--)
+            if (less(a[j], a[j-1]))
+                exch(a, j, j-1);
+            else break;
+}
+```
+
+
+
+![Insertion sort](/images/image-20190628002833173.png)
+
+一个不断扩张的有序数列
+
+- **Best case.** If *the array is in ascending order*, insertion sort makes N- 1 compares and 0 exchanges.
+- **Worst case.** If *the array is in descending order* (and no duplicates), insertion sort makes ~ ½ N<sup>2</sup> compares and ~ ½ N<sup>2</sup> exchanges.
+
+## shell sort
+
+- Shell sort: Move entries more than one position at a time by h-sorting the array.
+
+![an h-sorted array is h interleaved sorted subsequences](/images/image-20190628005206715.png)
+
+![Shellsort example: increments 7, 3, 1](/images/image-20190628172255771.png)
+
+>finding **the best increment sequence** is a research problem that has confounded people for quite a long time.
+
+```Java
+public static void sort(Comparable[] a){
+    int N = a.length;
+    int h = 1;
+    while (h < N/3) h = 3*h + 1; // 1, 4, 13, 40, 121, 364, ...
+    while (h >= 1){ // h-sort the array.
+        for (int i = h; i < N; i++){
+            for (int j = i; j >= h && less(a[j], a[j-h]); j -= h)
+                exch(a, j, j-h);
+        }
+
+        h = h/3;
+    }
+}
+```
+
+跳着比较和调整，每次缩小间隔，直到完全有序
+
+>We have to do a few extra passes to do the higher sorts but <u>the each element moves only a little bit on each path</u> and that's how Shellsort gains its **efficiency**.(subquadratic)
+
+## Shuffling
+
+- suppose you have a deck of cards, one of the things that you might want to try to do is to <u>simply rearrange those cards into random order</u>, that's called **shuffling**.
+- Knuth shuffle
+  - In iteration i, pick integer r between 0 and i uniformly at random.
+  - Swap a[i] and a[r].
+
+```Java
+public static void shuffle(Object[] a) {
+    int N = a.length;
+    for (int i = 0; i < N; i++) {
+        int r = StdRandom.uniform(i + 1);
+        exch(a, i, r);
+    }
+}
+```
+
+> it's key that the uniform random number be **between 0 and i - 1**.
+
+每拿到一张牌，随机插入已有的牌中。
+
+## Convex hull
+
+- The **convex hull** of a set of N points is <u>the smallest perimeter fence enclosing the points</u>.
+
+![Smallest convex set containing all the points](/images/image-20190628123254775.png)
+
+### application: motion planning
+
+**Robot motion planning.** Find shortest path in the plane from s to t that avoids a polygonal obstacle.
+
+![Robot motion planning](/images/image-20190628124013060.png)
+
+Shortest path is either straight line from s to t or it is one of two polygonal chains of convex hull.
+
+### application: farthest pair
+
+**Farthest pair problem.** Given N points in the plane, find a pair of points with <u>the largest Euclidean distance between them</u>.
+
+![Farthest pair problem](/images/image-20190628124429239.png)
+
+Farthest pair of points are extreme points on convex hull.
+
+### Graham scan
+
+- Graham scan
+  - Choose point p with <u>smallest y-coordinate</u>.(Define a **total order**, comparing by y-coordinate.)
+  - <u>Sort points</u> by *polar angle with p*.(Define a total order for each point p.)
+  - Consider points in order; discard unless it create a <font color = 'red'>counterclockwise turn</font>.
+
+- Given three points a, b, and c, is a → b→ c a counterclockwise turn? equals to **is c to the left of the ray a→b ?**
+
+![Implementing ccw](/images/image-20190628131155088.png)
+
+![Determinant gives 2x signed area of planar triangle.](/images/image-20190628132255947.png)
+
+- (b<sub>x</sub> − a<sub>x</sub> )(c<sub>y</sub> − a<sub>y</sub> ) − (b<sub>y</sub> − a<sub>y</sub> )(c<sub>x</sub> − a<sub>x</sub> )    `(b - a) × (c - a)`
+  - If signed area > 0, then a→ b→ c is counterclockwise.
+  - If signed area < 0, then a→ b→ c is clockwise.
+  - If signed area = 0, then a→ b→ c are collinear.
+
+```Java
+public static int ccw(Point2D a, Point2D b, Point2D c){
+    double area2 = (b.x-a.x)*(c.y-a.y) - (b.y-a.y)*(c.x-a.x);
+    if (area2 < 0) return -1; // clockwise
+    else if (area2 > 0) return +1; // counter-clockwise
+    else return 0; // collinear
+}
+```
 
