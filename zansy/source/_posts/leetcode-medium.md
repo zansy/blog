@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190625 更新/26）
+title: LeetCode 中等题汇总（20190630 更新/27）
 author: zansy
 tags: []
 categories:
@@ -8,7 +8,7 @@ toc: true
 ---
 Medium思考题，分类/题意/思路/代码。
 <!--more-->
-## 数组
+## 数组 Array
 ### 基础
 #### 80
 [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/submissions/)
@@ -1320,6 +1320,127 @@ class Solution {
             currentNode = nextNode;
         }
         return result;
+    }
+}
+```
+## 回溯 Backtracking
+### 基础
+#### 78
+[Subsets](https://leetcode.com/problems/subsets/)
+
+给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+
+说明：解集不能包含重复的子集。
+
+2019.06.30
+- 解一 回溯
+
+例如输入1，2，3，4先从1这一层开始，通过递归式，tempList依次添加为[1],[1,2],[1,2,3],[1,2,3,4]，同时分别把不同时期的tempList加入结果集中。再一步步回去并移除最后一位，同时观测i还能不能再进行循环：[1,2,3]不能，[1,2]，i = 2，可以进入当前层的循环，添加为[1,2,4]。并继续返回到上一层。
+```Java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        Arrays.sort(nums);
+        backtracking(result, new LinkedList<>(), nums, 0);
+        return result;
+    }
+    public void backtracking(List<List<Integer>> result, List<Integer> tempList, int[] nums, int start){
+        result.add(new ArrayList<>(tempList));
+        for (int i = start; i < nums.length; i++){
+            tempList.add(nums[i]);
+            backtracking(result, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
+        }
+    }
+}
+```
+- 解二 迭代
+
+继续拿1234举例，遍历1234，将之前的结果暂存到一个列表中，同时将遍历得到的数字插入到之前结果中。
+```
+null
+1
+2 1,2
+3 1,3 2,3 1,2,3
+4 1,4 2,4 1,2,4 3,4 1,3,4 2,3,4 1,2,3,4
+```
+注意迭代法还可以有另一个思路，这是按照子集元素种类排的，另一个思路可以是按照子集长度排，找出数组长度 1 的所有解，然后再在长度为 1 的所有解上加 1 个数字变成长度为 2 的所有解，同样的直到 n。
+```Java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        result.add(new LinkedList<>());
+        for (int i = 0; i < nums.length; i++){
+            List<List<Integer>> resultTemp = new LinkedList<>();
+            for (List<Integer> lastLayer : result){
+                List<Integer> lastLayerTemp = new LinkedList<>(lastLayer);
+                lastLayerTemp.add(nums[i]);
+                resultTemp.add(lastLayerTemp);
+            }
+            result.addAll(resultTemp);
+        }
+        return result;
+    }
+}
+```
+- 解三 位操作思路（StringBuilder实现）
+
+所有子集中，数组的每个元素都有两个状态：在或者不在，可以用01表示。
+```
+1 2 3
+0 0 0 -> [     ]
+0 0 1 -> [    3]
+0 1 0 -> [  2  ]   
+0 1 1 -> [  2 3]  
+1 0 0 -> [1    ]
+1 0 1 -> [1   3] 
+1 1 0 -> [1 2  ]
+1 1 1 -> [1 2 3]
+```
+由上图可以很明显地感受到，可以引入二进制进行解题。只需要遍历 0 0 0 到 1 1 1，然后判断每个比特位是否是 1，是 1 的话将对应数字加入即可。
+```Java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        int forTimes = 1 << nums.length;
+        for (int i = 0; i < forTimes; i++ ){
+            StringBuilder mirror = new StringBuilder(Integer.toBinaryString(i));
+            mirror = mirror.reverse();
+            List<Integer> temp = new LinkedList<>();
+            for (int j = 0; j < mirror.length(); j++){
+                if (mirror.charAt(j) == '1'){
+                    temp.add(nums[j]);
+                }
+            }
+            result.add(temp);
+        }
+        return result;
+    }
+}
+```
+
+- 解四 位操作
+
+其实直接用位操作也可以，思路是一样的，通过移位符直接从最末位看起，但注意这个时候对于输入数组来说，是往后对应的，所以count要++
+```Java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        int ans_nums = 1 << nums.length; //执行 2 的 n 次方
+        for (int i = 0; i < ans_nums; i++) {
+            List<Integer> tmp = new ArrayList<>();
+            int count = 0; //记录当前对应数组的哪一位
+            int i_copy = i; //用来移位
+            while (i_copy != 0) { 
+                if ((i_copy & 1) == 1) { //判断当前位是否是 1
+                    tmp.add(nums[count]);
+                }
+                count++;//对应数组的应该是往后看
+                i_copy = i_copy >> 1;//右移一位，从后往前看
+            }
+            ans.add(tmp);
+        }
+        return ans;
     }
 }
 ```
