@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190630 更新/27）
+title: LeetCode 中等题汇总（20190630 更新/28）
 author: zansy
 tags: []
 categories:
@@ -1441,6 +1441,60 @@ class Solution {
             ans.add(tmp);
         }
         return ans;
+    }
+}
+```
+#### 90
+[Subsets II](https://leetcode.com/problems/subsets-ii/)
+
+给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+
+说明：解集不能包含重复的子集。
+
+2019.06.30
+- 解一 位操作
+
+```Java
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result = new LinkedList<>();
+        int forTimes = 1 << nums.length;
+        for (int i = 0; i < forTimes; i++ ){
+            StringBuilder mirror = new StringBuilder(Integer.toBinaryString(i)).reverse();
+            List<Integer> temp = new LinkedList<>();
+            for (int j = 0; j < mirror.length(); j++){
+                if (mirror.charAt(j) == '1'){
+                    temp.add(nums[j]);
+                }
+            }
+            if (!result.contains(temp)) {
+                result.add(temp);
+            }
+        }
+        return result;
+    }
+}
+```
+- 解二 回溯
+
+```Java
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(nums);
+        backtrack(list, new ArrayList<>(), nums, 0);
+        return list;
+    }
+
+    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] nums, int start){
+        list.add(new ArrayList<>(tempList));
+        for(int i = start; i < nums.length; i++){
+            if(i > start && nums[i] == nums[i-1]) continue; // skip duplicates
+            tempList.add(nums[i]);
+            backtrack(list, tempList, nums, i + 1);
+            tempList.remove(tempList.size() - 1);
+        }
     }
 }
 ```
