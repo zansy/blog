@@ -1,6 +1,7 @@
 title: Animal Farm 摘录
 author: zansy
-tags: []
+tags: 
+  - English
 categories:
   - 读书摘录
 date: 2018-03-25 05:11:00
