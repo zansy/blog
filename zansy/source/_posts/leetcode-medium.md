@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190701 更新/29）
+title: LeetCode 中等题汇总（20190701 更新/31）
 author: zansy
 tags: []
 categories:
@@ -1556,6 +1556,41 @@ class Solution {
             for (int i = starter; i < candidates.length; i++){
                 temp.add(candidates[i]);
                 backTracking(candidates, target - candidates[i], i, result, temp);
+                temp.remove(temp.size() - 1);
+            }
+        }
+    }
+}
+```
+#### 40
+[Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
+
+给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+candidates 中的每个数字在每个组合中只能使用一次。
+
+说明：所有数字（包括目标数）都是正整数；解集不能包含重复的组合。 
+
+2019.07.01
+- 解一 回溯
+```Java
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<>();
+        backTracking(candidates, target, 0, result, new ArrayList<>());
+        return result;
+    }
+    public void backTracking(int[] candidates, int target, int starter, List<List<Integer>> result, List<Integer> temp){
+        if (target == 0 ){
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        if (target > 0){
+            for (int i = starter; i < candidates.length; i++){
+                if (i > starter && candidates[i] == candidates[i - 1])continue;
+                temp.add(candidates[i]);
+                backTracking(candidates, target - candidates[i], i + 1, result, temp);
                 temp.remove(temp.size() - 1);
             }
         }
