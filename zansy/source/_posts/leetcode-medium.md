@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190701 更新/32）
+title: LeetCode 中等题汇总（20190701 更新/33）
 author: zansy
 tags: []
 categories:
@@ -1626,6 +1626,38 @@ class Solution {
             backTracking(k - 1, n - i, i + 1, result, temp);
             temp.remove(temp.size() - 1);
         }
+    }
+}
+```
+
+#### 🌟377
+[Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
+
+给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
+
+2019.07.01
+由回溯法发现会超时，想到有没有办法用数组存下中间过程呢。通过动态规划存储过程中结果。
+```Java
+class Solution {
+    private int[] dp;
+    public int combinationSum4(int[] nums, int target) {
+        dp = new int[target + 1];
+        Arrays.fill(dp, -1);
+        dp[0] = 1;
+        return helper(nums, target);
+    }
+    private int helper(int[] nums, int target){
+        if (dp[target] != -1){
+            return dp[target];
+        }
+        int result = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (target >= nums[i]){
+                result += helper(nums, target - nums[i]);
+            }
+        }
+        dp[target] = result;
+        return result;
     }
 }
 ```
