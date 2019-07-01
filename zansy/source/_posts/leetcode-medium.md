@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190701 更新/31）
+title: LeetCode 中等题汇总（20190701 更新/32）
 author: zansy
 tags: []
 categories:
@@ -1593,6 +1593,38 @@ class Solution {
                 backTracking(candidates, target - candidates[i], i + 1, result, temp);
                 temp.remove(temp.size() - 1);
             }
+        }
+    }
+}
+```
+
+#### 216
+[Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)
+
+找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+
+说明：所有数字都是正整数；解集不能包含重复的组合。 
+
+2019.07.01
+- 解一 回溯
+
+拿回溯的结构去套真的好轻松哦…
+```Java
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> result = new ArrayList<>();
+        backTracking(k, n, 1, result, new ArrayList<>());
+        return result;
+    }
+    public void backTracking(int k, int n, int starter, List<List<Integer>> result, List<Integer> temp){
+        if (k == 0 && n == 0){
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = starter; i <= 9; i++){
+            temp.add(i);
+            backTracking(k - 1, n - i, i + 1, result, temp);
+            temp.remove(temp.size() - 1);
         }
     }
 }
