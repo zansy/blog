@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190630 更新/28）
+title: LeetCode 中等题汇总（20190701 更新/29）
 author: zansy
 tags: []
 categories:
@@ -1494,6 +1494,36 @@ class Solution {
             tempList.add(nums[i]);
             backtrack(list, tempList, nums, i + 1);
             tempList.remove(tempList.size() - 1);
+        }
+    }
+}
+```
+#### 🌟77
+[Combinations](https://leetcode.com/problems/combinations/)
+
+给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
+
+2019.07.01
+
+- 解一 回溯
+
+经典回溯，注意总结回溯法的基本框架。这道题非常值得再扩展，有回溯就有迭代，还可以递归，有递归还可以用动态规划，记得补充总结。
+```Java
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new LinkedList<>();
+        backTracking(n, k, 1, result, new LinkedList<>());
+        return result;
+    }
+    public void backTracking(int n, int k, int starter, List<List<Integer>> result, List<Integer> temp){
+        if (k == 0){
+            result.add(new LinkedList<>(temp));
+            return;
+        }
+        for (int i = starter; i <= n; i++){
+            temp.add(i);
+            backTracking(n, k - 1, i + 1, result, temp);
+            temp.remove(temp.size() - 1);
         }
     }
 }
