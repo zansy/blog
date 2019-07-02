@@ -1661,3 +1661,28 @@ class Solution {
     }
 }
 ```
+#### 46
+[Permutations](https://leetcode.com/problems/permutations/)
+
+给定一个没有重复数字的序列，返回其所有可能的全排列。
+
+2019.07.02
+- 解一 回溯
+```Java
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backTracking(nums, new ArrayList<>(), result);
+        return result;
+    }
+    public void backTracking(int nums[], List<Integer> temp, List<List<Integer>> result){
+        if (temp.size() == nums.length) result.add(new ArrayList<>(temp));
+        for (int i = 0; i < nums.length; i++){
+            if (temp.contains(nums[i])) continue;
+            temp.add(nums[i]);
+            backTracking(nums, temp, result);
+            temp.remove(temp.size() - 1);
+        }
+    }
+}
+```
