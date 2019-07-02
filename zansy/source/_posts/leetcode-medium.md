@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190701 更新/33）
+title: LeetCode 中等题汇总（20190702 更新/35）
 author: zansy
 tags: []
 categories:
@@ -1682,6 +1682,36 @@ class Solution {
             temp.add(nums[i]);
             backTracking(nums, temp, result);
             temp.remove(temp.size() - 1);
+        }
+    }
+}
+```
+
+#### 47
+[]()
+给定一个可包含重复数字的序列，返回所有不重复的全排列。
+
+2019.07.02
+- 解一 回溯
+
+比起上一题不重复的，主要加入了一个boolean数组判断该数是否已经使用过
+```Java
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        backTracking(result, new ArrayList<>(), nums, new boolean[nums.length]);
+        return result;
+    }
+    public void backTracking(List<List<Integer>> result, List<Integer> temp, int[] nums, boolean[] used){
+        if (temp.size() == nums.length) result.add(new ArrayList<>(temp));
+        for (int i = 0; i < nums.length; i++){
+            if (used[i] || i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+            temp.add(nums[i]);
+            used[i] = true;
+            backTracking(result, temp, nums, used);
+            temp.remove(temp.size() - 1);
+            used[i] = false;
         }
     }
 }
