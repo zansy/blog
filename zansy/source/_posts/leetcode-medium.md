@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190702 更新/35）
+title: LeetCode 中等题汇总（20190702 更新/36）
 author: zansy
 tags: []
 categories:
@@ -1688,7 +1688,7 @@ class Solution {
 ```
 
 #### 47
-[]()
+[Permutations II](https://leetcode.com/problems/permutations-ii/)
 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 
 2019.07.02
@@ -1713,6 +1713,56 @@ class Solution {
             temp.remove(temp.size() - 1);
             used[i] = false;
         }
+    }
+}
+```
+
+#### 31
+[Next Permutation](https://leetcode.com/problems/next-permutation/)
+
+实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
+
+如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+必须原地修改，只允许使用额外常数空间。
+
+以下是一些例子，输入位于左侧列，其相应输出位于右侧列。
+```
+1,2,3 → 1,3,2
+3,2,1 → 1,2,3
+1,1,5 → 1,5,1
+```
+
+2019.07.02
+
+---
+![Single Pass Approach](https://leetcode.com/media/original_images/31_Next_Permutation.gif)
+```Java
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int theFirstDecreasing = nums.length - 2;
+        while (theFirstDecreasing >= 0 && nums[theFirstDecreasing + 1] <= nums[theFirstDecreasing]){
+            theFirstDecreasing--;
+        }
+        if (theFirstDecreasing >= 0){
+            int swapIndex = nums.length - 1;
+            while (swapIndex >= 0 && nums[swapIndex] <= nums[theFirstDecreasing]) swapIndex--;
+            swap(nums, theFirstDecreasing, swapIndex);
+        }
+        reverse(nums, theFirstDecreasing + 1);
+    }
+    private void reverse(int[] nums, int start) {
+        int i = start, j = nums.length - 1;
+        while (i < j) {
+            swap(nums, i, j);
+            i++;
+            j--;
+        }
+    }
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
 ```
