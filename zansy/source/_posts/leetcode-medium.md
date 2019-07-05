@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190702 更新/36）
+title: LeetCode 中等题汇总（20190705 更新/37）
 author: zansy
 tags: []
 categories:
@@ -1763,6 +1763,66 @@ class Solution {
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
+    }
+}
+```
+#### 60
+[Permutation Sequence](https://leetcode.com/problems/permutation-sequence/)
+给出集合 [1,2,3,…,n]，其所有元素共有 n! 种排列。
+
+按大小顺序列出所有排列情况，并一一标记，当 n = 3 时, 所有排列如下：
+```
+"123"
+"132"
+"213"
+"231"
+"312"
+"321"
+```
+给定 n 和 k，返回第 k 个排列。
+
+说明：给定 n 的范围是 [1, 9]; 给定 k 的范围是[1,  n!]。
+
+2019.07.05
+
+---
+拿n = 4, k = 14举例，把4的结果分为
+```
+1（234）
+2（134）
+3（124）
+4（123）
+```
+根据4!可知结果一共有24个，按首位不同分为4大类，每类3!为6个。
+因为从0开始算起，所以14-1=13.
+13/6=2 余1。因为从0算起，所以2直接对应数组2 1234，为3。确定首位后确定第二位：1/2!=1/2=0 余1 所以第二位直接对应数组124第0位，为1。确定第三位：1/1!=1/1=1，余0，所以第三位直接对应数组24第1位，为4。剩下2，答案为3142。 
+```Java
+class Solution {
+    public String getPermutation(int n, int k) {
+        List<Integer> numbers = new ArrayList<>();
+        int[] factorial = new int[n+1];
+        StringBuilder result = new StringBuilder();
+
+        int sum = 1;
+        factorial[0] = 1;
+        for (int i = 1; i <= n; i++){
+            sum *= i;
+            factorial[i] = sum;
+        }
+
+        for (int i = 1; i <= n; i++){
+            numbers.add(i);
+        }
+
+        k--;
+
+        for (int i = 1; i <= n; i++){
+            int index = k / factorial[n - i];
+            result.append(String.valueOf(numbers.get(index)));
+            numbers.remove(index);
+            k = k - index * factorial[n - i];
+        }
+        return String.valueOf(result);
     }
 }
 ```
