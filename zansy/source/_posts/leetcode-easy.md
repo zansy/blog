@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190624 更新/31）
+title: LeetCode 简单题汇总（20190708 更新/32）
 author: zansy
 tags:
   - 水
@@ -1185,6 +1185,81 @@ class Solution {
             if (!notPrime[i]) result++;
         }
         return result;
+    }
+}
+```
+## 动态规划 Dynamic Programming
+### 一维
+#### 70
+[https://leetcode.com/problems/climbing-stairs/](https://leetcode.com/problems/climbing-stairs/)
+
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+注意：给定 n 是一个正整数。
+
+2019.07.08
+
+---
+这题也是典型的动态规划题，先考虑到的可以有递归处理。
+1. 递归：
+```Java
+class Solution {
+    public int climbStairs(int n) {
+        return climbStairsRecursion(0, n);
+    }
+    public int climbStairsRecursion(int i, int n) {
+        if (i > n) return 0;
+        if (i == n) return 1;
+        return climbStairsRecursion(i + 1, n) + climbStairsRecursion(i + 2, n);
+    }
+}
+```
+但这种一般都容易超时，因此需要再进行简化
+
+2. 带有记忆功能的递归
+
+通过加入一个memo数组，把曾经计算过的结果存入数组中
+```Java
+public class Solution {
+    public int climbStairs(int n) {
+        int memo[] = new int[n + 1];
+        return climb_Stairs(0, n, memo);
+    }
+    public int climb_Stairs(int i, int n, int memo[]) {
+        if (i > n) {
+            return 0;
+        }
+        if (i == n) {
+            return 1;
+        }
+        if (memo[i] > 0) {
+            return memo[i];
+        }
+        memo[i] = climb_Stairs(i + 1, n, memo) + climb_Stairs(i + 2, n, memo);
+        return memo[i];
+    }
+}
+```
+
+3. 动态规划
+
+因为可以分为子问题解决，并存在最优子结构，因此可用动态规划思路解决。
+要抵达第i阶台阶有两种途径：在第i-1的台阶上走一步；在第i-2的台阶上走两步。所以可以得出这样的式子：dp[i] = dp[i - 1] + dp[i - 2];
+```Java
+class Solution {
+    public int climbStairs(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
     }
 }
 ```
