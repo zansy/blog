@@ -1,6 +1,11 @@
-# Spring实战（第4版）笔记
-
-Spring 是一种轻量级的、开源的 Java EE应用软件框架，主要优势之一就是其分层架构。
+title: Spring实战笔记(2019.07.06 C2)
+author: zansy
+tags: []
+categories:
+  - 读薄专业书计划
+date: 2019-07-08 23:32:03
+---
+Spring实战（第4版）：Spring 是一种轻量级的、开源的 Java EE应用软件框架，主要优势之一就是其分层架构。
 <!--more-->
 
 # 第1部分：Spring框架的核心知识
