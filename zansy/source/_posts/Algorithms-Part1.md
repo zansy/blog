@@ -492,3 +492,108 @@ public static int ccw(Point2D a, Point2D b, Point2D c){
 }
 ```
 
+# Mergesort
+
+## Mergesort
+
+- Basic plan.
+  - Divide array into two halves.
+  - <font color = 'red'>Recursively</font> sort each half.
+  - Merge two halves.
+
+- [Mergesort](https://visualgo.net/en/sorting)
+- Goal. Given two **sorted subarrays** a[lo] to a[mid] and a[mid+1] to a[hi], replace with sorted subarray a[lo] to a[hi].
+
+![two sorted subarrays](/images/image-20190702004539414.png)
+
+### Java implementation (Merging)
+
+```Java
+private static void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
+  assert isSorted(a, lo, mid); // precondition: a[lo..mid] sorted
+  assert isSorted(a, mid+1, hi); // precondition: a[mid+1..hi] sorted
+  for (int k = lo; k <= hi; k++)
+    aux[k] = a[k];
+  int i = lo, j = mid+1;
+  for (int k = lo; k <= hi; k++) {
+    if (i > mid) a[k] = aux[j++];
+    else if (j > hi) a[k] = aux[i++];
+    else if (less(aux[j], aux[i])) a[k] = aux[j++];
+    else a[k] = aux[i++];
+  }
+  assert isSorted(a, lo, hi); // postcondition: a[lo..hi] sorted
+}
+```
+### Java implementation (Mergesort)
+```Java
+private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+  if (hi <= lo) return;
+  int mid = lo + (hi - lo) / 2;
+  sort(a, aux, lo, mid);
+  sort(a, aux, mid+1, hi);
+  merge(a, aux, lo, mid, hi);
+}
+```
+
+![result after recursive call](/images/image-20190702005145903.png)
+
+# Quicksort
+
+## Quicksort
+
+- Basic plan.
+  - **Shuffle** the array.
+  - **Partition** so that, for some j
+    - entry a[j] is in place
+    -  no larger entry to the left of j
+    -  no smaller entry to the right of j
+  - **Sort** each piece recursively.
+- Quicksort **partitioning**. 
+  - Repeat until i and j pointers **cross**.
+    - Scan i from left to right so long as (a[i] < a[lo]).
+    - Scan j from right to left so long as (a[j] > a[lo]).
+    - Exchange a[i] with a[j]
+  - When pointers **cross**.
+    - Exchange a[lo] with a[j].
+
+### Java code for partitioning
+
+```Java
+private static int partition(Comparable[] a, int lo, int hi) {
+    int i = lo, j = hi+1;
+    while (true) {
+        while (less(a[++i], a[lo]))
+            if (i == hi) break;
+        while (less(a[lo], a[--j]))
+            if (j == lo) break;
+
+        if (i >= j) break;
+        exch(a, i, j);
+    }
+    exch(a, lo, j);
+    return j;
+}
+```
+
+### Quicksort: Java implementation
+
+```Java
+public class Quick {
+    private static int partition(Comparable[] a, int lo, int hi) {}
+    public static void sort(Comparable[] a) {
+        sort(a, 0, a.length - 1);
+    }
+    private static void sort(Comparable[] a, int lo, int hi) {
+        if (hi <= lo) return;
+        int j = partition(a, lo, hi);
+        sort(a, lo, j-1);
+        sort(a, j+1, hi);
+    }
+} 
+```
+
+![Quicksort trace](/images/image-20190705095059876.png)
+
+- Quicksort is **not stable**.
+
+选择一组数列中的第一个为基准数，置换所有比基准数小的和比基准数大的数字，最后把基准数放到整个数列中它最后该在的位子。递归地把它前后乱序的数列按同样的办法整理好。

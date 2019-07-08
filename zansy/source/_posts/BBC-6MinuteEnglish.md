@@ -103,7 +103,7 @@ What did you say, Sam?
 
 **Neil** Rob, do you like metal? 
 
-**Rob ** Er, <u>that’s an odd question</u>. I’ve never really thought about it. I mean, I use metal things every day – my toaster, my bike, the underground… 
+**Rob** Er, <u>that’s an odd question</u>. I’ve never really thought about it. I mean, I use metal things every day – my toaster, my bike, the underground… 
 
 **Neil** No, no - not that kind of metal, this kind of metal.
 
@@ -149,7 +149,7 @@ Most fans are not angry. Most are <font color = 'red'>actually musically trained
 
 **Neil** What don’t people feel? 
 
-**Rob ** They don’t feel angry! What they do feel is **joyful**, the adjective from **joy**. They feel happy. Something else they feel is **empowered**. <font color = 'red'>This is a feeling of being in control of your life, that you can make and follow your own decisions</font>. 
+**Rob** They don’t feel angry! What they do feel is **joyful**, the adjective from **joy**. They feel happy. Something else they feel is **empowered**. <font color = 'red'>This is a feeling of being in control of your life, that you can make and follow your own decisions</font>. 
 
 **Neil** Music is certainly a powerful art form. Professor Thompson also said that fans <font color = 'green'>have an **aesthetic** interest in it</font>. This means that they <font color = 'red'>appreciate it as an art form</font>. Let’s hear Professor Thompson again. 
 
@@ -161,7 +161,7 @@ b) the 1930s
 c) the 1940s
 What did you think, Rob? 
 
-**Rob**I took a guess at the 1920s. 
+**Rob** I took a guess at the 1920s. 
 
 **Neil** Well electric guitars were early, but not quite that early, I'm afraid. The first ones were produced in the 1930s. So well done if, unlike Rob, you got that correct. Now, onto the vocabulary. 
 
