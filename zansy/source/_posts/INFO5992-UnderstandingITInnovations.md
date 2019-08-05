@@ -115,12 +115,12 @@ Creative destruction – waves that restructure entire industries and markets in
 
 a)  Read Section 5.8 of the 2016 report. It is important to note the roles of the Government in a Country’s innovation cycle. Study the cycle and look at the different roles of the Government. What are some of the ways that the Government can support innovation? 
 
-![The role of government in the innovation system](../images/image-20190806021308253.png)
+![The role of government in the innovation system](http://wx4.sinaimg.cn/large/b11f7046ly1g5p9msnthjj20u00xqwx4.jpg)
 
-![The innovation cycle and the role of government](../images/image-20190806021520115.png)
+![The innovation cycle and the role of government](http://wx4.sinaimg.cn/large/b11f7046ly1g5p9msmyrxj215s0u0qlb.jpg)
 
 b)  *‘Historically, publicly**-funded research has been essential to a range of significant innovations that turned out to have large economic returns. Notable examples include aviation, nuclear energy, the internet, pharmaceuticals, GPS navigation, biotechnology, artificial intelligence and robotics**’*. It is important to note that many of the given examples are technology (IT) innovations, e.g., Internet, GPS, AI and Robotics, and likely the others are enabled by these IT innovations. Why do you think these examples were publicly funded and not privately funded? 
 
 c)  Read the summary of the Government’s role in Innovations from the Australia 2030 report, page 6. It presents the recommendations required for the government to facilitate innovation (recommendations 11 to 18). Choose two most effective recommendation from your perspective and explain your justification for the selection with examples (e.g. real cases or your experiences). 
 
-![IMPERATIVE 3](../images/image-20190806021854991.png)
+![IMPERATIVE 3](http://wx3.sinaimg.cn/large/b11f7046ly1g5p9msoti3j20u012zgwe.jpg)
