@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20190705 更新/37）
+title: LeetCode 中等题汇总（20190808 更新/38）
 author: zansy
 tags: []
 categories:
@@ -1823,6 +1823,83 @@ class Solution {
             k = k - index * factorial[n - i];
         }
         return String.valueOf(result);
+    }
+}
+```
+#### 62
+[Unique Paths](https://leetcode.com/problems/unique-paths/)
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+
+问总共有多少条不同的路径？
+
+说明：m 和 n 的值均不超过 100。
+
+2019.08.08
+
+- 解一：二维动态规划
+
+这题其实不难理解，机器人只有向下或者向右移动的可能，所以到达每一格的可能路数这一结果，只有可能由它的上一格和左边格相加得到。
+
+接下去就很简单了，既然是地图格子，就列一个二维数组。将二维数组的边界格子都列为1，因为只有一种可能到达其本身，右边界为一直向右走，只有这一条路，同理下边界。
+
+以m7n3为例，得到初始二维格：
+```
+1 1 1 
+1 0 0 
+1 0 0 
+1 0 0 
+1 0 0 
+1 0 0 
+1 0 0 
+```
+每一格的结果数只有可能由它的上一格和左边格相加得到，即得到最终地图格：
+```
+1 1 1 
+1 2 3 
+1 3 6 
+1 4 10 
+1 5 15 
+1 6 21 
+1 7 28 
+```
+因此可以轻松得到一个m7n3范围的地图中，要达到右下角的地点可以有28种走法。
+```Java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] map = new int[m][n];
+        for (int i = 0; i < m; i++){
+            map[i][0] = 1;
+        }
+        for (int i = 0; i < n; i++){
+            map[0][i] = 1;
+        }
+        for (int i = 1; i < m; i++){
+            for (int j = 1; j < n; j++){
+                map[i][j] = map[i - 1][j] + map[i][j - 1];
+            }
+        }
+        return map[m - 1][n - 1];
+    }
+}
+```
+- 解二：一维数组
+
+由解法一还可以再进行化简，我们其实只需要最后一个，所以每次只更新保留最后一行。
+```Java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
     }
 }
 ```
