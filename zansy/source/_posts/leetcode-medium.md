@@ -1,9 +1,9 @@
-title: LeetCode 中等题汇总（20190808 更新/38）
+title: LeetCode 中等题汇总（20190827 更新/40）
 author: zansy
 tags: []
 categories:
   - 解题观察日记
-date: 2019-05-28 12:48:00
+date: 2019-08-27 12:48:00
 toc: true
 ---
 Medium思考题，分类/题意/思路/代码。
@@ -1931,6 +1931,10 @@ class Solution {
 1. 向右 -> 向右 -> 向下 -> 向下
 2. 向下 -> 向下 -> 向右 -> 向右
 ```
+2019.08.24
+
+---
+
 举例：
 ```
 0 0 0 
@@ -1950,7 +1954,6 @@ class Solution {
 1 1 2 
 ```
 
-2019.08.24
 ```Java
 class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
@@ -1984,6 +1987,62 @@ class Solution {
             }
         }
         return obstacleGrid[R - 1][C - 1];
+    }
+}
+```
+
+#### 120
+[Triangle](https://leetcode.com/problems/triangle/)
+
+给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。
+
+例如，给定三角形：
+```
+[
+     [2],
+    [3,4],
+   [6,5,7],
+  [4,1,8,3]
+]
+```
+自顶向下的最小路径和为 11（即，2 + 3 + 5 + 1 = 11）。
+
+说明：
+
+如果你可以只使用 O(n) 的额外空间（n 为三角形的总行数）来解决这个问题，那么你的算法会很加分。
+
+2019.08.27
+
+----
+动态规划思路，自底向上找最短路径。在实际操作中，可以从倒数第二行开始，把这一行上每一个数字都改为当前数字和下一行（倒数第一行）对应的相邻数相加取最小值。以题中数据举例，全部完成后应该是这样的：
+```
+2
+3 4
+7 6 10 
+4 1 8 3 
+```
+由此依次向上一层递推，得到最终结果为
+```
+11 
+9 10 
+7 6 10 
+4 1 8 3 
+```
+```Java
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle.size() == 0) return 0;
+
+        for (int i = triangle.size() - 2; i >= 0; i--){
+            for (int j = 0; j <= i; j++){
+                List<Integer> nextRow = triangle.get(i + 1);
+                //和下一行数字相加
+                int sum = Math.min(nextRow.get(j), nextRow.get(j + 1)) + triangle.get(i).get(j);
+                triangle.get(i).set(j, sum);
+            }
+        }
+
+        return triangle.get(0).get(0);
     }
 }
 ```
