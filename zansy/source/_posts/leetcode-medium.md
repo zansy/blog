@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200227 更新/42）
+title: LeetCode 中等题汇总（20200229 更新/43）
 author: zansy
 tags: []
 categories:
@@ -2145,3 +2145,150 @@ class Solution {
 2020.02.27
 
 ----
+根据wordDict依序生成不同字符串，同时与目标字符串进行匹配。如果生成的字符串可以和目标字符串匹配上了但是长度不足，则进入该支线。
+
+如示例3中，首先生成cats，cats和目标字符串全部吻合，则开始深度优先搜索，依序测试catscats和catsdog等，在catsand吻合，进入下一级，catsandcats等等。
+首先判断长度，长度超出则直接返回false进行同级其他字词匹配；否则逐单词进行比对，如果全部吻合且长度也相等，返回true。
+```Java
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        return wordBreakHelper(s, wordDict, "", new HashMap<String, Boolean>());
+    }
+
+    private boolean wordBreakHelper(String s, List<String> wordDict, String temp, HashMap<String, Boolean> hashMap) {
+        if (temp.length() > s.length()) {
+            return false;
+        }
+
+        if (hashMap.containsKey(temp)){
+            return hashMap.get(temp);
+        }
+        for (int i = 0; i < temp.length(); i++) {
+            if (s.charAt(i) != temp.charAt(i))
+                return false;
+        }
+
+        if (s.length() == temp.length()) return true;
+
+        for (int i = 0; i < wordDict.size(); i++) {
+            if (wordBreakHelper(s, wordDict, temp + wordDict.get(i), hashMap)){
+                hashMap.put(temp, true);
+                return true;
+            }
+        }
+
+        hashMap.put(temp, false);
+        return false;
+    }
+}
+```
+
+#### 375
+[Guess Number Higher or Lower II](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
+
+我们正在玩一个猜数游戏，游戏规则如下：
+
+我从 1 到 n 之间选择一个数字，你来猜我选了哪个数字。
+
+每次你猜错了，我都会告诉你，我选的数字比你的大了或者小了。
+
+然而，当你猜了数字 x 并且猜错了的时候，你需要支付金额为 x 的现金。直到你猜到我选的数字，你才算赢得了这个游戏。
+
+示例:
+```
+n = 10, 我选择了8.
+
+第一轮: 你猜我选择的数字是5，我会告诉你，我的数字更大一些，然后你需要支付5块。
+第二轮: 你猜是7，我告诉你，我的数字更大一些，你支付7块。
+第三轮: 你猜是9，我告诉你，我的数字更小一些，你支付9块。
+
+游戏结束。8 就是我选的数字。
+
+你最终要支付 5 + 7 + 9 = 21 块钱。
+```
+给定 n ≥ 1，计算你至少需要拥有多少现金才能确保你能赢得这个游戏。
+
+2020.02.29
+
+----
+
+给定一个数字n，对方会从1-n选择什么数字作为最终答案是并不清楚的，同时这个也不重要。题意的要求就是，要算每次都猜错的情况下的总体最小开销。
+
+假设i是第一次选错的数字，那么cost(1, n) = i + max( cost(1, i − 1), cost(i + 1, n))。在这一步我们把大问题分解成了小问题。对于左右两段，我们分别考虑在段内选择一个数，并重复上面的过程来求得最小开销。
+
+这一步就是初步暴力的做法，可以得到代码如下：
+```Java
+public class Solution {
+    public int calculate(int low, int high) {
+        if (low >= high)
+            return 0;
+        int minres = Integer.MAX_VALUE;
+        for (int i = low; i <= high; i++) {
+            int res = i + Math.max(calculate(i + 1, high), calculate(low, i - 1));
+            minres = Math.min(res, minres);
+        }
+
+        return minres;
+    }
+    public int getMoneyAmount(int n) {
+        return calculate(1, n);
+    }
+}
+```
+但这一步超时了。我们想一下是不是可以用数组来存储之前已经算好的结果，这样的话就不需要每次都重复计算。
+
+因为1-n每次都分成不同长度的小段（并不是二分法猜数字耗费最少），所以求1-n之间每次猜错后最终的最小花销，可以细分成求low-high之间每次猜错后最终的最小花销。
+
+例如给出n=5，要求出每次都猜错的最小花费，先猜2被告知比2大，再猜4被告知比4大或者小，这样最少需要6可以猜出对方心中想的数字。
+
+要储存不同范围内每次都猜错的最小花费，可以设置一个二维数组，当n=5时，这个二维数组dp可以设置为
+\ |1 |2 |3|4 |5
+:-:|:-:|:-:|:-:|:-:|:-:
+1|0||||
+2|-|0|||
+3|-|-|0||
+4|-|-|-|0|
+5|-|-|-|-|0
+
+其中dp[m][n]存储的就是在m-n范围内每次都猜错的最小花费，所以当m = n时，dp[m][n] = 0;
+
+要规律地填满这个二维数组，先按照范围长度依次递增的顺序进行填充。
+
+例如范围长度为1的时候，依次算1-2，2-3，3-4，4-5
+很顺利可得二维数组为
+\ |1 |2 |3|4 |5
+:-:|:-:|:-:|:-:|:-:|:-:
+1|0|1|||
+2|-|0|2||
+3|-|-|0|3|
+4|-|-|-|0|4
+5|-|-|-|-|0
+
+当范围长度为2的时候，依次算1-3，2-4，3-5
+由于之前的1-2，2-3，3-4，4-5已有答案，例如求dp[1][3]时，先1+max(dp[1][0], dp[2][3]) = 3;再2+max(dp[1][1], dp[3][3]) = 2;得出2最小。
+依此推论，则很顺利可得二维数组为
+\ |1 |2 |3|4 |5
+:-:|:-:|:-:|:-:|:-:|:-:
+1|0|1|2|4|6
+2|-|0|2|3|6
+3|-|-|0|3|4
+4|-|-|-|0|4
+5|-|-|-|-|0
+
+自顶向上得出dp[1][n]结果。
+```Java
+public static int getMoneyAmount(int n) {
+        int[][] dp = new int[n + 1][n + 1];
+        for (int len = 1; len < n; len++){
+            for (int start = 1; start <= n - len; start++) {
+                int minRes = Integer.MAX_VALUE;
+                for (int piv = start; piv < start + len; piv++) {
+                    int res = piv + Math.max(dp[start][piv - 1], dp[piv + 1][start + len]);
+                    minRes = Math.min(res, minRes);
+                }
+                dp[start][start + len] = minRes;
+            }
+        }
+        return dp[1][n];
+    }
+```
