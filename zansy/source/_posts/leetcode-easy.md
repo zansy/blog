@@ -1191,7 +1191,7 @@ class Solution {
 ## 动态规划 Dynamic Programming
 ### 一维
 #### 70
-[https://leetcode.com/problems/climbing-stairs/](https://leetcode.com/problems/climbing-stairs/)
+[Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 
@@ -1260,6 +1260,58 @@ class Solution {
             dp[i] = dp[i - 1] + dp[i - 2];
         }
         return dp[n];
+    }
+}
+```
+
+## 链表 Linked List
+### 基础
+#### 206
+[Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
+
+反转一个单链表。
+
+示例:
+```
+输入: 1->2->3->4->5->NULL
+输出: 5->4->3->2->1->NULL
+```
+
+2020.03.22
+
+---
+这道题有两个思路，
+一个是设置一个空指针，从第一个节点开始，每个节点暂时指向这个空指针，直到前部分反转成功后再迭代到下一个。
+另一个是从最后开始，每次指向前一位
+
+1. 迭代
+
+```Java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        while (cur != null){
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+}
+```
+
+2. 递归
+
+```Java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode cur = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return cur;
     }
 }
 ```
