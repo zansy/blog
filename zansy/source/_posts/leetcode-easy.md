@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20190708 更新/32）
+title: LeetCode 简单题汇总（20200325 更新/34）
 author: zansy
 tags:
   - 水
@@ -1203,7 +1203,7 @@ class Solution {
 
 ---
 这题也是典型的动态规划题，先考虑到的可以有递归处理。
-1. 递归：
+- 递归：
 ```Java
 class Solution {
     public int climbStairs(int n) {
@@ -1218,7 +1218,7 @@ class Solution {
 ```
 但这种一般都容易超时，因此需要再进行简化
 
-2. 带有记忆功能的递归
+- 带有记忆功能的递归
 
 通过加入一个memo数组，把曾经计算过的结果存入数组中
 ```Java
@@ -1243,7 +1243,7 @@ public class Solution {
 }
 ```
 
-3. 动态规划
+- 动态规划
 
 因为可以分为子问题解决，并存在最优子结构，因此可用动态规划思路解决。
 要抵达第i阶台阶有两种途径：在第i-1的台阶上走一步；在第i-2的台阶上走两步。所以可以得出这样的式子：dp[i] = dp[i - 1] + dp[i - 2];
@@ -1284,7 +1284,7 @@ class Solution {
 一个是设置一个空指针，从第一个节点开始，每个节点暂时指向这个空指针，直到前部分反转成功后再迭代到下一个。
 另一个是从最后开始，每次指向前一位
 
-1. 迭代
+- 迭代
 
 ```Java
 class Solution {
@@ -1302,7 +1302,7 @@ class Solution {
 }
 ```
 
-2. 递归
+- 递归
 
 ```Java
 class Solution {
@@ -1312,6 +1312,65 @@ class Solution {
         head.next.next = head;
         head.next = null;
         return cur;
+    }
+}
+```
+
+#### 141
+[Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+给定一个链表，判断链表中是否有环。
+
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+
+ 
+
+示例 1：
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+2020.02.25
+
+----
+这题的输入pos之类的其实是看不见的，题目就是求问一个链表里怎么判断有环。
+一个方法很简单，用个set存储每个结点，并查看是否有在之前存在，如果存在过就是存在环。
+
+- Hash
+
+```Java
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> nodesSeen = new HashSet<>();
+        while (head != null) {
+            if (nodesSeen.contains(head)) {
+                return true;
+            } else {
+                nodesSeen.add(head);
+            }
+            head = head.next;
+        }
+        return false;
+    }
+}
+```
+
+但上个方法的空间复杂度会有点高，还有一种巧思，设置两个快慢指针，在起点一起往前（快结点应比慢结点早一位，这样按理说应该是永远都追不上），如有相遇就是说明链表中存在环。
+
+```Java
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if(head == null || head.next == null) return false;
+        ListNode quick = head.next;
+        ListNode slow = head;
+        while(quick != slow){
+            if(quick == null || quick.next == null) return false;
+            quick = quick.next.next;
+            slow = slow.next;
+        }
+        return true;
     }
 }
 ```
