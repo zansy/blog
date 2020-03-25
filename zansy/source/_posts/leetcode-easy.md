@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200325 更新/34）
+title: LeetCode 简单题汇总（20200325 更新/35）
 author: zansy
 tags:
   - 水
@@ -167,6 +167,74 @@ public class Solution {
                 count++;
             } while (start != current);
         }
+    }
+}
+```
+#### 299
+[Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
+
+给出两串数字字符，找出字符中数值相同且位置对应的数字个数记为A，找出字符中数值相同但位置不同的数字个数记为B，输出记录。注意1123和0111等有重复数字的，第二串字符中第三位第四位的1只与第一串字符的第一位1符合B记录条件，因此B=1。11123和00111，B=2。
+
+2019.05.18
+
+- 解一
+
+简单。字符串转换数组，在转换的过程中就可以开始记录位置相同数值相同的数字个数了，获得A，最终得到去除这些数的两个数组。
+
+之后求B，遍历第一个数组的时候，每一位都和第二个数组的全部数比对，遇到数值相同的即将其转换成999防止后续再被比对上，记录B并退出比较循环，保证B值确实是一对一的对应结果。
+```java
+class Solution {
+    public String getHint(String secret, String guess) {
+        int[] secretInt = new int[secret.length()];
+        int[] guessInt = new int[guess.length()];
+        int unbulls = 0;
+        for(int i = 0; i < secret.length(); i++){
+            if(secret.charAt(i)!=guess.charAt(i)){
+                secretInt[unbulls] = Integer.parseInt(secret.substring(i,i+1));
+                guessInt[unbulls] = Integer.parseInt(guess.substring(i,i+1));
+                unbulls++;
+            }
+        }
+        int cows = 0;
+        for(int i = 0; i < unbulls; i++){
+            for(int j = 0; j < unbulls; j++){
+                if(secretInt[i] == guessInt[j]){
+                    cows++;
+                    guessInt[j] = 999;
+                    break;
+                }
+            }
+        }
+        return secret.length() - unbulls + "A" + cows + "B";
+    }
+}
+```
+
+- 解二
+
+求A值的部份好像不能再简化了。
+
+解一的空间复杂度稍高，额外要求了两个数组，有没有可能在记录A值的时候同时记录B值呢？
+
+由桶排序想到可以设立一个0-9的数组bucket，第一个字符串中每个出现的数字用正整数记录在bucket中，第二个字符串中每个出现的数字用负整数记录在bucket中。
+
+但在此之前检测一下，如果第二个字符串中出现的数字在bucket中的记录是反常的正整数，可以说明第二个字符串中出现的数字已经在第一个字符串中出现过了。同理可推反常的负整数也是如此。针对这两种不同的情况分别记录B值。
+```java
+class Solution {
+    public String getHint(String secret, String guess) {
+        int unbulls = 0;
+        int cows = 0;
+        int[] bucket = new int[10];
+        for(int i = 0; i < secret.length(); i++){
+            if(secret.charAt(i) != guess.charAt(i)){
+                unbulls++;
+                if(bucket[guess.charAt(i)-'0'] > 0) cows++;
+                if(bucket[secret.charAt(i)-'0'] < 0) cows++;
+                bucket[secret.charAt(i)-'0']++;
+                bucket[guess.charAt(i)-'0']--;
+            }
+        }
+        return secret.length() - unbulls + "A" + cows + "B";
     }
 }
 ```

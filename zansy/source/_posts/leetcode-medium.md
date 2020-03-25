@@ -39,76 +39,6 @@ class Solution {
 }
 ```
 
-
-#### 299
-[Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
-
-给出两串数字字符，找出字符中数值相同且位置对应的数字个数记为A，找出字符中数值相同但位置不同的数字个数记为B，输出记录。注意1123和0111等有重复数字的，第二串字符中第三位第四位的1只与第一串字符的第一位1符合B记录条件，因此B=1。11123和00111，B=2。
-
-2019.05.18
-
-- 解一
-
-简单。字符串转换数组，在转换的过程中就可以开始记录位置相同数值相同的数字个数了，获得A，最终得到去除这些数的两个数组。
-
-之后求B，遍历第一个数组的时候，每一位都和第二个数组的全部数比对，遇到数值相同的即将其转换成999防止后续再被比对上，记录B并退出比较循环，保证B值确实是一对一的对应结果。
-```java
-class Solution {
-    public String getHint(String secret, String guess) {
-        int[] secretInt = new int[secret.length()];
-        int[] guessInt = new int[guess.length()];
-        int unbulls = 0;
-        for(int i = 0; i < secret.length(); i++){
-            if(secret.charAt(i)!=guess.charAt(i)){
-                secretInt[unbulls] = Integer.parseInt(secret.substring(i,i+1));
-                guessInt[unbulls] = Integer.parseInt(guess.substring(i,i+1));
-                unbulls++;
-            }
-        }
-        int cows = 0;
-        for(int i = 0; i < unbulls; i++){
-            for(int j = 0; j < unbulls; j++){
-                if(secretInt[i] == guessInt[j]){
-                    cows++;
-                    guessInt[j] = 999;
-                    break;
-                }
-            }
-        }
-        return secret.length() - unbulls + "A" + cows + "B";
-    }
-}
-```
-
-- 解二
-
-求A值的部份好像不能再简化了。
-
-解一的空间复杂度稍高，额外要求了两个数组，有没有可能在记录A值的时候同时记录B值呢？
-
-由桶排序想到可以设立一个0-9的数组bucket，第一个字符串中每个出现的数字用正整数记录在bucket中，第二个字符串中每个出现的数字用负整数记录在bucket中。
-
-但在此之前检测一下，如果第二个字符串中出现的数字在bucket中的记录是反常的正整数，可以说明第二个字符串中出现的数字已经在第一个字符串中出现过了。同理可推反常的负整数也是如此。针对这两种不同的情况分别记录B值。
-```java
-class Solution {
-    public String getHint(String secret, String guess) {
-        int unbulls = 0;
-        int cows = 0;
-        int[] bucket = new int[10];
-        for(int i = 0; i < secret.length(); i++){
-            if(secret.charAt(i) != guess.charAt(i)){
-                unbulls++;
-                if(bucket[guess.charAt(i)-'0'] > 0) cows++;
-                if(bucket[secret.charAt(i)-'0'] < 0) cows++;
-                bucket[secret.charAt(i)-'0']++;
-                bucket[guess.charAt(i)-'0']--;
-            }
-        }
-        return secret.length() - unbulls + "A" + cows + "B";
-    }
-}
-```
-
 #### 134
 [Gas Station](https://leetcode.com/problems/gas-station/)
 
@@ -1827,7 +1757,7 @@ class Solution {
 }
 ```
 
-## Dynamic Programming
+## 动态规划 Dynamic Programming
 ### 一维
 #### 62
 [Unique Paths](https://leetcode.com/problems/unique-paths/)
@@ -2360,3 +2290,53 @@ class Solution {
 }
 ```
 非递归的话就是设置pre->1st->2nd三个指针，内部操作完以后再往后顺一位就行了，while循环外要变动的只有两个指针，一个pre一个head，所以只要他俩往后顺一位就行了。neg用来记录头结点。
+
+#### 328
+[Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+
+给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
+
+请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
+
+示例 1:
+```
+输入: 1->2->3->4->5->NULL
+输出: 1->3->5->2->4->NULL
+```
+示例 2:
+```
+输入: 2->1->3->5->6->4->7->NULL 
+输出: 2->3->6->7->1->5->4->NULL
+```
+说明:
+
+应当保持奇数节点和偶数节点的相对顺序。
+链表的第一个节点视为奇数节点，第二个节点视为偶数节点，以此类推。
+
+2020.03.25
+
+----
+这题思路很简单，就是拆成两个奇偶链表，因为需要把偶链表的头结点链接到奇链表的尾结点上，双端操作就需要每个链表分别设置头指针和尾指针。
+
+遇到链表题一定要画图，也注意分清楚哪些指针是需要变动的
+
+```Java
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if(head == null) return null;
+        ListNode oddTail = head;
+        ListNode evenHead = head.next;
+        ListNode evenTail = evenHead;
+
+        while (evenTail != null && evenTail.next != null){
+            oddTail.next = evenTail.next;
+            oddTail = oddTail.next;
+            evenTail.next = oddTail.next;
+            evenTail = evenTail.next;
+        }
+
+        oddTail.next = evenHead;
+        return head;
+    }
+}
+```
