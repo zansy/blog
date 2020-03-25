@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200229 更新/43）
+title: LeetCode 中等题汇总（20200325 更新/44）
 author: zansy
 tags: []
 categories:
@@ -2292,3 +2292,71 @@ public static int getMoneyAmount(int n) {
         return dp[1][n];
     }
 ```
+
+## 链表 Linked List
+### 基础
+#### 24
+[Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+示例:
+```
+给定 1->2->3->4, 你应该返回 2->1->4->3.
+```
+2020.03.25
+
+---
+
+- 递归
+
+```Java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode next = head.next;
+        head.next = swapPairs(next.next);
+        next.next = head;
+        
+        return next;
+    }
+}
+```
+递归主要注意三个点：
+    1. 递归终止条件
+    2. 递归内部操作
+    3. 递归返回值
+
+在这个题目里面，假设有head->next->next.next点，最终要达到next->head->next.next效果，可以确定终止条件是当head或者next为空，同时也可以确定返回值，新链表的head是next，那么返回值就是next，以作为下一个递归的参数。
+
+内部操作也很好懂，把head的下一位链接到next.next，具体这里到底是哪个值其实并不需要在意，只需要连接到第三位就行了，不用细思第三位上到底是什么。这里就可以用递归，swapPairs(next.next)，返回的是第三部分链表结点们的头结点。最后把next的下一位指向head，就完成了链表的转换。记住递归就是不断做重复的操作。
+
+- 非递归
+
+```Java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode neg = new ListNode(0);
+        neg.next = head;
+        ListNode pre = neg;
+
+        while (head != null && head.next != null){
+            //pre->1st->2nd->2nd.next
+            ListNode first = head;
+            ListNode second = head.next;
+
+            pre.next = second;
+            first.next = second.next;
+            second.next = first;
+
+            pre = head;
+            head = head.next;
+        }
+        return neg.next;
+    }
+}
+```
+非递归的话就是设置pre->1st->2nd三个指针，内部操作完以后再往后顺一位就行了，while循环外要变动的只有两个指针，一个pre一个head，所以只要他俩往后顺一位就行了。neg用来记录头结点。
