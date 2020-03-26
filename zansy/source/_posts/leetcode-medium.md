@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200326 更新/45）
+title: LeetCode 中等题汇总（20200326 更新/46）
 author: zansy
 tags: []
 categories:
@@ -2403,4 +2403,60 @@ class Solution {
         return neg.next;
     }
 }
+```
+#### 19
+[Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+
+示例：
+```
+给定一个链表: 1->2->3->4->5, 和 n = 2.
+
+当删除了倒数第二个节点后，链表变为 1->2->3->5.
+```
+说明：
+
+给定的 n 保证是有效的。
+
+进阶：
+
+你能尝试使用一趟扫描实现吗？
+
+2020.03.26
+
+----
+先遍历一遍得到全长，再通过全长和倒数数字得到顺数的位置。
+
+```Java
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode cur = head;
+        int overall = 0;
+
+        while (cur != null){
+            cur = cur.next;
+            overall++;
+
+        }
+        int target = overall - n + 1;
+
+        ListNode neg = new ListNode(0);
+        neg.next = head;
+        cur = neg;
+        while (target > 1){
+            target--;
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
+
+        return neg.next;
+    }
+}
+```
+这题还有一个解法很有意思，但是先不写了：
+```
+想象一下，两个人进行 100m 赛跑，假设他们的速度相同。开始的时候，第一个人就在第二个人前边 10m ，这样当第一个人跑到终点的时候，第二个人相距第一个人依旧是 10m ，也就是离终点 10m。
+
+对比于链表，我们设定两个指针，先让第一个指针遍历 n 步，然后再让它俩同时开始遍历，这样的话，当第一个指针到头的时候，第二个指针就离第一个指针有 n 的距离，所以第二个指针的位置就刚好是倒数第 n 个结点。
 ```
