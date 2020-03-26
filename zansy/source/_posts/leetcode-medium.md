@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200325 更新/44）
+title: LeetCode 中等题汇总（20200326 更新/45）
 author: zansy
 tags: []
 categories:
@@ -2337,6 +2337,70 @@ class Solution {
 
         oddTail.next = evenHead;
         return head;
+    }
+}
+```
+#### 92
+[Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+
+反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+
+说明:
+1 ≤ m ≤ n ≤ 链表长度。
+
+示例:
+```
+输入: 1->2->3->4->5->NULL, m = 2, n = 4
+输出: 1->4->3->2->5->NULL
+```
+2020.03.26
+
+----
+
+- 迭代
+
+不难做，注意遇到链表题要画图画图画图。
+然后为了防止出现从1开始反转的情况，设置一个neg结点在头指针前。因为要有衔接嘛所以设置一个linkTail作为m结点前一位的结点，linkHead作为m结点本身。只有pre和head两个结点在动（其实为了谨慎一点可以把head设置成为current指针）。pre和head每次往后移一位，进入m-n的范围了，head直接回头指向pre就行了。最后把这段反转链表的头尾衔接上，此时头尾衔接指针应该分别为 linkTail, linkHead; head, head.next。
+```Java
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (m == n) return head;
+        
+        ListNode neg = new ListNode(0);
+        neg.next = head;
+        int count = 0;
+        ListNode linkTail = null;
+        ListNode linkHead = null;
+        ListNode pre = neg;
+
+        while (head != null){
+            count ++;
+            if (count == m){
+                linkTail = pre;
+                linkHead = head;
+            }
+
+            if (count > m && count < n){
+                ListNode temp = head.next;
+                head.next = pre;
+                pre = head;
+                head = temp;
+                continue;
+            }
+
+            if (count == n){
+                linkHead.next = head.next;
+                head.next = pre;
+                linkTail.next = head;
+                break;
+            }
+
+            head = head.next;
+            pre = pre.next;
+        }
+
+
+        return neg.next;
     }
 }
 ```
