@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200325 更新/35）
+title: LeetCode 简单题汇总（20200326 更新/36）
 author: zansy
 tags:
   - 水
@@ -1439,6 +1439,36 @@ public class Solution {
             slow = slow.next;
         }
         return true;
+    }
+}
+```
+
+#### 237
+[Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
+
+请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
+
+示例 1:
+
+输入: head = [4,5,1,9], node = 5
+输出: [4,1,9]
+解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -> 1 -> 9.
+示例 2:
+
+输入: head = [4,5,1,9], node = 1
+输出: [4,5,9]
+解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -> 5 -> 9.
+
+2020.03.26
+
+----
+准确地来说是删除下一个结点。参数只给了当前结点，链表内也不存在环可以追溯到之前的结点，所以只可能把当前的值改成下一结点的值，当前的next改成下一结点的next。
+
+```Java
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
     }
 }
 ```
