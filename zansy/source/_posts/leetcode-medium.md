@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200326 更新/46）
+title: LeetCode 中等题汇总（20200328 更新/47）
 author: zansy
 tags: []
 categories:
@@ -2459,4 +2459,59 @@ class Solution {
 想象一下，两个人进行 100m 赛跑，假设他们的速度相同。开始的时候，第一个人就在第二个人前边 10m ，这样当第一个人跑到终点的时候，第二个人相距第一个人依旧是 10m ，也就是离终点 10m。
 
 对比于链表，我们设定两个指针，先让第一个指针遍历 n 步，然后再让它俩同时开始遍历，这样的话，当第一个指针到头的时候，第二个指针就离第一个指针有 n 的距离，所以第二个指针的位置就刚好是倒数第 n 个结点。
+```
+
+#### 82
+[Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)
+
+给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
+
+示例 1:
+```
+输入: 1->2->3->3->4->4->5
+输出: 1->2->5
+```
+示例 2:
+```
+输入: 1->1->1->2->3
+输出: 2->3
+```
+2020.03.28
+
+-----
+这题画了图以后还是很好做的……设置了三个指针pre cur next，先记录下重复值，一次性消除该重复值的结点们。
+
+
+```Java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null) return head;
+        ListNode neg = new ListNode(0);
+        neg.next = head;
+        ListNode pre = neg;
+        ListNode cur = neg.next;
+        ListNode next = neg.next.next;
+        int dupNum = -1;
+        while (next != null){
+            if (cur.val == next.val){
+                dupNum = cur.val;
+                while (next.val == dupNum) {
+                    next = next.next;
+                    if(next == null) break;
+                }
+                pre.next = next;
+                cur = next;
+                if(next != null)
+                    next = next.next;
+                continue;
+            }
+            pre = pre.next;
+            cur = cur.next;
+            if (next != null){
+                next = next.next;
+            }
+        }
+        return neg.next;
+    }
+}
 ```
