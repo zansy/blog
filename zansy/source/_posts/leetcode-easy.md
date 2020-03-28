@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200326 更新/36）
+title: LeetCode 简单题汇总（20200328 更新/38）
 author: zansy
 tags:
   - 水
@@ -1510,6 +1510,45 @@ class Solution {
         
         }
         return head;
+    }
+}
+```
+
+#### 203
+[Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
+
+删除链表中等于给定值 val 的所有节点。
+
+示例:
+```
+输入: 1->2->6->3->4->5->6, val = 6
+输出: 1->2->3->4->5
+```
+
+2020.03.28
+
+----
+这一题也很好做啦基本就是82的代码改了一改。注意设置一个neg指针指向head结点，最终返回也要返回neg.next。
+```Java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if(head == null) return head;
+        ListNode neg = new ListNode(0);
+        neg.next = head;
+        ListNode cur = neg;
+        ListNode next = neg.next;
+        while (next != null){
+            if (next.val == val){// cur-next-next.next
+                cur.next = next.next;
+                next = next.next;
+                continue;
+            }
+
+            cur = cur.next;
+            if(next!= null)
+                next = next.next;
+        }
+        return neg.next;
     }
 }
 ```
