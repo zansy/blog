@@ -1472,3 +1472,44 @@ class Solution {
     }
 }
 ```
+
+#### 83
+[Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+
+示例 1:
+```
+输入: 1->1->2
+输出: 1->2
+```
+示例 2:
+```
+输入: 1->1->2->3->3
+输出: 1->2->3
+```
+2020.03.28
+
+----
+这一题画个图也很好做啦，设置两个指针一前一后，遇到指针值相同的情况就直接跳过指向下一个。
+```Java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null) return head;
+        ListNode cur = head;
+        ListNode next = head.next;
+        while (next != null){
+            if (cur.val == next.val){
+                cur.next = next.next;
+                next = next.next;
+                continue;
+            }
+            
+            cur = cur.next;
+            if(next!= null)
+                next = next.next;
+        
+        }
+        return head;
+    }
+}
+```
