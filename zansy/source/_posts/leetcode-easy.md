@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200328 更新/38）
+title: LeetCode 简单题汇总（20200330 更新/39）
 author: zansy
 tags:
   - 水
@@ -1550,5 +1550,56 @@ class Solution {
         }
         return neg.next;
     }
+}
+```
+
+#### 160
+[Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+
+编写一个程序，找到两个单链表相交的起始节点。
+
+2020.03.30
+
+-----
+- 解一 HashSet
+
+
+HashSet就行啦，先存储下headA里每个结点，到了遍历HeadB的时候，看set里有没有该结点存在。
+```Java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        Set<ListNode> set = new HashSet<ListNode>();
+        while (headA != null){
+            set.add(headA); 
+            headA = headA.next;
+        }
+        while (headB != null){
+            if (set.contains(headB)){
+                return headB;
+            }
+            headB = headB.next;
+        }
+        return null;
+    }
+}
+```
+
+- 解二 双指针
+
+这道题还有另外一个很有意思的解法，设置指针A遍历headA，遍历完了去遍历HeadB；指针B也是，先遍历HeadB，再遍历headA，如果两指针路上有相遇，说明两链表相交。
+
+这其实也可以理解为两个人速度一致， 走过的路程一致。那么肯定会同一个时间点到达终点。如果到达终点的最后一段路两人都走的话，那么这段路上俩人肯定是肩并肩手牵手的。
+
+“若相交，链表A： a+c, 链表B : b+c. a+c+b+c = b+c+a+c 。则会在公共处c起点相遇。若不相交，a +b = b+a 。因此相遇处是NULL。”
+
+```Java
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) return null;
+    ListNode pA = headA, pB = headB;
+    while (pA != pB) {
+        pA = pA == null ? headB : pA.next;
+        pB = pB == null ? headA : pB.next;
+    }
+    return pA;
 }
 ```
