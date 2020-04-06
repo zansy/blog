@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200405 更新/50）
+title: LeetCode 中等题汇总（20200406 更新/51）
 author: zansy
 tags: []
 categories:
@@ -2662,6 +2662,75 @@ class Solution {
             }
         }
         return false;
+    }
+}
+```
+
+#### 153
+[Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+
+( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+
+请找出其中最小的元素。
+
+你可以假设数组中不存在重复元素。
+
+示例 1:
+```
+输入: [3,4,5,1,2]
+输出: 1
+```
+示例 2:
+```
+输入: [4,5,6,7,0,1,2]
+输出: 0
+```
+2020.04.06
+
+-----
+- 解一
+
+一个解法是找出轴点，先判断有序，如果左边全是升序，那结点一定存在于右边；如果右边有序，那结点一定存在于左边。
+
+但是这个解法需要考虑边界，一个是[1]的情况，一个是[1,2]的情况。
+
+```Java
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1, mid;
+        if (nums[right] > nums[0] || nums.length == 1) {
+          return nums[left];
+        }
+        while (left <= right){
+            mid = (left + right) / 2;
+            if (nums[mid] > nums[mid + 1]) return nums[mid + 1];
+            if (nums[mid] < nums[mid - 1]) return nums[mid];
+            if (nums[left] < nums[mid]){//左边有序
+                left = mid;
+            }else {
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
+}
+```
+- 解二
+
+另一种解法不需要判断边界值
+
+```Java
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1, mid;
+        while (left <= right){
+            mid = (left + right) / 2;
+            if (nums[mid] > nums[nums.length - 1]) left = mid + 1;
+            else right = mid - 1;
+        }
+        return nums[left];
     }
 }
 ```
