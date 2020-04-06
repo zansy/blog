@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20190625 更新/13）
+title: LeetCode 难题汇总（20200406 更新/14）
 author: zansy
 tags: []
 categories:
@@ -708,6 +708,52 @@ class Solution {
                 stack.push(current.right);
         }
         return postOrder;
+    }
+}
+```
+## 二分查找 Binary Search
+### 基础
+#### 154
+[Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
+
+假设按照升序排序的数组在预先未知的某个点上进行了旋转。
+
+( 例如，数组 [0,1,2,4,5,6,7] 可能变为 [4,5,6,7,0,1,2] )。
+
+请找出其中最小的元素。
+
+注意数组中可能存在重复的元素。
+
+示例 1：
+```
+输入: [1,3,5]
+输出: 1
+```
+示例 2：
+```
+输入: [2,2,2,0,1]
+输出: 0
+```
+2020.04.06
+
+-----
+二分查找，可以参考#153的第二种解法，拿mid元素和跟右边界元素对比，找出旋转的轴点，轴点那就是最小的数。
+
+如果右边元素 > mid元素，就是大概45012这样，说明轴点肯定不在右边，更新右边界=mid；
+如果右边界 < mid元素，举例45612，说明轴点会出现在右边，更新左边界=mid+1（注意一定要+1）；
+如果右边界 = mid元素，没办法判断轴点出现在哪，就一步步减小右边界。
+
+```Java
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1, mid;
+        while (left <= right){
+            mid = left + (right - left) / 2;
+            if (nums[mid] < nums[right]) right = mid;
+            else if (nums[mid] > nums[right]) left = mid + 1;
+            else right = right - 1;
+        }
+        return nums[left];
     }
 }
 ```
