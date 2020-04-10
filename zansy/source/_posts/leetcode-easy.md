@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200408 更新/43）
+title: LeetCode 简单题汇总（20200410 更新/44）
 author: zansy
 tags:
   - 水
@@ -1780,6 +1780,80 @@ public class Solution extends GuessGame {
             else left = mid + 1;
         }
         return -1;
+    }
+}
+```
+
+### 349
+[Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/)
+
+给定两个数组，编写一个函数来计算它们的交集。
+
+示例 1:
+```
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2]
+```
+
+示例 2:
+```
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [9,4]
+```
+
+说明:
+```
+输出结果中的每个元素一定是唯一的。
+我们可以不考虑输出结果的顺序。
+```
+
+2020.04.10
+
+----
+
+和二分查找没啥关系
+
+- 解一
+用HashSet的办法，转换两个数组，迭代某一个数组，检查是否有值存在于另一个数组中。
+
+```Java
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+       HashSet<Integer> set1 = new HashSet<Integer>();
+        for (Integer n : nums1) set1.add(n);
+        HashSet<Integer> set2 = new HashSet<Integer>();
+        for (Integer n : nums2) set2.add(n);
+        
+        int[] output = new int[set1.size()];
+        int index = 0;
+        for (Integer s : set1)
+            if (set2.contains(s)) 
+                output[index++] = s;
+            
+        return Arrays.copyOf(output, index); 
+    }
+}
+```
+
+- 解二
+
+Java有内置函数retainAll，直接看代码学用法就行
+```Java
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+       HashSet<Integer> set1 = new HashSet<Integer>();
+        for (Integer n : nums1) set1.add(n);
+        HashSet<Integer> set2 = new HashSet<Integer>();
+        for (Integer n : nums2) set2.add(n);
+
+        set1.retainAll(set2);
+        int[] output = new int[set1.size()];
+        int index = 0;
+        for (Integer s : set1)
+            if (set2.contains(s))
+                output[index++] = s;
+
+        return output;
     }
 }
 ```
