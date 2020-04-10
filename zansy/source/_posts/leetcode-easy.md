@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20200410 更新/44）
+title: LeetCode 简单题汇总（20200410 更新/45）
 author: zansy
 tags:
   - 水
@@ -1854,6 +1854,55 @@ class Solution {
                 output[index++] = s;
 
         return output;
+    }
+}
+```
+
+#### 350
+[Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
+
+给定两个数组，编写一个函数来计算它们的交集。
+
+示例 1:
+```
+输入: nums1 = [1,2,2,1], nums2 = [2,2]
+输出: [2,2]
+```
+示例 2:
+```
+输入: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+输出: [4,9]
+```
+说明：
+```
+输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
+我们可以不考虑输出结果的顺序。
+```
+2020.04.10
+
+-----
+用Hashmap。
+举例num1:49544，num2:94984
+设立一个hashmap m存储较短数组中数字的出现次数，如num1就是4-3 9-1 5-1。在遍历另一数组的时候，遇到相同数字就在m中-1，并且将该数字计入输出数组中，如果减为0就不计。
+如遍历num2时第一个数字：4-3 9-0 5-1，第二个数字：4-2 9-0 5-1，第三个数字：4-2 9-0 5-1……如此。
+
+```Java
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) return intersect(nums2, nums1);
+
+        HashMap<Integer,Integer> m = new HashMap<Integer, Integer>();
+        for (int n : nums1) m.put(n, m.getOrDefault(n, 0) + 1);
+
+        int k = 0;
+        for (int n : nums2){
+            int count = m.getOrDefault(n,0);
+            if (count > 0){
+                nums1[k++] = n;
+                m.put(n, count - 1);
+            }
+        }
+        return Arrays.copyOfRange(nums1, 0, k);
     }
 }
 ```
