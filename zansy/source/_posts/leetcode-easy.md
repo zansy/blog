@@ -1784,7 +1784,7 @@ public class Solution extends GuessGame {
 }
 ```
 
-### 349
+#### 349
 [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/)
 
 给定两个数组，编写一个函数来计算它们的交集。
