@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200411 更新/54）
+title: LeetCode 中等题汇总（20200412 更新/55）
 author: zansy
 tags: []
 categories:
@@ -10,7 +10,7 @@ Medium思考题，分类/题意/思路/代码。
 <!--more-->
 ## 数组 Array
 ### 基础
-#### 80
+#### 80 Remove Duplicates from Sorted Array II
 [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/submissions/)
 
 给出一组排好序的数，要求去除数组里数，使其中数最多重复两次。返回数组长度。
@@ -39,7 +39,7 @@ class Solution {
 }
 ```
 
-#### 134
+#### 134 Gas Station
 [Gas Station](https://leetcode.com/problems/gas-station/)
 
 给出两组数，第一组gas分别表示每个加油站可加的油，第二组cost分别表示目前加油站到达下一加油站所消耗的油量。要求从某一加油站加满油出发，顺时针循环所有的加油站并回到出发的加油站，返回该出发加油站的索引。如果中途油不够无法完成循环，则返回-1。
@@ -115,7 +115,7 @@ class Solution {
 }
 ```
 
-#### 229
+#### 229 Majority Element II
 [Majority Element II](https://leetcode.com/problems/majority-element-ii/)
 
 给出两组无序数，返回所有占总数三分之一以上的数
@@ -203,7 +203,7 @@ class Solution {
 }
 ```
 
-#### 274
+#### 274 H-Index
 [H-Index](https://leetcode.com/problems/h-index/)
 
 涉及一个`h-index`的概念
@@ -284,7 +284,7 @@ class Solution {
 }
 ```
 
-#### 275
+#### 275 H-Index II
 [H-Index II](https://leetcode.com/problems/h-index/)
 
 题意如#274，但这次给出的是升序数组，要求时间复杂度对数级。
@@ -314,7 +314,7 @@ class Solution {
 }
 ```
 
-#### 220
+#### 220 Contains Duplicate III
 [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)
 
 给出一组无序数nums，一个k，一个t，要求存在nums[i]和nums[j]，使得二者绝对值小于等于t，同时i与j的绝对值小于等于k。
@@ -352,7 +352,7 @@ class Solution {
 }
 ```
 
-#### 55
+#### 55 Jump Game
 [Jump Game](https://leetcode.com/problems/jump-game/)
 
 给出一组无序的非负整数，每个数字是指在其索引的位置上能往右走的最大步数，问在第一位是否能走到数组最后一位。
@@ -372,7 +372,7 @@ class Solution {
     }
 }
 ```
-#### 309
+#### 309 Best Time to Buy and Sell Stock with Cooldown
 [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 
 给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以进行无限次交易，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。并且每次交易后的第二天不能交易
@@ -399,7 +399,7 @@ class Solution {
     }
 }
 ```
-#### 11
+#### 11 Container With Most Water
 [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
 给出一组无序数height，表示在x轴上不同高度的线。两线可组成容器盛水，底是两线之间的距离，高是较短的一线，求能盛最多水的容器的长宽积。
@@ -444,7 +444,7 @@ class Solution {
 }
 ```
 
-#### 334
+#### 334 Increasing Triplet Subsequence
 [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
 
 给出一组无序数nums，问其中是否存在三个数，nums[i] < nums[j] < nums[k],同时i < j < k。要求时间复杂度O(n)，空间复杂度O(1)。
@@ -467,7 +467,7 @@ class Solution {
     }
 }
 ```
-#### 287
+#### 287 Find the Duplicate Number
 [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
 
 给出n+1个无序数，数组中值为1-n，找出重复的数字（必存在也只存在一个）。
@@ -525,7 +525,7 @@ class Solution {
 
 ##  字符串 String
 ### 基础
-#### 151
+#### 151 Reverse Words in a String
 [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
 
 给定一个字符串，逐个翻转字符串中的每个单词。
@@ -557,7 +557,7 @@ class Solution {
 }
 ```
 
-#### 49
+#### 49 Group Anagrams
 [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
@@ -587,7 +587,7 @@ class Solution {
 }
 ```
 
-#### 179
+#### 179 Largest Number
 [Largest Number](https://leetcode.com/problems/largest-number/)
 
 给定一组非负整数，重新排列它们的顺序使之组成一个最大的整数。
@@ -637,7 +637,7 @@ class Solution {
     }
 }
 ```
-#### 6
+#### 6 ZigZag Conversion
 [ZigZag Conversion](https://leetcode.com/problems/zigzag-conversion/)
 
 将一个给定字符串根据给定的行数，以从上往下、从左到右进行 Z 字形排列。
@@ -698,7 +698,7 @@ class Solution {
 }
 ```
 
-#### 12
+#### 12 Integer to Roman
 [Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
 
 罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
@@ -799,7 +799,7 @@ class Solution {
 
 ## 数学 Math
 ### 基础
-#### 165
+#### 165 Compare Version Numbers
 [Compare Version Numbers](https://leetcode.com/problems/compare-version-numbers/)
 
 两个字符串，比较版本号，前者比后者新返回1，否则返回-1。当相等时返回0。注意1.0和1比较，1.001和1.01比较的情况。
@@ -833,7 +833,7 @@ class Solution {
     }
 }
 ```
-#### 8
+#### 8 String to Integer (atoi)
 [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
 
 实现一个 atoi 函数，使其能将字符串转换成整数。
@@ -902,7 +902,7 @@ class Solution {
     }
 }
 ```
-#### 43
+#### 43 Multiply Strings
 [Multiply Strings](https://leetcode.com/problems/multiply-strings/)
 
 给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
@@ -931,7 +931,7 @@ class Solution {
     }
 }
 ```
-#### 29
+#### 29 Divide Two Integers
 [Divide Two Integers](https://leetcode.com/problems/divide-two-integers/)
 给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
 
@@ -967,7 +967,7 @@ class Solution {
     }
 }
 ```
-#### 50
+#### 50 Pow(x, n)
 [Pow(x, n)](https://leetcode.com/problems/powx-n/)
 
 实现 pow(x, n) ，即计算 x 的 n 次幂函数。
@@ -992,7 +992,7 @@ class Solution {
     }
 }
 ```
-#### 365
+#### 365 Water and Jug Problem
 [Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/)
 
 有两个容量分别为 x升 和 y升 的水壶以及无限多的水。请判断能否通过使用这两个水壶，从而可以得到恰好 z升 的水？
@@ -1032,7 +1032,7 @@ class Solution {
 ```
 ## 树 Tree
 ### 基础
-#### 144
+#### 144 Binary Tree Preorder Traversal
 [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/)
 
 给定一个二叉树，返回它的 前序 遍历。
@@ -1100,7 +1100,7 @@ class Solution {
     }
 }
 ```
-#### 94
+#### 94 Binary Tree Inorder Traversal
 [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
 
 给定一个二叉树，返回它的中序 遍历。
@@ -1165,7 +1165,7 @@ class Solution {
     }
 }
 ```
-#### 104
+#### 104 Binary Tree Level Order Traversal
 [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
 
 给定一个二叉树，返回其按层次遍历的节点值。 （即逐层地，从左到右访问所有节点）。
@@ -1255,7 +1255,7 @@ class Solution {
 ```
 ## 回溯 Backtracking
 ### 基础
-#### 78
+#### 78 Subsets
 [Subsets](https://leetcode.com/problems/subsets/)
 
 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
@@ -1374,7 +1374,7 @@ class Solution {
     }
 }
 ```
-#### 90
+#### 90 Subsets II
 [Subsets II](https://leetcode.com/problems/subsets-ii/)
 
 给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
@@ -1428,7 +1428,7 @@ class Solution {
     }
 }
 ```
-#### 🌟77
+#### 🌟77 Combinations
 [Combinations](https://leetcode.com/problems/combinations/)
 
 给定两个整数 n 和 k，返回 1 ... n 中所有可能的 k 个数的组合。
@@ -1458,7 +1458,7 @@ class Solution {
     }
 }
 ```
-#### 39
+#### 39 Combination Sum
 [Combination Sum](https://leetcode.com/problems/combination-sum/)
 
 给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
@@ -1492,7 +1492,7 @@ class Solution {
     }
 }
 ```
-#### 40
+#### 40 Combination Sum II
 [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
 
 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
@@ -1528,7 +1528,7 @@ class Solution {
 }
 ```
 
-#### 216
+#### 216 Combination Sum III
 [Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)
 
 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
@@ -1560,7 +1560,7 @@ class Solution {
 }
 ```
 
-#### 🌟377
+#### 🌟377 Combination Sum IV
 [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
 
 给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
@@ -1591,7 +1591,7 @@ class Solution {
     }
 }
 ```
-#### 46
+#### 46 Permutations
 [Permutations](https://leetcode.com/problems/permutations/)
 
 给定一个没有重复数字的序列，返回其所有可能的全排列。
@@ -1617,7 +1617,7 @@ class Solution {
 }
 ```
 
-#### 47
+#### 47 Permutations II
 [Permutations II](https://leetcode.com/problems/permutations-ii/)
 给定一个可包含重复数字的序列，返回所有不重复的全排列。
 
@@ -1647,7 +1647,7 @@ class Solution {
 }
 ```
 
-#### 31
+#### 31 Next Permutation
 [Next Permutation](https://leetcode.com/problems/next-permutation/)
 
 实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
@@ -1696,7 +1696,7 @@ class Solution {
     }
 }
 ```
-#### 60
+#### 60 Permutation Sequence
 [Permutation Sequence](https://leetcode.com/problems/permutation-sequence/)
 给出集合 [1,2,3,…,n]，其所有元素共有 n! 种排列。
 
@@ -1759,7 +1759,7 @@ class Solution {
 
 ## 动态规划 Dynamic Programming
 ### 一维
-#### 62
+#### 62 Unique Paths
 [Unique Paths](https://leetcode.com/problems/unique-paths/)
 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
 
@@ -1836,7 +1836,7 @@ class Solution {
     }
 }
 ```
-#### 63
+#### 63 Unique Paths II
 [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/)
 
 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
@@ -1924,7 +1924,7 @@ class Solution {
 }
 ```
 
-#### 120
+#### 120 Triangle
 [Triangle](https://leetcode.com/problems/triangle/)
 
 给定一个三角形，找出自顶向下的最小路径和。每一步只能移动到下一行中相邻的结点上。
@@ -1980,7 +1980,7 @@ class Solution {
 }
 ```
 
-#### 279
+#### 279 Perfect Squares
 [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
@@ -2044,7 +2044,7 @@ class Solution {
 }
 ```
 
-#### 139
+#### 139 Word Break
 [Word Break](https://leetcode.com/problems/word-break/)
 
 给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
@@ -2113,7 +2113,7 @@ class Solution {
 }
 ```
 
-#### 375
+#### 375 Guess Number Higher or Lower II
 [Guess Number Higher or Lower II](https://leetcode.com/problems/guess-number-higher-or-lower-ii/)
 
 我们正在玩一个猜数游戏，游戏规则如下：
@@ -2225,7 +2225,7 @@ public static int getMoneyAmount(int n) {
 
 ## 链表 Linked List
 ### 基础
-#### 24
+#### 24 Swap Nodes in Pairs
 [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
 
 给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
@@ -2291,7 +2291,7 @@ class Solution {
 ```
 非递归的话就是设置pre->1st->2nd三个指针，内部操作完以后再往后顺一位就行了，while循环外要变动的只有两个指针，一个pre一个head，所以只要他俩往后顺一位就行了。neg用来记录头结点。
 
-#### 328
+#### 328 Odd Even Linked List
 [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
 
 给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
@@ -2340,7 +2340,7 @@ class Solution {
     }
 }
 ```
-#### 92
+#### 92 Reverse Linked List II
 [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
 
 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
@@ -2404,7 +2404,7 @@ class Solution {
     }
 }
 ```
-#### 19
+#### 19 Remove Nth Node From End of List
 [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
@@ -2461,7 +2461,7 @@ class Solution {
 对比于链表，我们设定两个指针，先让第一个指针遍历 n 步，然后再让它俩同时开始遍历，这样的话，当第一个指针到头的时候，第二个指针就离第一个指针有 n 的距离，所以第二个指针的位置就刚好是倒数第 n 个结点。
 ```
 
-#### 82
+#### 82 Remove Duplicates from Sorted List II
 [Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)
 
 给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
@@ -2516,7 +2516,7 @@ class Solution {
 }
 ```
 
-#### 2
+#### 2 Add Two Numbers
 [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
@@ -2563,7 +2563,7 @@ class Solution {
 
 ## 二分查找 Binary Search
 ### 基础
-#### 33
+#### 33 Search in Rotated Sorted Array
 [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
 
 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
@@ -2616,7 +2616,7 @@ class Solution {
 }
 ```
 
-#### 81
+#### 81 Search in Rotated Sorted Array II
 [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
 
 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
@@ -2666,7 +2666,7 @@ class Solution {
 }
 ```
 
-#### 153
+#### 153 Find Minimum in Rotated Sorted Array
 [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
 
 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
@@ -2735,7 +2735,7 @@ class Solution {
 }
 ```
 
-#### 162
+#### 162 Find Peak Element
 [Find Peak Element](https://leetcode.com/problems/find-peak-element/)
 
 峰值元素是指其值大于左右相邻值的元素。
@@ -2778,9 +2778,9 @@ class Solution {
 }
 ```
 
-#### *34
-[Find First and Last Position of Element in Sorted Array
-Medium](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
+#### *34 Find First and Last Position of Element in Sorted Array
+
+[Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
 
@@ -2844,7 +2844,7 @@ class Solution {
 
 ## 矩阵 Matrix
 ### 基础
-#### 48
+#### 48 Rotate Image
 [Rotate Image](https://leetcode.com/problems/rotate-image/)
 
 给定一个 n × n 的二维矩阵表示一个图像。
@@ -2927,6 +2927,36 @@ class Solution {
                 matrix[i][n - 1 - j] = temp;
             }
         }
+    }
+}
+```
+
+#### 54 Spiral Matrix
+[Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+
+2020.04.12
+
+------
+
+这题太绝了，我推荐我自己学十遍！主要就是设置边界，如果边界有重合那就说明已经遍历完成了
+
+```Java
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new LinkedList<Integer>();
+        if (matrix.length == 0) return result;
+        int up = 0, down = matrix.length - 1, left = 0, right = matrix[0].length - 1;
+        while (true){
+            for (int i = left; i <= right; i++) result.add(matrix[up][i]);//从左移到右
+            if (up++ >= down)break; //重新定义上边界，若上边界大于下边界，则遍历完成
+            for (int i = up; i <= down; i++)result.add(matrix[i][right]);//从上移到下
+            if (right-- <= left) break;//重新定义右边界，若右边界和左边界重合，则遍历完成
+            for (int i = right; i >= left; i--) result.add(matrix[down][i]);//从右移到左
+            if (down-- <= up)break;
+            for (int i = down; i >= up; i--)result.add(matrix[i][left]);
+            if (left++ >= right)break;
+        }
+        return result;
     }
 }
 ```

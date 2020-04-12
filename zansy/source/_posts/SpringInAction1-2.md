@@ -9,10 +9,10 @@ Spring 是一种轻量级的、开源的 Java EE 应用软件框架，主要优�
 <!--more-->
 ## 概述
 - 两个核心特性，也就是依赖注入（dependency injection，DI）和面向切面编程（aspect-oriented programming，AOP）
-- 
 ![spring框架的组成结构图](/images/pasted-5.png)
+
 	- `核心容器`：包含四个组建：Beans、Core、Context和SpEl。Spring的核心容器也称 IoC容器，提供了 Spring 框架的基本功能。主要组件是 BeanFactory，是工厂模式的具体实现。
-容器是Spring框架最核心的部分，它管理着Spring应用中bean的创建、配置和管理。在该模块中，包括了Spring bean工厂，它为Spring提供了DI的功能。基于bean工厂，我们还会发现有多种Spring应用上下文的实现，每一种都提供了配置Spring的不同方式。
+	- 容器是Spring框架最核心的部分，它管理着Spring应用中bean的创建、配置和管理。在该模块中，包括了Spring bean工厂，它为Spring提供了DI的功能。基于bean工厂，我们还会发现有多种Spring应用上下文的实现，每一种都提供了配置Spring的不同方式。
 	- `Spring 上下文`：是一个配置文件，用于给Spring框架提供上下文信息
 	- `数据访问与集成`：使用JDBC编写代码通常会导致大量的样板式代码，例如获得数据库连接、创建语句、处理结果集到最后关闭数据库连接。Spring的JDBC和DAO（Data Access Object）模块抽象了这些样板式代码，使我们的数据库代码变得简单明了，还可以避免因为关闭数据库资源失败而引发的问题。该模块在多种数据库服务的错误信息之上构建了一个语义丰富的异常层，以后我们再也不需要解释那些隐晦专有的SQL错误信息了。
 	- ` Web与远程调用`：MVC（Model-View-Controller）模式是一种普遍被接受的构建Web应用的方法，它可以帮助用户将界面逻辑与应用逻辑分离。虽然Spring能够与多种流行的MVC框架进行集成，但它的Web和远程调用模块自带了一个强大的MVC框架，有助于在Web层提升应用的松耦合水平。
@@ -34,7 +34,7 @@ Spring 是一种轻量级的、开源的 Java EE 应用软件框架，主要优�
 
 ##### 例
 类B
-```
+```Java
 public class ClassB {
 	public ClassB() {
 		System.out.println("B类默认构造方法被执行！");
@@ -45,7 +45,7 @@ public class ClassB {
 }
 ```
 类A
-```
+```Java
 public class ClassA {
 	private ClassB classB;//类A的依赖于类B，因为类A使用类B的一个实例classB
 	public ClassA() {
@@ -70,7 +70,7 @@ public class ClassA {
 }
 ```
 <b>强耦合依赖关系</b>
-```
+```Java
 public class Main {
 	public static void main(String[] args) {
 		ClassA classA = new ClassA();
@@ -79,7 +79,7 @@ public class Main {
 }
 ```
 <b>弱耦合关系（构造器注入依赖关系）</b>
-```
+```Java
 public static void main(String[] args) {
 		ClassB classB = new ClassB();
 		ClassA classA = new ClassA(classB);
@@ -87,7 +87,7 @@ public static void main(String[] args) {
 }
 ```
 <b>弱耦合关系（Setter方法注入依赖）</b>
-```
+```Java
 public static void main(String[] args) {
 		ClassB classB = new ClassB();
 		ClassA classA = new ClassA();
@@ -97,7 +97,10 @@ public static void main(String[] args) {
 ```
 - 创建应用组件之间协作的行为通常称为装配（wiring）。Spring有多种装配bean的方式，采用XML是很常见的一种装配方式。Spring还支持使用Java来描述配置。【具体参见 1.1.2 依赖注入一章】
 - Spring通过应用上下文（Application Context）装载bean的定义并把它们组装起来。Spring应用上下文全权负责对象的创建和组装。
+
+
 #### 应用切面
+
 - DI 能够让相互协作的软件组件保持松散耦合，而面向切面编程（aspect-oriented programming，AOP）允许你把遍布应用各处的功能分离出来形成可重用的组件。
 - 系统由许多不同的组件组成，每一个组件各负责一块特定功能。除了实现自身核心的功能之外，这些组件还经常承担着额外的职责。诸如日志、事务管理和安全这样的系统服务经常融入到自身具有核心业务逻辑的组件中去，这些系统服务通常被称为横切关注点，因为它们会跨越系统的多个组件。AOP能够使这些服务模块化，并以声明的方式将它们应用到它们需要影响的组件中去。所造成的结果就是这些组件会具有更高的内聚性并且会更加关注自身的业务，完全不需要了解涉及系统服务所带来复杂性。
 - AOP 是对 OOP(面向对象编程)地补充和完善，它利用一种被称为“横切”的技术，剖解封装的对象内部，并将哪些影响了多个类的公共行为封装到一个可重用模块，并将其命名为 Aspect，即“方面/切面”。
@@ -113,16 +116,21 @@ public static void main(String[] args) {
 	- `Pointcut（切入点）` ：是对 JointPoint 的形式描述，用于指出要对哪些 JointPoint 进行拦截的定义。
 	- `Advice（通知）`：一个 Advice 对应一个横切关注点逻辑的载体，它代表将会织入到 JointPoint的横切逻辑：在切面的某个特定的连接点上执行的逻辑。分为前置通知和后置通知。
 - 进行 Spring AOP 编程，有两种实现方式，一种是基于 XML 配置的 Spring AOP 编程，另一种是基于注释配置的 Spring AOP 编程。
+
+
 #### 模板技术
+
 - 使用Spring的JdbcTemplate（利用了 Java 5特性的JdbcTemplate实现）重写的方法仅仅关注核心逻辑，而不需要迎合JDBC API的需求
 - Spring通过面向POJO编程、DI、切面和模板技术来简化Java开发中的复杂性。
 
 ### Spring 容器
+
 - 在基于Spring的应用中，应用对象生存于Spring容器（container）中。Spring容器负责创建对象，装配它们，配置它们并管理它们的整个生命周期，从生存到死亡（在这里，可能就是new到finalize()）。
 - 容器是Spring框架的核心。Spring容器使用DI管理构成应用的组件，它会创建相互协作的组件之间的关联。毫无疑问，这些对象更简单干净，更易于理解，更易于重用并且更易于进行单元测试。
 - Spring自带了多个容器实现，可以归为两种不同的类型。`bean工厂`（由org.springframework.beans.factory.BeanFactory接口定义）是最简单的容器，提供基本的DI支持。`应用上下文`（由org.springframework.context.ApplicationContext接口定义）基于BeanFactory构建，并提供应用框架级别的服务，例如从属性文件解析文本信息以及发布应用事件给感兴趣的事件监听者。
 
 #### 使用应用上下文
+
 - Spring自带了多种类型的应用上下文：
 	- AnnotationConfigApplicationContext：从一个或多个基于Java的配置类中加载Spring应用上下文。
 	- AnnotationConfigWebApplicationContext：从一个或多个基于Java的配置类中加载Spring Web应用上下文。
@@ -134,7 +142,7 @@ public static void main(String[] args) {
 
 #### bean的生命周期
 - 在传统的Java应用中，bean的生命周期很简单。使用Java关键字new进行bean实例化，然后该bean就可以使用了。一旦该bean不再被使用，则由Java自动进行垃圾回收。
-- 
+
 ![Spring 中 bean 的生命周期](/images/pasted-6.png)
 - 在bean准备就绪之前，bean工厂执行了若干启动步骤：
 	1．Spring对bean进行实例化；
@@ -176,7 +184,7 @@ public static void main(String[] args) {
 
 #### 一、  创建可被发现的bean
 1. CompactDisc接口在Java中定义了CD的概念。
-```
+```Java
 package soundsystem;
 public interface CompactDisc {
   void play();
@@ -185,7 +193,7 @@ public interface CompactDisc {
 作为接口，它定义了CD播放器对一盘CD所能进行的操作。它将CD播放器的任意实现与CD本身的耦合降低到了最小的程度。
 
 2. 带有@Component注解的CompactDisc实现类SgtPeppers
-```
+```Java
 package soundsystem;
 import org.springframework.stereotype.Component;
 @Component
@@ -224,7 +232,7 @@ public class CDPlayerConfig {
 `
 4. 测试组件扫描能够发现CompactDisc
 
-```
+```Java
 package soundsystem;
 
 import static org.junit.Assert.*;
@@ -252,7 +260,7 @@ CDPlayerTest使用了Spring的SpringJUnit4ClassRunner，以便在测试开始的
 注：Spring会根据类名为其自动指定一个ID。
 
 1. 将期望的ID作为值传递给@Component注解
-```
+```Java
 @Component("lonelyHeartsClub")
 public class SgtPeppers implements CompactDisc {
   ...
@@ -260,7 +268,7 @@ public class SgtPeppers implements CompactDisc {
 ```
 2. 另外一种为bean命名的方式，这种方式不使用@Component注解，而是使用Java依赖注入规范（Java Dependency Injection）中所提供的@Named注解来为bean设置ID
 
-```
+```Java
 package soundsystem;
 import javax.inject.Named;
 
@@ -274,25 +282,25 @@ public class SgtPeppers implements CompactDisc {
 #### 三、设置组件扫描的基础包
 注：如果没有为@ComponentScan设置任何属性，按照默认规则，它会以配置类所在的包作为基础包（base package）来扫描组件。
 - 为了指定不同的基础包，需要在@ComponentScan的value属性中指明包的名称：
-```
+```Java
 @Configuration
 @ComponentScan("soundsystem")
 public class CDPlayerConfig {}
 ```
 - 想更加清晰地表明所设置的是基础包，可以通过basePackages属性进行配置：
-```
+```Java
 @Configuration
 @ComponentScan(basePackages="soundsystem")
 public class CDPlayerConfig {}
 ```
 - 可以设置多个基础包，只需要将basePackages属性设置为要扫描包的一个数组即可：
-```
+```Java
 @Configuration
 @ComponentScan(basePackages={"soundsystem", "video"})
 public class CDPlayerConfig {}
 ```
 - 除了将包设置为简单的String类型之外，@ComponentScan还提供了另外一种方法，那就是将其指定为包中所包含的类或接口：
-```
+```Java
 @Configuration
 @ComponentScan(basePackageClasses={CDPlayer.class, DVDPlayer.class})
 public class CDPlayerConfig {}
@@ -304,7 +312,7 @@ public class CDPlayerConfig {}
 - 为了声明要进行自动装配，可以借助Spring的@Autowired注解。
 - 通过自动装配，将一个CompactDisc注入到CDPlayer之中：
 
-```
+```Java
 package soundsystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -326,7 +334,7 @@ public class CDPlayer implements MediaPlayer {
 >CDPlayer类的构造器上添加了@Autowired注解，这表明当Spring创建CDPlayerbean的时候，会通过这个构造器来进行实例化并且会传入一个可设置给CompactDisc类型的bean。
 
 - @Autowired注解不仅能够用在构造器上，还能用在属性的Setter方法上：
-```
+```Java
 @Autowired
 public void setCompactDisc(CompactDisc cd) {
   this.cd = cd;
@@ -335,7 +343,7 @@ public void setCompactDisc(CompactDisc cd) {
 >在Spring初始化bean之后，它会尽可能得去满足bean的依赖，在本例中，依赖是通过带有@Autowired注解的方法进行声明的，也就是setCompactDisc()。Setter方法并没有什么特殊之处。@Autowired注解可以用在类的任何方法上。
 
 - 不管是构造器、Setter方法还是其他的方法，Spring都会尝试满足方法参数上所声明的依赖。假如有且只有一个bean匹配依赖需求的话，那么这个bean将会被装配进来。如果没有匹配的bean，那么在应用上下文创建的时候，Spring会抛出一个异常。为了避免异常的出现，你可以将@Autowired的required属性设置为false：
-```
+```Java
 @Autowired(required=false)
 public CDPlayer(CompactDisc cd) {
   this.cd = cd;
@@ -345,7 +353,7 @@ public CDPlayer(CompactDisc cd) {
 
 - @Autowired是Spring特有的注解。如果你不愿意在代码中到处使用Spring的特定注解来完成自动装配任务的话，那么你可以考虑将其替换为@Inject：
 
-```
+```Java
 package soundsystem;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -367,7 +375,7 @@ public class CDPlayer {
 #### 五、验证自动装配
 - 已经在CDPlayer的构造器中添加了@Autowired注解，Spring将把一个可分配给CompactDisc类型的bean自动注入进来。为了验证这一点，修改一下CDPlayerTest，使其能够借助CDPlayer bean播放CD：
 
-```
+```Java
 package soundsystem;
 import static org.junit.Assert.*;
 import org.junit.Rule;
@@ -415,7 +423,7 @@ public class CDPlayerTest {
 
 #### 一、创建配置类
 - 现在样例中的CDPlayerConfig：
-```
+```Java
 package soundsystem;
 import org.springframework.context.annotation.Configuration;
 @Configuration
@@ -427,7 +435,7 @@ public class CDPlayerConfig {
 #### 二、声明简单的bean
 注：要在JavaConfig中声明bean，我们需要编写一个方法，这个方法会创建所需类型的实例，然后给这个方法添加@Bean注解。
 - 下面的代码声明了CompactDisc bean：
-```
+```Java
 @Bean
 public CompactDisc sgtPeppers() {
   return new SgtPeppers();
@@ -436,7 +444,7 @@ public CompactDisc sgtPeppers() {
 >@Bean注解会告诉Spring这个方法将会返回一个对象，该对象要注册为Spring应用上下文中的bean。
 
 - 默认情况下，bean的ID与带有@Bean注解的方法名是一样的。如果想为其设置成一个不同的名字的话，那么可以重命名该方法，也可以通过name属性指定一个不同的名字：
-```
+```Java
 @Bean(name="lonelyHeartsClubBand")
 public CompactDisc sgtPeppers() {
   return new SgtPeppers();
@@ -445,7 +453,7 @@ public CompactDisc sgtPeppers() {
 >不管采用什么方法来为bean命名，bean声明都是非常简单的。方法体返回了一个新的SgtPeppers实例。这里是使用Java来进行描述的，因此我们可以发挥Java提供的所有功能，只要最终生成一个CompactDisc实例即可。
 
 - 在一组CD中随机选择一个CompactDisc来播放：
-```
+```Java
 @Bean
 public CompactDisc randomBeatlesCD() {
   int choice = (int) Math.floor(Math.random() * 4);
@@ -464,7 +472,7 @@ public CompactDisc randomBeatlesCD() {
 #### 三、借助JavaConfig实现注入
 - 在JavaConfig中装配bean的最简单方式就是引用创建bean的方法。例如，下面就是一种声明CDPlayer的可行方案：
 
-```
+```Java
 @Bean
 public CDPlayer cdPlayer() {
   return new CDPlayer(sgtPeppers());
@@ -475,7 +483,7 @@ public CDPlayer cdPlayer() {
 >看起来，CompactDisc是通过调用sgtPeppers()得到的，但情况并非完全如此。因为sgtPeppers()方法上添加了@Bean注解，Spring将会拦截所有对它的调用，并确保直接返回该方法所创建的bean，而不是每次都对其进行实际的调用。
 
 比如说，假设你引入了一个其他的CDPlayerbean，它和之前的那个bean完全一样：
-```
+```Java
 @Bean
 public CDPlayer cdPlayer() {
   return new CDPlayer(sgtPeppers());
@@ -489,7 +497,7 @@ public CDPlayer anotherCDPlayer() {
 假如对sgtPeppers()的调用就像其他的Java方法调用一样的话，那么每个CDPlayer实例都会有一个自己特有的SgtPeppers实例。如果我们讨论的是实际的CD播放器和CD光盘的话，这么做是有意义的。如果你有两台CD播放器，在物理上并没有办法将同一张CD光盘放到两个CD播放器中。
 但是，在软件领域中，我们完全可以将同一个SgtPeppers实例注入到任意数量的其他bean之中。默认情况下，Spring中的bean都是单例的，我们并没有必要为第二个CDPlayer bean创建完全相同的SgtPeppers实例。所以，Spring会拦截对sgtPeppers()的调用并确保返回的是Spring所创建的bean，也就是Spring本身在调用sgtPeppers()时所创建的CompactDiscbean。因此，两个CDPlayer bean会得到相同的SgtPeppers实例。
 可以看到，通过调用方法来引用bean的方式有点令人困惑。其实还有一种理解起来更为简单的方式：
-```
+```Java
 @Bean
 public CDPlayer cdPlayer(CompactDisc compactDisc) {
   return new CDPlayer(compactDisc);
@@ -499,7 +507,7 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 通过这种方式引用其他的bean通常是最佳的选择，因为它不会要求将CompactDisc声明到同一个配置类之中。在这里甚至没有要求CompactDisc必须要在JavaConfig中声明，实际上它可以通过组件扫描功能自动发现或者通过XML来进行配置。你可以将配置分散到多个配置类、XML文件以及自动扫描和装配bean之中，只要功能完整健全即可。不管CompactDisc是采用什么方式创建出来的，Spring都会将其传入到配置方法中，并用来创建CDPlayer bean。
 
 注意：在这里使用CDPlayer的构造器实现了DI功能，但是完全可以采用其他风格的DI配置。比如说，如果想通过Setter方法注入CompactDisc的话，那么代码看起来应该是这样的：
-```
+```Java
 @Bean
 public CDPlayer cdPlayer(CompactDisc compactDisc) {
   CDPlayer cdPlayer = new CDPlayer(compactDisc);
@@ -513,7 +521,7 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 #### 一、创建XML配置规范
 - 在使用XML为Spring装配bean之前，需要创建一个新的配置规范。在使用JavaConfig的时候，这意味着要创建一个带有@Configuration注解的类，而在XML配置中，这意味着要创建一个XML文件，并且要以<beans>元素为根。
 - 最为简单的Spring XML配置如下所示：
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -530,13 +538,13 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 
 #### 二、声明一个简单的`<bean>`
 `<bean>`元素类似于JavaConfig中的@Bean注解。我们可以按照如下的方式声明CompactDiscbean：
-```
+```Java
 <bean class="soundsystem.SgtPeppers" />
 ```
 >创建这个bean的类通过class属性来指定的，并且要使用全限定的类名。因为没有明确给定ID，所以这个bean将会根据全限定类名来进行命名。在本例中，bean的ID将会是“soundsystem.SgtPeppers#0”。其中，“#0”是一个计数的形式，用来区分相同类型的其他bean。如果声明了另外一个SgtPeppers，并且没有明确进行标识，那么它自动得到的ID将会是“soundsystem.SgtPeppers#1”。
 
 - 通常来讲更好的办法是借助id属性，为每个bean设置一个你自己选择的名字：
-```
+```Java
 <bean id="compactDisc" class="soundsystem.SgtPeppers" />
 ```
 >这个简单bean声明的一些特征：第一件需要注意的事情就是你不再需要直接负责创建SgtPeppers的实例，在基于JavaConfig的配置中，是需要这样做的。当Spring发现这个`<bean>`元素时，它将会调用SgtPeppers的默认构造器来创建bean。在XML配置中，bean的创建显得更加被动，不过，它并没有JavaConfig那样强大，在JavaConfig配置方式中，你可以通过任何可以想象到的方法来创建bean实例。
@@ -549,9 +557,11 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 	2. 使用Spring 3.0所引入的c-命名空间
 
 - `<constructor-arg>`元素比使用c-命名空间会更加冗长，从而导致XML更加难以读懂。另外，有些事情`<constructor-arg>`可以做到，但是使用c-命名空间却无法实现。
+
+
 ##### 构造器注入bean引用
 - 现在已经声明了SgtPeppers bean，并且SgtPeppers类实现了CompactDisc接口，所以实际上我们已经有了一个可以注入到CDPlayerbean中的bean。我们所需要做的就是在XML中声明CDPlayer并通过ID引用SgtPeppers：
-```
+```Java
 <bean id="cdPlayer" class="soundsystem.CDPlayer">
   <constructor-arg ref="compactDisc" />
 </bean>
@@ -560,7 +570,7 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 
 - c-命名空间是在Spring 3.0中引入的，它是在XML中更为简洁地描述构造器参数的方式。要使用它的话，必须要在XML的顶部声明其模式，如下所示：
 
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:c="http://www.springframework.org/schema/c"
@@ -572,7 +582,7 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 </beans>
 ```
 - 在c-命名空间和模式声明之后，就可以使用它来声明构造器参数了，如下所示：
-```
+```Java
 <bean id="cdPlayer" class="soundsystem.CDPlayer"
       c:cd-ref="compactDisc" />
 ```
@@ -583,14 +593,14 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 >它直接引用了构造器参数的名称。引用参数的名称看起来有些怪异，因为这需要在编译代码的时候，将调试标志（debug symbol）保存在类代码中。如果你优化构建过程，将调试标志移除掉，那么这种方式可能就无法正常执行了。
 
 - 替代的方案是使用参数在整个参数列表中的位置信息：
-```
+```Java
 <bean id="cdPlayer" class="soundsystem.CDPlayer"
       c:_0-ref="compactDisc" />
 ```
 >将参数的名称替换成了“0”，也就是参数的索引。因为在XML中不允许数字作为属性的第一个字符，因此必须要添加一个下画线作为前缀。使用索引来识别构造器参数感觉比使用名字更好一些。即便在构建的时候移除掉了调试标志，参数却会依然保持相同的顺序。如果有多个构造器参数的话，这当然是很有用处的。
 
 - 在这里因为只有一个构造器参数，所以我们还有另外一个方案——根本不用去标示参数：
-```
+```Java
 <bean id="cdPlayer" class="soundsystem.CDPlayer"
       c:_-ref="compactDisc" />
 ```
@@ -598,7 +608,7 @@ public CDPlayer cdPlayer(CompactDisc compactDisc) {
 ##### 将字面量注入到构造器中
 - 迄今为止，我们所做的DI通常指的都是类型的装配——也就是将对象的引用装配到依赖于它们的其他对象之中——而有时候，我们需要做的只是用一个字面量值来配置对象。为了阐述这一点，假设要创建CompactDisc的一个新实现，如下所示：
 
-```
+```Java
 package soundsystem;
 
 public class BlankDisc implements CompactDisc {
@@ -617,7 +627,7 @@ public class BlankDisc implements CompactDisc {
 }
 ```
 - 现在可以将已有的SgtPeppers替换为这个类：
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc">
   <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
@@ -627,7 +637,7 @@ public class BlankDisc implements CompactDisc {
 >再次使用`<constructor-arg>`元素进行构造器参数的注入。但是这一次没有使用“ref”属性来引用其他的bean，而是使用了value属性，通过该属性表明给定的值要以字面量的形式注入到构造器之中。
 
 - 如果要使用c-命名空间的话，第一种方案是引用构造器参数的名字：
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc"
       c:_title="Sgt. Pepper's Lonely Hearts Club Band"
@@ -636,7 +646,7 @@ public class BlankDisc implements CompactDisc {
 >装配字面量与装配引用的区别在于属性名中去掉了“-ref”后缀。
 
 - 与之类似，也可以通过参数索引装配相同的字面量值，如下所示：
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc"
       c:_0="Sgt. Pepper's Lonely Hearts Club Band"
@@ -644,7 +654,7 @@ public class BlankDisc implements CompactDisc {
 ```
 
 - XML不允许某个元素的多个属性具有相同的名字。因此，如果有两个或更多的构造器参数的话，不能简单地使用下画线进行标示。但是如果只有一个构造器参数的话就可以这样做了。假设BlankDisc只有一个构造器参数，这个参数接受唱片的名称。在这种情况下可以在Spring中这样声明它：
-```
+```Java
 <bean id="compactDisc" class="soundsystem.BlankDisc"
       c:_="Sgt. Pepper's Lonely Hearts Club Band" />
 ```
@@ -653,7 +663,7 @@ public class BlankDisc implements CompactDisc {
 ##### 装配集合
 - 如果使用CompactDisc为真正的CD建模，那么它也应该有磁道列表（大多数的CD都会包含十多个磁道，每个磁道上包含一首歌）的概念。请考虑下面这个新的BlankDisc：
 
-```
+```Java
 package soundsystem.collections;
 import java.util.List;
 import soundsystem.CompactDisc;
@@ -678,7 +688,7 @@ public class BlankDisc implements CompactDisc {
 }
 ```
 - 这个变更会对Spring如何配置bean产生影响，在声明bean的时候，必须要提供一个磁道列表。最简单的办法是将列表设置为null。因为它是一个构造器参数，所以必须要声明它，不过可以采用如下的方式传递null给它：
-```
+```Java
 <bean id="compactDisc" class="soundsystem.BlankDisc">
   <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
   <constructor-arg value="The Beatles" />
@@ -688,7 +698,7 @@ public class BlankDisc implements CompactDisc {
 ><null/>元素所做的事情与你的期望是一样的：将null传递给构造器。这并不是解决问题的好办法，但在注入期它能正常执行。当调用play()方法时，会遇到NullPointerException异常，因此这并不是理想的方案。
 
 - 更好的解决方法是提供一个磁道名称的列表。要达到这一点，我们可以有多个可选方案。首先，可以使用<list>元素将其声明为一个列表：
-```
+```Java
 <bean id="compactDisc" class="soundsystem.BlankDisc">
   <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
   <constructor-arg value="The Beatles" />
@@ -707,11 +717,11 @@ public class BlankDisc implements CompactDisc {
 >其中，`<list>`元素是`<constructor-arg>`的子元素，这表明一个包含值的列表将会传递到构造器中。其中，`<value>`元素用来指定列表中的每个元素。
 
 - 与之类似，我们也可以使用`<ref>`元素替代`<value>`，实现bean引用列表的装配。例如，假设你有一个Discography类，它的构造器如下所示：
-```
+```Java
 public Discography(String artist, List<CompactDisc> cds) { ... }
 ```
 那么，可以采取如下的方式配置Discography bean：
-```
+```Java
 <bean id="beatlesDiscography"
       class="soundsystem.Discography">
   <constructor-arg value="The Beatles" />
@@ -727,7 +737,7 @@ public Discography(String artist, List<CompactDisc> cds) { ... }
 </bean>
 ```
 当构造器参数的类型是java.util.List时，使用`<list>`元素是合情合理的。尽管如此，我们也可以按照同样的方式使用`<set>`元素：
-```
+```Java
 <bean id="compactDisc" class="soundsystem.BlankDisc">
   <constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band" />
   <constructor-arg value="The Beatles" />
@@ -751,7 +761,7 @@ public Discography(String artist, List<CompactDisc> cds) { ... }
 - 到目前为止，CDPlayer和BlankDisc类完全是通过构造器注入的，没有使用属性的Setter方法。
 - 关于如何使用Spring XML实现属性注入。假设属性注入的CDPlayer如下所示：
 
-```
+```Java
 package soundsystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import soundsystem.CompactDisc;
@@ -772,13 +782,13 @@ public class CDPlayer implements MediaPlayer {
 >作为一个通用的规则，倾向于对强依赖使用构造器注入，而对可选性的依赖使用属性注入。按照这个规则，可以说对于BlankDisc来讲，唱片名称、艺术家以及磁道列表是强依赖，因此构造器注入是正确的方案。
 
 - 现在，CDPlayer没有任何的构造器（除了隐含的默认构造器），它也没有任何的强依赖。因此，可以采用如下的方式将其声明为Spring bean：
-```
+```Java
 <bean id="cdPlayer"
       class="soundsystem.CDPlayer" />
 ```
 
 - Spring在创建bean的时候不会有任何的问题，但是CDPlayerTest会因为出现NullPointerException而导致测试失败，因为我们并没有注入CDPlayer的compactDisc属性。不过，按照如下的方式修改XML，就能解决该问题：
-```
+```Java
 <bean id="cdPlayer"
       class="soundsystem.CDPlayer">
   <property name="compactDisc" ref="compactDisc" />
@@ -787,7 +797,7 @@ public class CDPlayer implements MediaPlayer {
 >`<property>`元素为属性的Setter方法所提供的功能与`<constructor-arg>`元素为构造器所提供的功能是一样的。在本例中，它引用了ID为compactDisc的bean（通过ref属性），并将其注入到compactDisc属性中（通过setCompactDisc()方法）。如果现在运行测试的话，应该就能通过了。
 
 - Spring为<constructor-arg>元素提供了c-命名空间作为替代方案，与之类似，Spring提供了更加简洁的p-命名空间，作为<property>元素的替代方案。为了启用p-命名空间，必须要在XML文件中与其他的命名空间一起对其进行声明：
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:p="http://www.springframework.org/schema/p"
@@ -798,7 +808,7 @@ public class CDPlayer implements MediaPlayer {
 </bean>
 ```
 - 可以使用p-命名空间，按照以下的方式装配compactDisc属性：
-```
+```Java
 <bean id="cdPlayer"
       class="soundsystem.CDPlayer"
       p:compactDisc-ref="compactDisc" />
@@ -811,7 +821,7 @@ public class CDPlayer implements MediaPlayer {
 ##### 将字面量注入到属性中
 - 属性也可以注入字面量，这与构造器参数非常类似。示例：BlankDisc这次完全通过属性注入进行配置，而不是构造器注入。新的BlankDisc类如下所示：
 
-```
+```Java
 package soundsystem;
 import java.util.List;
 import soundsystem.CompactDisc;
@@ -845,13 +855,13 @@ public class BlankDisc implements CompactDisc {
 ```
 
 - 现在，它不再强制要求我们装配任何的属性。你可以按照如下的方式创建一个BlankDiscbean，它的所有属性全都是空的：
-```
+```Java
 <bean id="reallyBlankDisc"
       class="soundsystem.BlankDisc" />
 ```
 - 如果在装配bean的时候不设置这些属性，那么在运行期CD播放器将不能正常播放内容。play()方法可能会遇到的输出内容是“Playing null by null”，随之会抛出NullPointerException异常，这是因为我们没有指定任何的磁道。所以，我们需要装配这些属性，可以借助`<property>`元素的value属性实现该功能：
 
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc">
   <property name="title"
@@ -872,7 +882,7 @@ public class BlankDisc implements CompactDisc {
 >在这里，除了使用<property>元素的value属性来设置title和artist，我们还使用了内嵌的<list>元素来设置tracks属性，这与之前通过<constructor-arg>装配tracks是完全一样的。
 
 - 另外一种可选方案就是使用p-命名空间的属性来完成该功能：
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc"
       p:title="Sgt. Pepper's Lonely Hearts Club Band"
@@ -893,7 +903,7 @@ public class BlankDisc implements CompactDisc {
 
 - 需要注意的是，我们不能使用p-命名空间来装配集合，没有便利的方式使用p-命名空间来指定一个值（或bean引用）的列表。但是，我们可以使用Spring util-命名空间中的一些功能来简化BlankDiscbean。首先，需要在XML中声明util-命名空间及其模式：
 
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -907,7 +917,7 @@ public class BlankDisc implements CompactDisc {
 </beans>
 ```
 util-命名空间所提供的功能之一就是`<util:list>`元素，它会创建一个列表的bean。借助`<util:list>`，我们可以将磁道列表转移到BlankDisc bean之外，并将其声明到单独的bean之中，如下所示：
-```
+```Java
 <util:list id="trackList">
   <value>Sgt. Pepper's Lonely Hearts Club Band</value>
   <value>With a Little Help from My Friends</value>
@@ -919,7 +929,7 @@ util-命名空间所提供的功能之一就是`<util:list>`元素，它会创�
 ```
 
 - 现在，能够像使用其他的bean那样，将磁道列表bean注入到BlankDisc bean的tracks属性中：
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc"
       p:title="Sgt. Pepper's Lonely Hearts Club Band"
@@ -943,7 +953,7 @@ util:set | 创建一个java.util.Set类型的bean，其中包含值或引用
 #### 在JavaConfig中引用XML配置
 - 临时假设CDPlayerConfig已经变得有些笨重，我们想要将其进行拆分。尽管，它目前只定义了两个bean。我们所能实现的一种方案就是将BlankDisc从CDPlayerConfig拆分出来，定义到它自己的CDConfig类中，如下所示：
 
-```
+```Java
 package soundsystem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -958,7 +968,7 @@ public class CDConfig {
 ```
 - compactDisc()方法已经从CDPlayerConfig中移除掉了，需要有一种方式将这两个类组合在一起。一种方法就是在CDPlayerConfig中使用@Import注解导入CDConfig：
 
-```
+```Java
 package soundsystem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -976,7 +986,7 @@ public class CDPlayerConfig {
 }
 ```
 或者采用一个更好的办法，也就是不在CDPlayerConfig中使用@Import，而是创建一个更高级别的SoundSystemConfig，在这个类中使用@Import将两个配置类组合在一起：
-```
+```Java
 package soundsystem;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -990,7 +1000,7 @@ public class SoundSystemConfig {
 
 - 现在，假设希望通过XML来配置BlankDisc，如下所示：
 
-```
+```Java
 <bean id="compactDisc"
       class="soundsystem.BlankDisc"
       c:_0="Sgt. Pepper's Lonely Hearts Club Band"
@@ -1009,7 +1019,7 @@ public class SoundSystemConfig {
 ```
 - 现在BlankDisc配置在了XML之中，该如何让Spring同时加载它和其他基于Java的配置呢？答案是@ImportResource注解，假设BlankDisc定义在名为cd-config.xml的文件中，该文件位于根类路径下，那么可以修改SoundSystemConfig，让它使用@ImportResource注解，如下所示：
 
-```
+```Java
 package soundsystem;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -1026,7 +1036,7 @@ public class SoundSystemConfig {
 - 假设正在使用Spring基于XML的配置并且XML逐渐变得无法控制，我们决定将XML配置文件进行拆分。在JavaConfig配置中，我们已经展现了如何使用@Import和@ImportResource来拆分JavaConfig类。在XML中，我们可以使用import元素来拆分XML配置。
 - 比如，假设希望将BlankDisc bean拆分到自己的配置文件中，该文件名为cd-config.xml，这与我们之前使用@ImportResource是一样的。我们可以在XML配置文件中使用<import>元素来引用该文件：
 
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1042,7 +1052,7 @@ public class SoundSystemConfig {
 ```
 - 现在，我们假设不再将BlankDisc配置在XML之中，而是将其配置在JavaConfig中，CDPlayer则继续配置在XML中。基于XML的配置该如何引用一个JavaConfig类呢？`<import>`元素只能导入其他的XML配置文件，并没有XML元素能够导入JavaConfig类。但是，有一个你已经熟知的元素能够用来将Java配置导入到XML配置中：`<bean>`元素。为了将JavaConfig类导入到XML配置中，我们可以这样声明bean：
 
-```
+```Java
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
