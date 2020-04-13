@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200412 更新/55）
+title: LeetCode 中等题汇总（20200413 更新/56）
 author: zansy
 tags: []
 categories:
@@ -2956,6 +2956,65 @@ class Solution {
             for (int i = down; i >= up; i--)result.add(matrix[i][left]);
             if (left++ >= right)break;
         }
+        return result;
+    }
+}
+```
+
+#### 59 Spiral Matrix II
+[Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+
+给定一个正整数 n，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
+
+示例:
+```
+输入: 3
+输出:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+```
+
+2020.04.13
+
+-------
+边界值设置这个办法实在是太好用了……
+
+```Java
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] result = new int[n][n];
+        int left = 0, right = n-1, up = 0, down = n-1;
+        int number = 1;
+
+        while (true){
+            for (int i = left; i <= right; i++){
+                result[up][i] = number;
+                number++;
+            }
+            if (up++ > down) break;
+
+            for (int i = up; i <= down; i++){
+                result[i][right] = number;
+                number++;
+            }
+            if (right-- < left) break;
+            
+            for (int i = right; i >= left; i--){
+                result[down][i] = number;
+                number++;
+            }
+            if (down-- < up) break;
+            
+            for (int i = down; i >= up; i--){
+                result[i][left] = number;
+                number++;
+            }
+            if (left++ > right) break;
+        }
+
         return result;
     }
 }
