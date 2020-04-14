@@ -3019,3 +3019,68 @@ class Solution {
     }
 }
 ```
+
+#### 73 Set Matrix Zeroes
+[Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
+
+给定一个 m x n 的矩阵，如果一个元素为 0，则将其所在行和列的所有元素都设为 0。请使用原地算法。
+
+示例 1:
+```
+输入: 
+[
+  [1,1,1],
+  [1,0,1],
+  [1,1,1]
+]
+输出: 
+[
+  [1,0,1],
+  [0,0,0],
+  [1,0,1]
+]
+```
+示例 2:
+```
+输入: 
+[
+  [0,1,2,0],
+  [3,4,5,2],
+  [1,3,1,5]
+]
+输出: 
+[
+  [0,0,0,0],
+  [0,4,5,0],
+  [0,3,1,0]
+]
+```
+2020.03.15
+
+-----
+第一反应用hashSet！一次AC啦。用HashSet存下0的横竖坐标轴，最后再遍历一次，把记录下的xy轴上的行列都置为0。
+
+但是这个办法要求额外空间，还有另一种办法可以原地置换，就是遇到有0的，把对应的行列第一个值分别记为0，这样在第二次遍历数组的时候，遇到行列第一个值是0的 就可以把整行或者整列清为0。
+```Java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        HashSet<Integer> x = new HashSet<Integer>();
+        HashSet<Integer> y = new HashSet<Integer>();
+
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[0].length; j++){
+                if (matrix[i][j] == 0){
+                    x.add(i);y.add(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[0].length; j++){
+                if (x.contains(i) || y.contains(j))
+                    matrix[i][j] = 0;
+            }
+        }
+    }
+}
+```
