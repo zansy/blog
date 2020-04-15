@@ -1,4 +1,4 @@
-title: LeetCode 难题汇总（20200406 更新/14）
+title: LeetCode 难题汇总（20200416 更新/15）
 author: zansy
 tags: []
 categories:
@@ -10,7 +10,7 @@ Hard学习题，分类/题意/思路/代码。
 <!--more-->
 ## 数组 Array
 ### 基础
-#### 41
+#### 41 First Missing Positive
 [First Missing Positive](https://leetcode.com/problems/first-missing-positive/)
 
 给出一组未排序的数，需要找到缺失的最小正整数，样例如下：
@@ -61,7 +61,7 @@ class Solution {
 }
 ```
 
-#### 45
+#### 45 Jump Game II
 [Jump Game II](https://leetcode.com/problems/jump-game-ii/)
 给出一组无序的非负整数，每个数字是指在其索引的位置上能往右走的最大步数，问在第一个位置上，最少走几步能走到最末位。（假设一定能走到最末位
 关于样例{2,3,1,1,4}的遍历情况如图
@@ -105,7 +105,7 @@ class Solution {
 }
 ```
 
-#### 123
+#### 123 Best Time to Buy and Sell Stock III
 [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/submissions/)
 给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以最多进行两次交易，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。
 
@@ -130,7 +130,7 @@ class Solution {
 }
 ```
 
-#### 188
+#### 188 Best Time to Buy and Sell Stock IV
 [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
 
 当k超过prices的长度（特别地，超过长度的一半）时，问题就转换为了任意交易次数，对应问题#122。
@@ -171,7 +171,7 @@ class Solution {
     }
 }
 ```
-#### 42
+#### 42 Trapping Rain Water
 [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
 
 给出一组无序的非负整数代表山形图，问雨后能贮水多少
@@ -252,7 +252,7 @@ class Solution {
 }
 ```
 
-#### 128
+#### 128 Longest Consecutive Sequence
 [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
 给出一组无序数，要求返回这组数中存在的连续数组的最长长度。
 如{1,2,0,1}，存在连续数组012，返回3
@@ -354,7 +354,7 @@ class Solution {
     }
 }
 ```
-#### 164
+#### 164 Maximum Gap
 [Maximum Gap](https://leetcode.com/problems/maximum-gap/)
 
 给出一组无序数，要求返回这组数排序后的最长的相邻间隔长度。
@@ -415,7 +415,7 @@ class Solution {
 }
 ```
 
-#### 135
+#### 135 Candy
 [Candy](https://leetcode.com/problems/candy/)
 
 给出一组无序数，视为一群要糖吃的小朋友的等级，要求等级较高的小朋友要比等级较低的身边小朋友有更多的糖，另外每个小朋友都至少要有一颗糖。
@@ -455,7 +455,7 @@ class Solution {
 }
 ```
 
-#### 330
+#### 330 Patching Array
 [Patching Array](https://leetcode.com/problems/patching-array/)
 
 给出一组有序正整数nums和一个数n，要求在数组中插入几个数后，数组中的不同数通过相加能够获得1-n中的任意一个数字。问最少插入多少个数才行。
@@ -495,7 +495,7 @@ class Solution {
 
 ## 字符串 String
 ### 基础
-#### 87
+#### 87 Scramble String
 [Scramble String](https://leetcode.com/problems/scramble-string/)
 
 给定一个字符串 s1，我们可以把它递归地分割成两个非空子字符串，从而将其表示为二叉树。
@@ -546,7 +546,7 @@ class Solution {
     }
 }
 ```
-#### 316
+#### 316 Remove Duplicate Letters
 [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters/)
 
 给定一个仅包含小写字母的字符串，去除字符串中重复的字母，使得每个字母只出现一次。需保证返回结果的字典序最小（要求不能打乱其他字符的相对位置）。
@@ -589,7 +589,7 @@ class Solution {
 }
 ```
 
-#### 273
+#### 273 Integer to English Words
 [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
 将非负整数转换为其对应的英文表示。可以保证给定输入小于 2<sup>31</sup> - 1 。
 ```
@@ -629,7 +629,7 @@ private final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five"
 ```
 ## 树 Tree
 ### 基础
-#### 145
+#### 145 Binary Tree Postorder Traversal
 [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
 
 给定一个二叉树，返回它的 后序 遍历。
@@ -713,7 +713,7 @@ class Solution {
 ```
 ## 二分查找 Binary Search
 ### 基础
-#### 154
+#### 154 Find Minimum in Rotated Sorted Array II
 [Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
 
 假设按照升序排序的数组在预先未知的某个点上进行了旋转。
@@ -754,6 +754,92 @@ class Solution {
             else right = right - 1;
         }
         return nums[left];
+    }
+}
+```
+
+## 矩阵 Matrix
+### 基础
+#### 329 Longest Increasing Path in a Matrix
+[Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
+
+给定一个整数矩阵，找出最长递增路径的长度。
+
+对于每个单元格，你可以往上，下，左，右四个方向移动。 你不能在对角线方向上移动或移动到边界外（即不允许环绕）。
+
+示例 1:
+```
+输入: nums = 
+[
+  [9,9,4],
+  [6,6,8],
+  [2,1,1]
+] 
+输出: 4 
+解释: 最长递增路径为 [1, 2, 6, 9]。
+```
+示例 2:
+```
+输入: nums = 
+[
+  [3,4,5],
+  [3,2,6],
+  [2,2,1]
+] 
+输出: 4 
+解释: 最长递增路径是 [3, 4, 5, 6]。注意不允许在对角线方向上移动。
+```
+
+2020.04.16
+
+-----
+这道题可以转换成有向图然后用拓扑排序做。通过计算每个顶点的出度，进行拓扑排序找出最长有向路的层次，就是最长递增路径的长度。
+```Java
+class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        int[][] direction = {{0,1},{1,0},{0,-1},{-1,0}};
+        int row = matrix.length;
+        if (row == 0) return 0;
+        int col = matrix[0].length;
+
+        int[][] grid = new int[row + 2][col + 2];
+        for (int i = 0; i < row; i++){
+            System.arraycopy(matrix[i],0, grid[i+1], 1, col);
+        }
+
+        //计算出入度
+        int[][] outdegree = new int[row+2][col+2];
+        for (int i = 1; i <= row; i++){
+            for (int j = 1; j <= col; j++){
+                for (int[] d : direction){
+                    if (grid[i][j] < grid[i + d[0]][j + d[1]]) outdegree[i][j]++;
+                }
+            }
+        }
+
+        row += 2; col += 2;
+        List<int[]> leaves = new ArrayList<int[]>();
+        for (int i = 1; i < row - 1; i++){
+            for (int j = 1; j < col - 1; j++){
+                if (outdegree[i][j] == 0) leaves.add(new int[]{i,j});
+            }
+        }
+
+        int height = 0;
+        while (!leaves.isEmpty()){
+            height++;
+            List<int[]> newLeaves = new ArrayList<int[]>();
+            for (int[] node : leaves){
+                for (int[] dir : direction){
+                    int x = node[0] + dir[0], y = node[1] + dir[1];
+                    if (grid[node[0]][node[1]] > grid[x][y]){
+                        if (--outdegree[x][y] == 0) newLeaves.add(new int[]{x,y});
+                    }
+                }
+            }
+            leaves = newLeaves;
+        }
+        return height;
     }
 }
 ```

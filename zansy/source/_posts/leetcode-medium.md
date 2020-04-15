@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200413 更新/56）
+title: LeetCode 中等题汇总（20200414 更新/57）
 author: zansy
 tags: []
 categories:
@@ -3055,7 +3055,7 @@ class Solution {
   [0,3,1,0]
 ]
 ```
-2020.03.15
+2020.04.14
 
 -----
 第一反应用hashSet！一次AC啦。用HashSet存下0的横竖坐标轴，最后再遍历一次，把记录下的xy轴上的行列都置为0。
