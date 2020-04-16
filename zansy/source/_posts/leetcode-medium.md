@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200414 更新/57）
+title: LeetCode 中等题汇总（20200416 更新/58）
 author: zansy
 tags: []
 categories:
@@ -3084,3 +3084,50 @@ class Solution {
     }
 }
 ```
+
+#### 378 Kth Smallest Element in a Sorted Matrix
+[Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+
+给定一个 n x n 矩阵，其中每行和每列元素均按升序排序，找到矩阵中第k小的元素。
+请注意，它是排序后的第 k 小元素，而不是第 k 个不同的元素。
+
+示例:
+```
+matrix = [
+   [ 1,  5,  9],
+   [10, 11, 13],
+   [12, 13, 15]
+],
+k = 8,
+
+返回 13。
+```
+
+2020.04.16
+
+-----
+- 解一 优先队列
+用优先队列做，正常优先队列是小顶堆，注意要重写比较方法变为大顶堆。如果队列长度大于k，就把最大的poll出去。最终返回堆顶。
+
+```Java
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+        
+        for (int i = 0; i < matrix.length; i++){
+            for (int j = 0; j < matrix[0].length; j++){
+                queue.add(matrix[i][j]);
+                if (queue.size() > k) queue.poll();
+            }
+        }
+        return queue.peek();
+    }
+}
+```
+
+- 解二 二分查找
+
