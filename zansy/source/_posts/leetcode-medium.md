@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200416 更新/58）
+title: LeetCode 中等题汇总（20200417 更新/59）
 author: zansy
 tags: []
 categories:
@@ -3131,3 +3131,74 @@ class Solution {
 
 - 解二 二分查找
 
+这题可以通过二分查找做，化作在有序数列中找出一个分界点，使得分界点的左边正好有k个数。当low >= high时返回low，就是第k小的元素。
+两个端点：low是数组最左上角的数字，high是数组最右下角的数字。从数组的每一行开始判断，找出整个数组中少于两极端中端数mid的计数有多少。再根据比较k继续二分查找。
+```Java
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        int low = matrix[0][0], high = matrix[matrix.length - 1][matrix[0].length - 1];
+        while (low < high){
+            int mid = low + (high - low) / 2;
+            int count = 0, j = matrix[0].length - 1;
+            for (int i = 0; i < matrix.length; i++){
+                while (j >= 0 && matrix[i][j] > mid) j--;
+                count += (j + 1);
+            }
+            if (count < k) low = mid + 1;
+            else high = mid;
+        }
+        return low;
+    }
+}
+```
+
+#### 74 Search a 2D Matrix
+[Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
+
+编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+
+每行中的整数从左到右按升序排列。
+每行的第一个整数大于前一行的最后一个整数。
+示例 1:
+```
+输入:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 3
+输出: true
+```
+示例 2:
+```
+输入:
+matrix = [
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+target = 13
+输出: false
+```
+
+2020.04.17
+
+-----
+数组的每一行首尾衔接上可以看作有序数列，那么问题可以简化为二分查找在有序数列中找到目标值。low是数组左上角数字的序号，high是数组右下角数字的序号。
+```Java
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (matrix.length == 0) return false;
+        int low = 0, high = matrix[0].length * matrix.length - 1;//0 11
+        while (low <= high){
+            int mid = low + (high - low) / 2;//5
+            int x = mid / matrix[0].length, y = mid % matrix[0].length;
+            if (matrix[x][y] == target) return true;
+            else if (matrix[x][y] < target) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+}
+```
