@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200418 更新/60）
+title: LeetCode 中等题汇总（20200422 更新/61）
 author: zansy
 tags: []
 categories:
@@ -3271,6 +3271,196 @@ class Solution {
             }
         }
         return false;
+    }
+}
+```
+
+## DFS & BFS
+### 基础
+#### 200 Number of Islands
+[Number of Islands](https://leetcode.com/problems/number-of-islands/)
+
+给定一个由 '1'（陆地）和 '0'（水）组成的的二维网格，计算岛屿的数量。一个岛被水包围，并且它是通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设网格的四个边均被水包围。
+
+示例 1:
+```
+输入:
+11110
+11010
+11000
+00000
+
+输出: 1
+```
+示例 2:
+```
+输入:
+11000
+11000
+00100
+00011
+
+输出: 3
+```
+2020.04.19
+
+----
+- 解一 DFS
+
+DFS的解法就是遍历数组，遇到每个1就先转为0再深度搜索，直到把一整块岛屿都转为0。接着进入下一个岛屿。
+```Java
+class Solution {
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0)return 0;
+        int rows = grid.length, cols = grid[0].length;
+
+        int num_islands = 0;
+
+        for (int r = 0; r < rows; r++){
+            for (int c = 0; c < cols; c++){
+                if (grid[r][c] == '1'){
+                    num_islands++;
+                    dfs(grid, r, c);
+                }
+            }
+        }
+        return num_islands;
+    }
+    void dfs(char[][] grid, int r, int c){
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        if (r < 0 || c < 0 || r >= rows || c >= cols || grid[r][c] == '0') return;
+
+        grid[r][c] = '0';
+        dfs(grid, r - 1, c);
+        dfs(grid, r + 1, c);
+        dfs(grid, r, c - 1);
+        dfs(grid, r, c + 1);
+    }
+}
+```
+- 解二 BFS
+和DFS的主要区别是会设立一个队列把所有值为1的位置记录下，然后循环排出这个队列中的值。
+```Java
+class Solution {
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int rows = grid.length, cols = grid[0].length;
+        int num_islands = 0;
+
+        for (int r = 0; r < rows; r++){
+            for (int c = 0; c < cols; c++){
+                if (grid[r][c] == '1'){
+                    num_islands++;
+                    grid[r][c] = '0';
+                    Queue<Integer> neighbors = new LinkedList<Integer>();
+                    neighbors.add(r * cols + c);
+                    while (!neighbors.isEmpty()){
+                        int id = neighbors.remove();
+                        int row = id / cols;
+                        int col = id % cols;
+
+                        if (row - 1 >= 0 && grid[row - 1][col] == '1'){
+                            neighbors.add((row - 1)* cols + col);
+                            grid[row - 1][col] = '0';
+                        }
+                        if (row + 1 < rows && grid[row + 1][col] == '1'){
+                            neighbors.add((row + 1) * cols + col);
+                            grid[row + 1][col] = '0';
+                        }
+                        if (col - 1 >= 0 && grid[row][col - 1] == '1'){
+                            neighbors.add(row * cols + col - 1);
+                            grid[row][col - 1] = '0';
+                        }
+                        if (col + 1 < cols && grid[row][col + 1] == '1'){
+                            neighbors.add(row * cols + col + 1);
+                            grid[row][col + 1] = '0';
+                        }
+                    }
+                }
+            }
+        }
+        return num_islands;
+    }
+}
+```
+
+- 解三 并查集
+
+```Java
+class Solution {
+    public int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int rows = grid.length, cols = grid[0].length;
+        UnionFind uf = new UnionFind(grid);
+
+        for (int r = 0; r < rows; r++){
+            for (int c = 0; c < cols; c++){
+                if (grid[r][c] == '1'){
+                    grid[r][c] = '0';
+                    if (r - 1 >= 0 && grid[r - 1][c] == '1'){
+                        uf.union(r * cols + c, (r - 1) * cols + c);
+                    }
+                    if (r + 1 < rows && grid[r + 1][c] == '1'){
+                        uf.union(r * cols + c, (r + 1) * cols + c);
+                    }
+                    if (c - 1 >= 0 && grid[r][c - 1] == '1'){
+                        uf.union(r * cols + c, r * cols + c - 1);
+                    }
+                    if (c + 1 < cols && grid[r][c + 1] == '1'){
+                        uf.union(r * cols + c, r * cols + c + 1);
+                    }
+                }
+            }
+        }
+        return uf.getCount();
+    }
+    
+    class UnionFind{
+        int count;
+        int[] parent;
+        int[] rank;
+
+        public UnionFind(char[][] grid){
+            count = 0;
+            int rows = grid.length, cols = grid[0].length;
+            parent = new int[cols * rows];
+            rank = new int[cols * rows];
+            for (int i = 0; i < rows; i++){
+                for (int j = 0; j < cols; j++){
+                    if (grid[i][j] == '1'){
+                        parent[i * cols + j] = i * cols + j;
+                        count++;
+                    }
+                    rank[i * cols + j] = 0;
+                }
+            }
+        }
+
+        public int find(int i){
+            if (parent[i] != i) parent[i] = find(parent[i]);
+            return parent[i];
+        }
+
+        public void union(int x, int y){
+            int rootx = find(x);
+            int rooty = find(y);
+            if (rootx != rooty){
+                if (rank[rootx] > rank[rooty]){
+                    parent[rooty] = rootx;
+                }else if (rank[rootx] < rank[rooty]){
+                    parent[rootx] = rooty;
+                }else {
+                    parent[rooty] = rootx;
+                    rank[rootx] += 1;
+                }
+                count--;
+            }
+        }
+        public int getCount(){
+            return count;
+        }
     }
 }
 ```
