@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200422 更新/61）
+title: LeetCode 中等题汇总（20200614 更新/62）
 author: zansy
 tags: []
 categories:
@@ -3464,3 +3464,60 @@ class Solution {
     }
 }
 ```
+
+#### 130 Surrounded Regions
+[Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+给定一个二维的矩阵，包含 'X' 和 'O'（字母 O）。
+
+找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+
+示例:
+```
+X X X X
+X O O X
+X X O X
+X O X X
+```
+运行你的函数后，矩阵变为：
+```
+X X X X
+X X X X
+X X X X
+X O X X
+```
+2020.06.14
+
+-------
+```Java
+class Solution {
+    public void solve(char[][] board) {
+        if (board.length < 3 || board[0].length < 3) return;
+        int rows = board.length, cols = board[0].length;
+        for (int i = 0; i < rows; i++){
+            if (board[i][0] == 'O') DFS(board, i, 0);
+            if (board[i][cols - 1] == 'O') DFS(board, i, cols - 1);
+        }
+        for (int i = 1; i < cols - 1; i++){
+            if (board[0][i] == 'O') DFS(board, 0, i);
+            if (board[rows - 1][i] == 'O') DFS(board, rows - 1, i);
+        }
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                if (board[i][j] == 'O') board[i][j] = 'X';
+                if (board[i][j] == '*') board[i][j] = 'O';
+            }
+        }
+    }
+    private void DFS(char[][] board, int rows, int cols){
+        if (rows < 0 || cols < 0 || rows > board.length - 1 || cols > board[0].length - 1 || board[rows][cols] != 'O')
+            return;
+        board[rows][cols] = '*';
+        DFS(board, rows + 1, cols);
+        DFS(board, rows - 1, cols);
+        DFS(board, rows, cols + 1);
+        DFS(board, rows, cols - 1);
+    }
+}
+```
+如果矩阵是2*2或以下的直接可以返回结果了，因为不存在被包围的元素。
+从边角找起，找到是`O`的就应用DFS继续探索，将所有没有被包围的`O`变为`*`暂定值。最后遍历这个矩阵，发现还是`O`的就改为`X`，发现是`*`的就改回为`O`。
