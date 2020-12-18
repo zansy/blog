@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20200614 更新/62）
+title: LeetCode 中等题汇总（20201218 更新/63）
 author: zansy
 tags: []
 categories:
@@ -3521,3 +3521,89 @@ class Solution {
 ```
 如果矩阵是2*2或以下的直接可以返回结果了，因为不存在被包围的元素。
 从边角找起，找到是`O`的就应用DFS继续探索，将所有没有被包围的`O`变为`*`暂定值。最后遍历这个矩阵，发现还是`O`的就改为`X`，发现是`*`的就改回为`O`。
+
+#### 127 Word Ladder
+[Word Ladder](https://leetcode.com/problems/word-ladder/)
+
+给定两个单词（beginWord 和 endWord）和一个字典，找到从 beginWord 到 endWord 的最短转换序列的长度。转换需遵循如下规则：
+
+1. 每次转换只能改变一个字母。
+2. 转换过程中的中间单词必须是字典中的单词。
+
+说明:
+
+- 如果不存在这样的转换序列，返回 0。
+- 所有单词具有相同的长度。
+- 所有单词只由小写字母组成。
+- 字典中不存在重复的单词。
+- 你可以假设 beginWord 和 endWord 是非空的，且二者不相同。
+
+示例 1:
+
+```
+输入:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+
+输出: 5
+
+解释: 一个最短转换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog",
+     返回它的长度 5。
+```
+示例 2:
+```
+输入:
+beginWord = "hit"
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log"]
+
+输出: 0
+
+解释: endWord "cog" 不在字典中，所以无法进行转换。
+```
+2020.12.18
+
+-------
+这题可用双向bfs想，分别从起始单词和目标单词每次变动一位字母，同时要求变动字母后的单词都在给出的wordlist中。
+在示例1中，start是hit，end是cog，hit只变动一个字母形成的单词且在wordlist中的有hot。
+
+| start word | temp | end word| note|step|
+|:---:|:---:|:---:|:---:|:---:|
+| hit| hot| cog| |2
+| cog| [dog,log]| hot| hot更新成为新的word，但start从原来的end开始|3
+| hot|[dot, lot] | [dog,log]| [dog,log]更新成为新的word，但start从原来的end开始|4
+|[dog,log]| ->| [dot, lot]| 再多一步可以完成变形|5
+
+```Java
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> diction = new HashSet<>(wordList), beginSet = new HashSet<>(), endSet = new HashSet<>(),
+                visitedSet = new HashSet<>();
+        beginSet.add(beginWord);
+        if (diction.contains(endWord)) {
+            endSet.add(endWord);
+            for (int step = 2; !endSet.isEmpty(); step++) {
+                Set<String> temp = new HashSet<>();
+                for (String s : beginSet) {
+                    for (int j = 0; j < s.length(); j++) {
+                        char[] chars = s.toCharArray();
+                        for (char c = 'a'; c <= 'z'; c++) {
+                            if (c != chars[j]) {
+                                char t = chars[j];
+                                chars[j] = c;
+                                String newS = String.valueOf(chars);
+                                if (endSet.contains(newS)) return step;
+                                if (diction.contains(newS) && visitedSet.add(newS)) temp.add(newS);
+                                chars[j] = t;
+                            }
+                        }
+                    }
+                }
+                beginSet = endSet; endSet = temp;
+            }
+        }
+        return 0;
+    }
+}
+```
