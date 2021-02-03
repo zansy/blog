@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20201218 更新/63）
+title: LeetCode 中等题汇总（20210203 更新/64）
 author: zansy
 tags: []
 categories:
@@ -440,6 +440,59 @@ class Solution {
             maxArea = Math.max(maxArea, Math.min(height[left] , height[right]) * (right - left));
         }
         return maxArea;
+    }
+}
+```
+
+#### 15 3Sum
+[3Sum](https://leetcode.com/problems/3sum/)
+
+给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+
+注意：答案中不可以包含重复的三元组。
+
+示例 1：
+
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+示例 2：
+
+输入：nums = []
+输出：[]
+示例 3：
+
+输入：nums = [0]
+输出：[]
+
+---
+先将数组进行排序，遍历每一位，获得其对应数字，接下去的任务就是从之后的数组中查找出是否有两数之和等于该对应数字。
+这一阶段任务可以应用部分二分法，从两端找起，如果两端之和比该数大，则右边向内进一位，否则左边向内进一位。
+注意重复值。在最开始就消除重复值的计算，即
+```Java
+if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))
+```
+2021.02.03
+
+```java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++){
+            if (i == 0 || (i > 0 && nums[i] != nums[i - 1])){
+                int left = i + 1, right = nums.length -1, sum = -nums[i];
+                while(left < right){
+                    if (nums[left] + nums[right] == sum){
+                        result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1])right--;
+                        left++; right--;
+                    }else if (nums[left] + nums[right] < sum) left++;
+                    else right--;
+                }
+            }
+        }
+        return result;
     }
 }
 ```
