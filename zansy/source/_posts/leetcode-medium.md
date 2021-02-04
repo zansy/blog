@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210203 更新/64）
+title: LeetCode 中等题汇总（20210205 更新/65）
 author: zansy
 tags: []
 categories:
@@ -452,18 +452,20 @@ class Solution {
 注意：答案中不可以包含重复的三元组。
 
 示例 1：
-
+```
 输入：nums = [-1,0,1,2,-1,-4]
 输出：[[-1,-1,2],[-1,0,1]]
+```
 示例 2：
-
+```
 输入：nums = []
 输出：[]
+```
 示例 3：
-
+```
 输入：nums = [0]
 输出：[]
-
+```
 ---
 先将数组进行排序，遍历每一位，获得其对应数字，接下去的任务就是从之后的数组中查找出是否有两数之和等于该对应数字。
 这一阶段任务可以应用部分二分法，从两端找起，如果两端之和比该数大，则右边向内进一位，否则左边向内进一位。
@@ -493,6 +495,48 @@ class Solution {
             }
         }
         return result;
+    }
+}
+```
+#### 16 3Sum Closest
+[3Sum Closest](https://leetcode.com/problems/3sum-closest/)
+
+给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+
+示例：
+```
+输入：nums = [-1,2,1,-4], target = 1
+输出：2
+解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2) 
+```
+---
+和第15题的思路差不多。
+>先将数组进行排序，遍历每一位，获得其对应数字，接下去的任务就是从之后的数组中查找出是否有两数之和等于该对应数字。
+这一阶段任务可以应用部分二分法，从两端找起，如果两端之和比该数大，则右边向内进一位，否则左边向内进一位。
+
+但其中有一点不同，将每次获得的值设为tempSum，去和上一次选出的最接近值比较，如果比其更接近target则替换。
+
+2021.02.05
+
+```java
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);//-3 0 1 2
+        int lastOne = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < nums.length - 2; i++){
+            if (i == 0 || (i > 0 && nums[i] != nums[i - 1])){
+                int left = i + 1, right = nums.length - 1;
+                while (left < right){
+                    int tempSum = nums[i] + nums[left] + nums[right];
+                    if (Math.abs(tempSum - target) < Math.abs(lastOne - target)) lastOne = tempSum;
+                    if (tempSum == target) return target;
+                    else if (tempSum < target){
+                        left++;
+                    }else right--;
+                }
+            }
+        }
+        return lastOne;
     }
 }
 ```
@@ -2061,19 +2105,19 @@ dp[2] = dp[1]+1 = 2
 dp[3] = dp[2]+1 = 3
 dp[4] = Min{ dp[4-1*1]+1, dp[4-2*2]+1 } 
       = Min{ dp[3]+1, dp[0]+1 } 
-      = 1				
+      = 1                
 dp[5] = Min{ dp[5-1*1]+1, dp[5-2*2]+1 } 
       = Min{ dp[4]+1, dp[1]+1 } 
       = 2
-						.
-						.
-						.
+                        .
+                        .
+                        .
 dp[13] = Min{ dp[13-1*1]+1, dp[13-2*2]+1, dp[13-3*3]+1 } 
        = Min{ dp[12]+1, dp[9]+1, dp[4]+1 } 
        = 2
-						.
-						.
-						.
+                        .
+                        .
+                        .
 dp[n] = Min{ dp[n - i*i] + 1 },  n - i*i >=0 && i >= 1
 ```
 对每一个给定的数，比较所有它减去平方数的数，例如13，比较dp[12]、dp[9]、dp[4]，比较它们加上本身被减去的平方数后的最小值即是能组成和的最小平方数。
