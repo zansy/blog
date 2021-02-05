@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210205 更新/65）
+title: LeetCode 中等题汇总（20210205 更新/66）
 author: zansy
 tags: []
 categories:
@@ -537,6 +537,104 @@ class Solution {
             }
         }
         return lastOne;
+    }
+}
+```
+
+#### 18 4Sum
+[4Sum](https://leetcode.com/problems/4sum/)
+
+给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
+
+注意：
+
+答案中不可以包含重复的四元组。
+
+示例：
+```
+给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。
+
+满足要求的四元组集合为：
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+```
+---
+和第15题的思路差不多。
+>先将数组进行排序，遍历每一位，获得其对应数字，接下去的任务就是从之后的数组中查找出是否有两数之和等于该对应数字。
+这一阶段任务可以应用部分二分法，从两端找起，如果两端之和比该数大，则右边向内进一位，否则左边向内进一位。
+
+和第15题的区别无非是外面再套一层罢了
+但这样的解法时间和空间复杂度都很高。
+除此以外，还可以进行一些细微的优化工作，例如在第一层循环中：
+1. 确定最左边的1个数，剩下3个数选择数组其余最小3个数，四个数字之和如果大于target，则可以直接退出循环
+2. 确定最左边的1个数，剩下3个数选择排序后数组最大三个数，四个数的和如果小于target则可以不必进入第二层循环，继续换第一个数。
+
+同时在第二层循环中同样也可以细节优化：
+1. 确定前两个数后，后两位选择数组中最大数字，如果小于target则退出
+2. 确定前两个数后，后两位选择数组中最小数字，如果大于target则退出
+
+2021.02.05
+
+```java
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);//-3 0 1 2
+        int lastOne = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < nums.length - 2; i++){
+            if (i == 0 || (i > 0 && nums[i] != nums[i - 1])){
+                int left = i + 1, right = nums.length - 1;
+                while (left < right){
+                    int tempSum = nums[i] + nums[left] + nums[right];
+                    if (Math.abs(tempSum - target) < Math.abs(lastOne - target)) lastOne = tempSum;
+                    if (tempSum == target) return target;
+                    else if (tempSum < target){
+                        left++;
+                    }else right--;
+                }
+            }
+        }
+        return lastOne;
+    }
+}
+```
+细节优化后：
+>Runtime: 4 ms, faster than 96.51% of Java online submissions for 4Sum.
+Memory Usage: 39.2 MB, less than 93.04% of Java online submissions for 4Sum.
+
+```Java
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> result = new LinkedList<>();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 3; i++){
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+            if (nums[i] + nums[nums.length - 1] + nums[nums.length - 2] + nums[nums.length - 3] < target) continue;
+            for (int j = i + 1; j < nums.length - 2; j++){
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+                    continue;
+                }
+                if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) break;
+                if (nums[i] + nums[j] + nums[nums.length - 2] + nums[nums.length - 1] < target) {
+                    continue;
+                }
+                int left = j + 1, right = nums.length - 1;
+                while (left < right) {
+                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                    if (sum == target) {
+                        List<Integer> temp = Arrays.asList(nums[i], nums[j], nums[left], nums[right]);
+                        if (!result.contains(temp)) result.add(temp);
+                        left++;
+                    } else if (sum < target) {
+                        left++;
+                    } else right--;
+                }
+            }
+        }
+        return result;
     }
 }
 ```
@@ -2105,19 +2203,19 @@ dp[2] = dp[1]+1 = 2
 dp[3] = dp[2]+1 = 3
 dp[4] = Min{ dp[4-1*1]+1, dp[4-2*2]+1 } 
       = Min{ dp[3]+1, dp[0]+1 } 
-      = 1                
+      = 1				
 dp[5] = Min{ dp[5-1*1]+1, dp[5-2*2]+1 } 
       = Min{ dp[4]+1, dp[1]+1 } 
       = 2
-                        .
-                        .
-                        .
+						.
+						.
+						.
 dp[13] = Min{ dp[13-1*1]+1, dp[13-2*2]+1, dp[13-3*3]+1 } 
        = Min{ dp[12]+1, dp[9]+1, dp[4]+1 } 
        = 2
-                        .
-                        .
-                        .
+						.
+						.
+						.
 dp[n] = Min{ dp[n - i*i] + 1 },  n - i*i >=0 && i >= 1
 ```
 对每一个给定的数，比较所有它减去平方数的数，例如13，比较dp[12]、dp[9]、dp[4]，比较它们加上本身被减去的平方数后的最小值即是能组成和的最小平方数。
