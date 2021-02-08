@@ -51,7 +51,7 @@ class Solution {
 指定了是顺时针循环的话，难度就降低了很多。先预设结果是不可能，station = -1。遍历每一站，对每一站尝试进行“加油、消耗”操作，如果结果为负，说明在前往下一站的路上油不足，跳出循环看下一站，如果结果为正说明走得通。数组循环的话并不难，将其前面的位数都排到后面来即可，例如：
 
 数组 | 0 | 1 | 2 |  3 | 4
-:-:|:-:|:-:|:-:|:-:|:-:|:-:
+:-:|:-:|:-:|:-:|:-:|:-:
 gas | 1|2|3|4|5
 cost| 3| 4| 5| 1| 2|
 
@@ -893,6 +893,7 @@ class Solution {
 }
 ```
 
+
 #### 12 Integer to Roman
 [Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
 
@@ -1687,6 +1688,8 @@ class Solution {
     }
 }
 ```
+
+
 #### 40 Combination Sum II
 [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
 
@@ -1722,6 +1725,7 @@ class Solution {
     }
 }
 ```
+
 
 #### 216 Combination Sum III
 [Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)
@@ -1786,6 +1790,8 @@ class Solution {
     }
 }
 ```
+
+
 #### 46 Permutations
 [Permutations](https://leetcode.com/problems/permutations/)
 
@@ -1811,6 +1817,7 @@ class Solution {
     }
 }
 ```
+
 
 #### 47 Permutations II
 [Permutations II](https://leetcode.com/problems/permutations-ii/)
@@ -2367,13 +2374,14 @@ public class Solution {
 例如给出n=5，要求出每次都猜错的最小花费，先猜2被告知比2大，再猜4被告知比4大或者小，这样最少需要6可以猜出对方心中想的数字。
 
 要储存不同范围内每次都猜错的最小花费，可以设置一个二维数组，当n=5时，这个二维数组dp可以设置为
-\ |1 |2 |3|4 |5
+
+ \ | 1 | 2 | 3 | 4 | 5 
 :-:|:-:|:-:|:-:|:-:|:-:
-1|0||||
-2|-|0|||
-3|-|-|0||
-4|-|-|-|0|
-5|-|-|-|-|0
+ 1 | 0 | \ | \ | \ | \ 
+ 2 | - | 0 | \ | \ | \ 
+ 3 | - | - | 0 | \ | \ 
+ 4 | - | - | - | 0 | \ 
+ 5 | - | - | - | - | 0 
 
 其中dp[m][n]存储的就是在m-n范围内每次都猜错的最小花费，所以当m = n时，dp[m][n] = 0;
 
@@ -2381,6 +2389,7 @@ public class Solution {
 
 例如范围长度为1的时候，依次算1-2，2-3，3-4，4-5
 很顺利可得二维数组为
+
 \ |1 |2 |3|4 |5
 :-:|:-:|:-:|:-:|:-:|:-:
 1|0|1|||
@@ -2392,6 +2401,7 @@ public class Solution {
 当范围长度为2的时候，依次算1-3，2-4，3-5
 由于之前的1-2，2-3，3-4，4-5已有答案，例如求dp[1][3]时，先1+max(dp[1][0], dp[2][3]) = 3;再2+max(dp[1][1], dp[3][3]) = 2;得出2最小。
 依此推论，则很顺利可得二维数组为
+
 \ |1 |2 |3|4 |5
 :-:|:-:|:-:|:-:|:-:|:-:
 1|0|1|2|4|6
@@ -2998,7 +3008,34 @@ class Solution {
 2020.04.08
 
 -----
-
+两次使用二分查找分别找出左边界和右边界，左边界很好找，当while循环退出，left就是左边界。
+右边界需要mid每次多+1，保证范围足够大。在两个循环退出后都要判断是否左右边界和target数字相同。是则存入，否则不存。
+简易版本：
+```Java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = {-1, -1};
+        int start = 0, end = nums.length - 1, mid;
+        if (nums != null && nums.length != 0) {
+            while (start < end) {
+                mid = start + (end - start) / 2;
+                if (nums[mid] < target) start = mid + 1;
+                else end = mid;
+            }
+            if (nums[start] == target) result[0] = start;
+            end = nums.length - 1;
+            while (start < end) {
+                mid = start + (end - start) / 2 + 1;
+                if (nums[mid] > target) end = mid - 1;
+                else start = mid;
+            }
+            if (nums[end] == target) result[1] = end;
+        }
+        return result;
+    }
+}
+```
+进阶版本：
 ```Java
 class Solution {
     private int extremeInsertionIndex(int[] nums, int target, boolean left) {
@@ -3036,6 +3073,27 @@ class Solution {
     }
 }
 ```
+这题还可以用0.5来求，例如target是8，就在int数组里查找7.5和8.5。这个办法也很绝。
+```Java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        double left = target - 0.5, right = target + 0.5;
+        int l = bs(nums, left), r = bs(nums, right);
+        if(l == r) return new int[]{-1, -1};
+        return new int[]{l, r-1};
+    }
+    public int bs(int[] nums, double target) {
+        int l = 0, h = nums.length-1;
+        while(l <= h){
+            int m = l + (h - l)/2;
+            if(target > nums[m]) l = m+1;
+            else h = m-1;
+        }
+        return l;
+    }
+}
+```
+
 
 ## 矩阵 Matrix
 ### 基础
