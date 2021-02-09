@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210205 更新/66）
+title: LeetCode 中等题汇总（20210209 更新/67）
 author: zansy
 tags: []
 categories:
@@ -638,6 +638,55 @@ class Solution {
     }
 }
 ```
+
+
+
+#### 56 Merge Intervals
+[Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+
+以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+
+示例 1：
+```
+输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+输出：[[1,6],[8,10],[15,18]]
+解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+```
+示例 2：
+```
+输入：intervals = [[1,4],[4,5]]
+输出：[[1,5]]
+解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
+```
+
+---
+这题用了Java 8 里的lambda comparator，先把数组排序，然后添加排序后的第一个数组。再将之后数组的起始端和第一个数组的结尾端比较。如果在第一个数组表示的间隙内，再判断两个间隙哪个结尾更长；否则的话表示第一个间隔已经没有可以进行扩展的了，添加新间隔为新加入的数组。
+
+注意原来ArrayList中添加过的数组数值在List之外修改 还是会影响List中的结果。
+
+2021.02.09
+
+```java
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        List<int[]> result = new ArrayList<>();
+        Arrays.sort(intervals, (i1, i2) -> Integer.compare(i1[0], i2[0]));
+        int[] newInterval = intervals[0];
+        result.add(newInterval);
+        for (int[] temp : intervals){
+            if (temp[0] <= newInterval[1]){
+                newInterval[1] = Math.max(newInterval[1], temp[1]);
+            }else {
+                newInterval = temp;
+                result.add(newInterval);
+            }
+        }
+        return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+
 
 #### 334 Increasing Triplet Subsequence
 [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence/)
