@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210209 更新/67）
+title: LeetCode 中等题汇总（20210210 更新/68）
 author: zansy
 tags: []
 categories:
@@ -681,6 +681,75 @@ class Solution {
                 result.add(newInterval);
             }
         }
+        return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+
+#### 57 Insert Interval
+[Insert Interval](https://leetcode.com/problems/insert-interval/)
+
+给你一个 无重叠的 ，按照区间起始端点排序的区间列表。
+
+在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+
+示例 1：
+```
+输入：intervals = [[1,3],[6,9]], newInterval = [2,5]
+输出：[[1,5],[6,9]]
+```
+示例 2：
+```
+输入：intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+输出：[[1,2],[3,10],[12,16]]
+解释：这是因为新的区间 [4,8] 与 [3,5],[6,7],[8,10] 重叠。
+```
+示例 3：
+```
+输入：intervals = [], newInterval = [5,7]
+输出：[[5,7]]
+```
+示例 4：
+```
+输入：intervals = [[1,5]], newInterval = [2,3]
+输出：[[1,5]]
+```
+示例 5：
+```
+输入：intervals = [[1,5]], newInterval = [2,7]
+输出：[[1,7]]
+```
+
+---
+设立一个start end来标识当前正在考虑插入的间隔。同时遍历给定间隔的数组。将考虑的间隔与给定的间隔比较。这里又分为3种情况：
+1. 两者不重复，且考虑间隔在给定间隔右侧。此时直接将给定间隔存入即可。
+2. 两者不重复，且考虑间隔在给定间隔左侧。此时先加入考虑间隔。再将当前给定间隔列为新的考虑间隔。
+3. 两者重复。则考虑间隔进行更新扩大范围，但不存入，仍需进行下一次考虑。
+
+在循环结束后，存入最后手中的考虑间隔。
+
+
+2021.02.10
+
+```java
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> result = new ArrayList<>();
+        int start = newInterval[0], end = newInterval[1];
+        for (int[] interval : intervals){
+            if (interval[1] < start){
+                result.add(interval);
+            }else if (interval[0] > end){
+                result.add(new int[]{start, end});
+                start = interval[0];
+                end = interval[1];
+            }else {
+                start = Math.min(start, interval[0]);
+                end = Math.max(end, interval[1]);
+            }
+        }
+        result.add(new int[]{start, end});
         return result.toArray(new int[result.size()][]);
     }
 }
