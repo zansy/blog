@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210219 更新/69）
+title: LeetCode 中等题汇总（20210221 更新/70）
 author: zansy
 tags: []
 categories:
@@ -751,6 +751,64 @@ class Solution {
         }
         result.add(new int[]{start, end});
         return result.toArray(new int[result.size()][]);
+    }
+}
+```
+
+#### 75 Sort Colors
+[Sort Colors](https://leetcode.com/problems/sort-colors/)
+
+给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+ 
+
+示例 1：
+```
+输入：nums = [2,0,2,1,1,0]
+输出：[0,0,1,1,2,2]
+```
+示例 2：
+```
+输入：nums = [2,0,1]
+输出：[0,1,2]
+```
+示例 3：
+```
+输入：nums = [0]
+输出：[0]
+```
+示例 4：
+```
+输入：nums = [1]
+输出：[1]
+```
+
+---
+其实就是给出一组全是0，1，2的数组，要求进行从小到大排序。
+这题的特别处是在原数组下进行数字的变换。因此设立了一个可移动的start点&end点进行推进和整理。
+首先对数组中每一位进行处理，如果等于2就和end点上的数据进行交换，再处理一遍交换来的数字；等于0则和start点上的数据进行交换，处理下一位。
+
+2021.02.21
+
+```java
+class Solution {
+    public void sortColors(int[] nums) {
+        int start = 0, end = nums.length - 1;
+        for (int i = 0; i <= end;){
+            if (nums[i] == 2) {
+                swap(nums, i, end);
+                end--;
+            }else if (nums[i] == 0){
+                swap(nums, i, start);
+                start++;i++;
+            }else i++;
+        }
+    }
+    private void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
 ```
@@ -2301,6 +2359,8 @@ class Solution {
     }
 }
 ```
+
+
 
 #### 120 Triangle
 [Triangle](https://leetcode.com/problems/triangle/)
