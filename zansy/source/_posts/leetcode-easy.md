@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20210222 更新/46）
+title: LeetCode 简单题汇总（20210222 更新/47）
 author: zansy
 tags:
   - 水
@@ -500,6 +500,62 @@ class Solution {
     }
 }
 ```
+
+#### 20 Valid Parentheses
+[Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+
+给定一个只包括 `'('，')'，'{'，'}'，'['，']' `的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+
+示例 1：
+```
+输入：s = "()"
+输出：true
+```
+示例 2：
+```
+输入：s = "()[]{}"
+输出：true
+```
+示例 3：
+```
+输入：s = "(]"
+输出：false
+```
+示例 4：
+```
+输入：s = "([)]"
+输出：false
+```
+示例 5：
+```
+输入：s = "{[]}"
+输出：true
+```
+-----
+用栈。在出现左括号的部分时往栈里放其应该存在的对应右括号。在面对右括号是栈推出最顶上的字符，如果不相等则返回false。
+注意这里有一个要注意的，在栈推出前应该先判断栈是否为空。如果为空说明目前遇上的右括号其对应的左括号并不在字符串里。同样返回为false。
+
+2021.02.22
+```Java
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char c : s.toCharArray()){
+            if (c == '(') stack.push(')');
+            else if (c == '{') stack.push('}');
+            else if (c == '[') stack.push(']');
+            else if (stack.isEmpty()) return false;
+            else if (stack.pop() != c) return false;
+        }
+        return stack.isEmpty();
+    }
+}
+```
+
 
 
 ### 基础
