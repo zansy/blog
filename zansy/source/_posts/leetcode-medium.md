@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210221 更新/70）
+title: LeetCode 中等题汇总（20210222 更新/71）
 author: zansy
 tags: []
 categories:
@@ -1746,6 +1746,69 @@ class Solution {
     }
 }
 ```
+#### 79 Word Search
+[Word Search](https://leetcode.com/problems/word-search/)
+
+给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+
+示例:
+```
+board =
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+
+给定 word = "ABCCED", 返回 true
+给定 word = "SEE", 返回 true
+给定 word = "ABCB", 返回 false
+
+```
+-----
+用回溯法，用深度优先搜索即可，传入该board，当前的横纵坐标和当前字符串进行到的位数。
+同样还因为传入一个访问数组来判定每个位置是否有被访问。
+
+2021.02.22
+```Java
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        if (board.length > 0) {
+            int rows = board.length, cols = board[0].length;
+            boolean[][] visited = new boolean[rows][cols];
+            for (int i = 0; i < rows; i++){
+                for (int j = 0; j < cols; j++){
+                    if (existRecursive(board, i, j, word, 0, visited)) return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean existRecursive(char[][] board, int row, int col, String word, int index, boolean[][] visited){
+        //if out of bounds
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) return false;
+        if (visited[row][col] || board[row][col] != word.charAt(index)) return false;
+        if (index == word.length() - 1)return true;
+        //Start to determine whether the location can be included
+        visited[row][col] = true;
+        boolean up = existRecursive(board, row - 1, col, word, index + 1, visited);
+        if (up) return true;
+        boolean down = existRecursive(board, row + 1, col, word, index + 1, visited);
+        if (down) return true;
+        boolean left = existRecursive(board, row, col - 1, word, index + 1, visited);
+        if (left) return true;
+        boolean right = existRecursive(board, row, col + 1, word, index + 1, visited);
+        if (right) return true;
+        //the current position is not included, reset as unvisited
+        visited[row][col] = false;
+        return false;
+    }
+}
+```
+
 #### 90 Subsets II
 [Subsets II](https://leetcode.com/problems/subsets-ii/)
 
