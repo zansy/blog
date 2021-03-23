@@ -1,4 +1,4 @@
-title: LeetCode 中等题汇总（20210222 更新/71）
+title: LeetCode 中等题汇总（20210323 更新/72）
 author: zansy
 tags: []
 categories:
@@ -896,6 +896,63 @@ class Solution {
 
 ##  字符串 String
 ### 基础
+#### 3 Longest Substring Without Repeating Characters
+[Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+
+示例 1:
+```
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+```
+示例 2:
+```
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+```
+示例 3:
+```
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+```
+示例 4:
+```
+输入: s = ""
+输出: 0
+```
+
+2021.03.23
+
+----
+这题解法有很多，这边主要用窗口法。
+把它想成窗口在移动
+![](http://windliang.oss-cn-beijing.aliyuncs.com/slide.jpg)
+
+以left和right界定窗口的边界，当left和right都没有走到最后一位的时候，不停扩张right的边界，如果发现right即将进入的那个字母是窗口中已存在的，则需要缩短左边界left直到其为已存在的字母的下一位。这时候可以以不停地缩短左边界达成这一结果。
+```Java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length()==0) return 0;
+        int left = 0, right = 0, windowsMaxLength = right - left;
+        HashSet<Character> window = new HashSet<>();
+        while (left < s.length() && right < s.length()){
+            if (!window.contains(s.charAt(right))){
+                window.add(s.charAt(right)); right++;
+                windowsMaxLength = Math.max(windowsMaxLength, right - left);
+            }else {
+                window.remove(s.charAt(left));
+                left++;
+            }
+        }
+        return windowsMaxLength;
+    }
+}
+```
 #### 151 Reverse Words in a String
 [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
 
