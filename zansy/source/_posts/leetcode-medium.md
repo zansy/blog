@@ -930,7 +930,9 @@ class Solution {
 
 ----
 这题解法有很多，这边主要用窗口法。
-把它想成窗口在移动
+
+- 解一 把它想成窗口在移动
+
 ![](http://windliang.oss-cn-beijing.aliyuncs.com/slide.jpg)
 
 以left和right界定窗口的边界，当left和right都没有走到最后一位的时候，不停扩张right的边界，如果发现right即将进入的那个字母是窗口中已存在的，则需要缩短左边界left直到其为已存在的字母的下一位。这时候可以以不停地缩短左边界达成这一结果。
@@ -953,6 +955,35 @@ class Solution {
     }
 }
 ```
+
+- 解二 动态规划
+剑指offer中给出了公式，首先第一位肯定可以包含其中。给一个数组f保存每一位为结尾的最长子串长度，因此f[0] = 1。之后每一位遍历以获得数组f的内容。1.如果当前位i在之前重复过，那就算出相同的上一位的位置，算出它们的距离distance。这时候出现两种可能，一种是距离小于等于前一位s[i - 1]为结尾的最长子串长度f[i - 1]，即重复的上一位存在于当前位为结尾的最长子串中，那么f[i] = distance；另一种是距离大于前一位s[i - 1]为结尾的最长子串长度，例如“affbcda”，进行到最后一位a的时候，前一位的最小子串是fbcd，f[5] = 4，但是dis = 6 > 4，说明两个a之间存在重复元素导致第五位的d结尾的最长子串没有纳入重复元素，因此这种情况下f[i] = f[i] + 1。2.如果当前位i在之前没有重复过，子串长度简单+1即可，即f[i] = f[i] + 1。
+```Java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0) return 0;
+        int[] f = new int[s.length()];
+        f[0] = 1;
+        HashMap<Character, Integer> letterAndLastPosition = new HashMap<>();
+        letterAndLastPosition.put(s.charAt(0),0);
+        int max = 1;
+        for (int i = 1; i < s.length(); i++){
+            if (!letterAndLastPosition.containsKey(s.charAt(i))){
+                f[i] = f[i - 1] + 1;
+            }else {
+                if (i - letterAndLastPosition.get(s.charAt(i)) <= f[i - 1])
+                    f[i] = i - letterAndLastPosition.get(s.charAt(i));
+                else f[i] = f[i - 1] + 1;
+            }
+            letterAndLastPosition.put(s.charAt(i),i);
+            max = Math.max(f[i], max);
+        }
+        return max;
+    }
+}
+```
+
+
 #### 151 Reverse Words in a String
 [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
 

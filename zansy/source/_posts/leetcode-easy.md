@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20210222 更新/47）
+title: LeetCode 简单题汇总（20210324 更新/48）
 author: zansy
 tags:
   - 水
@@ -11,7 +11,7 @@ Easy练手感题，分类/题意/思路/代码。
 <!--more-->
 ## 数组 Array
 ### 基础
-#### 26
+#### 26 Remove Duplicates from Sorted Array
 [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
 给出一组排好序的数，要求去除数组里重复的数值，返回数组长度。对空间有要求。
@@ -35,7 +35,7 @@ class Solution {
 }
 ```
 
-#### 27
+#### 27 Remove Element
 [Remove Element](https://leetcode.com/problems/remove-element/)
 
 给出一个数组和一个指定的数，要求从数组中删除所有该数并返回数组长度。对空间有要求。
@@ -58,7 +58,61 @@ class Solution {
     }
 }
 ```
-#### 189
+
+#### 53 Maximum Subarray
+[Maximum Subarray](https://leetcode.com/problems/remove-element/)
+
+给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+示例 1：
+```
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+```
+示例 2：
+```
+输入：nums = [1]
+输出：1
+```
+示例 3：
+```
+输入：nums = [0]
+输出：0
+```
+示例 4：
+```
+输入：nums = [-1]
+输出：-1
+```
+示例 5：
+```
+输入：nums = [-100000]
+输出：-100000
+```
+2021.03.24
+
+---
+我好像有点懂动态规划了。。既然问最大子序列和，那就算当前每一位上的最大子序列和，其中不同情况具体分析，通过前一位的结果获得当前位的结果，然后设置一个值用以更新结果。
+
+这里的不同情况就是，前一位上的最大子序列和是否为正数。如果不是的话索性不要加上前一位了，不如自己本身来得结果大。否则的话就简单加上前一位就可以。
+```Java
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int[] curMaxSum = new int[nums.length];
+        curMaxSum[0] = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < nums.length; i++){
+            if (curMaxSum[i - 1] <= 0)curMaxSum[i] = nums[i];
+            else curMaxSum[i] = curMaxSum[i - 1] + nums[i];
+            max = Math.max(max, curMaxSum[i]);
+        }
+        return max;
+    }
+}
+```
+
+#### 189 Rotate Array
 [Rotate Array](https://leetcode.com/problems/rotate-array/)
 
 给出一组数，每次将原数组的最后一位提到数组的第一位来，执行给定的n次
@@ -170,7 +224,7 @@ public class Solution {
     }
 }
 ```
-#### 299
+#### 299 Bulls and Cows
 [Bulls and Cows](https://leetcode.com/problems/bulls-and-cows/)
 
 给出两串数字字符，找出字符中数值相同且位置对应的数字个数记为A，找出字符中数值相同但位置不同的数字个数记为B，输出记录。注意1123和0111等有重复数字的，第二串字符中第三位第四位的1只与第一串字符的第一位1符合B记录条件，因此B=1。11123和00111，B=2。
@@ -239,7 +293,7 @@ class Solution {
 }
 ```
 
-#### 118
+#### 118 Pascal's Triangle
 [Pascal's Triangle](https://leetcode.com/problems/pascals-triangle/)
 
 根据输入的行数，输出一个杨辉三角
@@ -263,7 +317,7 @@ class Solution {
 }
 ```
 
-#### 119
+#### 119 Pascal's Triangle II
 [Pascal's Triangle II](https://leetcode.com/problems/pascals-triangle-ii/)
 
 根据输入的行数，输出杨辉三角指定的行数。
@@ -288,7 +342,7 @@ class Solution {
 }
 ```
 
-#### 169
+#### 169 Majority Element
 [Majority Element](https://leetcode.com/problems/majority-element/)
 
 给出一组无序数，要求返回在数组占二分之一以上的一个数。
@@ -335,7 +389,7 @@ public class Solution {
     }
 }
 ```
-#### 217
+#### 217 Contains Duplicate
 [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
 判断一组无序数中是否有重复数字，有则返回true，否则false
 
@@ -357,7 +411,7 @@ class Solution {
 }
 ```
 
-#### 219
+#### 219 Contains Duplicate II
 [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)
 给出一组无序数和k，问数组中是否存在两个数nums[i] = nums[j]，并且|i-j| <= k
 
@@ -395,7 +449,7 @@ class Solution {
 }
 ```
 
-#### 121
+#### 121 Best Time to Buy and Sell Stock
 [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/submissions/)
 给出一组无序数prices，要求得出prices[j] - prices[i]最大值是多少，且prices[j] > prices[i]，j > i
 
@@ -422,7 +476,7 @@ class Solution {
 }
 ```
 
-#### 122
+#### 122 Best Time to Buy and Sell Stock II
 [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
 
 给出一组无序数prices，表示商品在不同日期（索引）时对应的不同价格。可以多次买入卖出，但每次只能保持一次完整的交易，即买入新的前必须卖出旧的。
@@ -559,7 +613,7 @@ class Solution {
 
 
 ### 基础
-#### 28
+#### 28 Implement strStr()
 [Implement strStr()](https://leetcode.com/problems/implement-strstr/)
 
 字符串匹配
@@ -578,7 +632,8 @@ class Solution {
     }
 }
 ```
-#### 14
+#### 14 Longest Common Prefix
+[Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
 
 编写一个函数来查找字符串数组中的最长公共前缀。
 如果不存在公共前缀，返回空字符串 ""。
@@ -659,7 +714,7 @@ class Solution {
 
 还有一种堆排也很有趣，详情可看官方题解：[14. Longest Common Prefix](https://leetcode.com/articles/longest-common-prefix/)
 
-#### 58
+#### 58 Length of Last Word
 [Length of Last Word](https://leetcode.com/problems/length-of-last-word/)
 
 给定一个仅包含大小写字母和空格 ' ' 的字符串，返回其最后一个单词的长度。
@@ -683,7 +738,7 @@ class Solution {
 }
 ```
 
-#### 387
+#### 387 First Unique Character in a String
 [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/)
 
 给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
@@ -704,7 +759,7 @@ class Solution {
     }
 }
 ```
-#### 383
+#### 383 Ransom Note
 [Ransom Note](https://leetcode.com/problems/ransom-note/)
 
 给定一个赎金信 (ransom) 字符串和一个杂志(magazine)字符串，判断第一个字符串ransom能不能由第二个字符串magazines里面的字符构成。如果可以构成，返回 true ；否则返回 false。
@@ -734,7 +789,7 @@ class Solution {
     }
 }
 ```
-#### 344
+#### 344 Reverse String
 [Reverse String](https://leetcode.com/problems/reverse-string/)
 
 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
@@ -763,7 +818,7 @@ class Solution {
     }
 }
 ```
-#### 345
+#### 345 Reverse Vowels of a String
 [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
 编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
 
@@ -798,7 +853,7 @@ class Solution {
 }
 ```
 
-#### 205
+#### 205 Isomorphic Strings
 [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
 
 给定两个字符串 s 和 t，判断它们是否是同构的。
@@ -830,7 +885,7 @@ class Solution {
     }
 }
 ```
-#### 290
+#### 290 Word Pattern
 [Word Pattern](https://leetcode.com/problems/word-pattern/)
 给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。
 
@@ -876,7 +931,7 @@ class Solution {
 }
 ```
 
-#### 242
+#### 242 Valid Anagram
 [Valid Anagram](https://leetcode.com/problems/valid-anagram/)
 
 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
@@ -928,7 +983,7 @@ class Solution {
     }
 }
 ```
-#### 38
+#### 38 Count and Say
 [Count and Say](https://leetcode.com/problems/count-and-say/)
 
 报数序列是一个整数序列，按照其中的整数的顺序进行报数，得到下一个数。其前五项如下：
@@ -974,7 +1029,7 @@ class Solution {
 }
 ```
 
-#### 168
+#### 168 Excel Sheet Column Title
 [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/)
 给定一个正整数，返回它在 Excel 表中相对应的列名称。
 
@@ -1009,7 +1064,7 @@ class Solution {
     }
 }
 ```
-#### 171
+#### 171 Excel Sheet Column Number
 [Excel Sheet Column Number](https://leetcode.com/problems/excel-sheet-column-number/)
 给定一个Excel表格中的列名称，返回其相应的列序号。
 
@@ -1044,7 +1099,7 @@ class Solution {
 }
 ```
 
-#### 13
+#### 13 Roman to Integer
 [Roman to Integer](https://leetcode.com/problems/roman-to-integer/submissions/)
 
 罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
@@ -1101,7 +1156,7 @@ class Solution {
 
 ## 数学 Math
 ### 基础
-#### 7
+#### 7 Reverse Integer
 [Reverse Integer](https://leetcode.com/problems/reverse-integer/)
 
 长整数翻转。
@@ -1124,7 +1179,7 @@ class Solution {
 }
 ```
 
-#### 66
+#### 66 Plus One
 [Plus One](https://leetcode.com/problems/plus-one/)
 
 给出一组数，其表示一个正整数。要求这个正整数+1后的数仍然以数组的形式展示。
@@ -1156,7 +1211,7 @@ class Solution {
     }
 }
 ```
-#### 258
+#### 258 Add Digits
 [Add Digits](https://leetcode.com/problems/add-digits/)
 
 给定一个非负整数 num，反复将各个位上的数字相加，直到结果为一位数。
@@ -1206,7 +1261,7 @@ class Solution {
     }
 }
 ```
-#### 67
+#### 67 Add Binary
 [Add Binary](https://leetcode.com/problems/add-binary/)
 
 给定两个二进制字符串，返回他们的和（用二进制表示）。
@@ -1276,7 +1331,7 @@ class Solution {
     }
 }
 ```
-#### 69
+#### 69 Sqrt(x)
 [Sqrt(x)](https://leetcode.com/problems/sqrtx/)
 
 实现 int sqrt(int x) 函数。
@@ -1315,7 +1370,7 @@ class Solution {
     }
 }
 ```
-#### 367
+#### 367 Valid Perfect Square
 [Valid Perfect Square](https://leetcode.com/problems/valid-perfect-square/)
 
 给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。
@@ -1339,7 +1394,7 @@ class Solution {
     }
 }
 ```
-#### 204
+#### 204 Count Primes
 [Count Primes](https://leetcode.com/problems/count-primes/)
 
 统计所有小于非负整数 n 的质数的数量。
@@ -1369,7 +1424,7 @@ class Solution {
 ```
 ## 动态规划 Dynamic Programming
 ### 一维
-#### 70
+#### 70 Climbing Stairs
 [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
@@ -1445,7 +1500,7 @@ class Solution {
 
 ## 链表 Linked List
 ### 基础
-#### 206
+#### 206 Reverse Linked List
 [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
 
 反转一个单链表。
@@ -1495,7 +1550,7 @@ class Solution {
 }
 ```
 
-#### 141
+#### 141 Linked List Cycle
 [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 
 给定一个链表，判断链表中是否有环。
@@ -1554,7 +1609,7 @@ public class Solution {
 }
 ```
 
-#### 237
+#### 237 Delete Node in a Linked List
 [Delete Node in a Linked List](https://leetcode.com/problems/delete-node-in-a-linked-list/)
 
 请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。
@@ -1584,7 +1639,7 @@ class Solution {
 }
 ```
 
-#### 83
+#### 83 Remove Duplicates from Sorted List
 [Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
 给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
 
@@ -1625,7 +1680,7 @@ class Solution {
 }
 ```
 
-#### 203
+#### 203 Remove Linked List Elements
 [Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/)
 
 删除链表中等于给定值 val 的所有节点。
@@ -1664,7 +1719,7 @@ class Solution {
 }
 ```
 
-#### 160
+#### 160 Intersection of Two Linked Lists
 [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 编写一个程序，找到两个单链表相交的起始节点。
@@ -1715,7 +1770,7 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
 }
 ```
 
-#### *21
+#### *21 Merge Two Sorted Lists
 [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
 将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
@@ -1773,7 +1828,7 @@ class Solution {
 
 ## 二分查找 Binary Search
 ### 基础
-#### 278 
+#### 278 First Bad Version
 [First Bad Version](https://leetcode.com/problems/first-bad-version/)
 你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。
 
@@ -1813,7 +1868,7 @@ public class Solution extends VersionControl {
 }
 ```
 
-#### 35
+#### 35 Search Insert Position
 [Search Insert Position](https://leetcode.com/problems/search-insert-position/)
 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
 
@@ -1859,7 +1914,7 @@ class Solution {
 }
 ```
 
-#### 374
+#### 374 Guess Number Higher or Lower
 [Guess Number Higher or Lower](https://leetcode.com/problems/guess-number-higher-or-lower/)
 
 我们正在玩一个猜数字游戏。 游戏规则如下：
@@ -1895,7 +1950,7 @@ public class Solution extends GuessGame {
 }
 ```
 
-#### 349
+#### 349 Intersection of Two Arrays
 [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/)
 
 给定两个数组，编写一个函数来计算它们的交集。
@@ -1969,7 +2024,7 @@ class Solution {
 }
 ```
 
-#### 350
+#### 350 Intersection of Two Arrays II
 [Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
 
 给定两个数组，编写一个函数来计算它们的交集。
