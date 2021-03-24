@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20210324 更新/48）
+title: LeetCode 简单题汇总（20210325 更新/49）
 author: zansy
 tags:
   - 水
@@ -108,6 +108,56 @@ class Solution {
             max = Math.max(max, curMaxSum[i]);
         }
         return max;
+    }
+}
+```
+
+#### 88 Merge Sorted Array
+[Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+
+给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。
+
+初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。你可以假设 nums1 的空间大小等于 m + n，这样它就有足够的空间保存来自 nums2 的元素。
+
+
+示例 1：
+```
+输入：nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+输出：[1,2,2,3,5,6]
+```
+示例 2：
+```
+输入：nums1 = [1], m = 1, nums2 = [], n = 0
+输出：[1]
+```
+
+2021.03.25
+
+---
+
+搞三个指针就行
+
+```Java
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int realTail = m + n - 1, num1Tail = m - 1, num2Tail = n - 1;
+        while (num1Tail >= 0 && num2Tail >= 0){
+            if (nums1[num1Tail] >= nums2[num2Tail]){
+                nums1[realTail] = nums1[num1Tail];
+                realTail--; num1Tail--;
+            }else {
+                nums1[realTail] = nums2[num2Tail];
+                realTail--; num2Tail--;
+            }
+        }
+        while (num1Tail >= 0){
+            nums1[realTail] = nums1[num1Tail];
+            realTail--; num1Tail--;
+        }
+        while (num2Tail >= 0){
+            nums1[realTail] = nums2[num2Tail];
+            realTail--; num2Tail--;
+        }
     }
 }
 ```
@@ -501,6 +551,7 @@ class Solution {
 ```
 
 ## 字符串 String
+### 基础
 #### 9 Palindrome Number
 [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
 
@@ -610,9 +661,6 @@ class Solution {
 }
 ```
 
-
-
-### 基础
 #### 28 Implement strStr()
 [Implement strStr()](https://leetcode.com/problems/implement-strstr/)
 
@@ -1152,7 +1200,6 @@ class Solution {
     }
 }
 ```
-
 
 ## 数学 Math
 ### 基础
