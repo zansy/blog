@@ -1,4 +1,4 @@
-title: LeetCode 简单题汇总（20210325 更新/50）
+title: LeetCode 简单题汇总（20210401 更新/51）
 author: zansy
 tags:
   - 水
@@ -158,6 +158,84 @@ class Solution {
             nums1[realTail] = nums2[num2Tail];
             realTail--; num2Tail--;
         }
+    }
+}
+```
+
+#### 167 Two Sum II - Input array is sorted
+[Two Sum II - Input array is sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+
+给定一个已按照 升序排列  的整数数组 numbers ，请你从数组中找出两个数满足相加之和等于目标数 target 。
+
+函数应该以长度为 2 的整数数组的形式返回这两个数的下标值。numbers 的下标 从 1 开始计数 ，所以答案数组应当满足 1 <= answer[0] < answer[1] <= numbers.length 。
+
+你可以假设每个输入只对应唯一的答案，而且你不可以重复使用相同的元素。
+
+ 
+示例 1：
+
+输入：numbers = [2,7,11,15], target = 9
+输出：[1,2]
+解释：2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。
+示例 2：
+
+输入：numbers = [2,3,4], target = 6
+输出：[1,3]
+示例 3：
+
+输入：numbers = [-1,0], target = -1
+输出：[1,2]
+
+2021.04.01
+
+---
+这道题和leetcode第一题的两数之和的区别就在于，这个数组是排好序的。仍然可以按照第一题的hashmap来做。
+
+```Java
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        HashMap<Integer, Integer> pairAndItsIndex = new HashMap();
+        for (int i = 0; i < numbers.length; i++){
+            pairAndItsIndex.put(target - numbers[i], i);
+        }
+        for (int i = 0; i < numbers.length; i++){
+            if (pairAndItsIndex.get(numbers[i]) != null) {
+                int[] result = {i+1, pairAndItsIndex.get(numbers[i])+1};
+                return result;
+            }
+        }
+        return new int[]{};
+    }
+}
+```
+但是注意，因为是有序的，首先我们可以想到二分查找，另外还可以想到双指针。
+```Java
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        int head = 0, tail = numbers.length - 1;
+        while (head < tail){
+            int sum = numbers[head] + numbers[tail];
+            if (sum == target) return new int[]{head + 1, tail + 1};
+            else if (sum < target) head++;
+            else tail--;
+        }
+        return new int[]{};
+    }
+}
+```
+```Java
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        for (int i = 0; i < numbers.length; i++){
+            int low = i + 1, high = numbers.length - 1;
+            while (low <= high){
+                int mid = (high - low) / 2 + low;
+                if (numbers[mid] == target - numbers[i]) return new int[]{i + 1, mid + 1};
+                else if (numbers[mid] < target - numbers[i]) low = mid + 1;
+                else high = mid - 1;
+            }
+        }
+        return new int[]{};
     }
 }
 ```
