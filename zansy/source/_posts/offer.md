@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210409 更新/1）
+title: 剑指offer刷题记录（20210409 更新/2）
 
 author: zansy
 
@@ -15,7 +15,7 @@ date: 2021-04-09 01:59:00
 ---
 拜托offer快快来，简单记录读书笔记和专门的刷题记录
 <!--more-->
-## 1. 数组中重复的数字（easy）
+## 3. 数组中重复的数字（easy）
 [数组中重复的数字](https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/)
 
 找出数组中重复的数字。
@@ -46,6 +46,72 @@ class Solution {
             }
         }
         return 0;
+    }
+}
+```
+## 7. 重建二叉树（medium）
+[重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)
+
+输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+ 
+
+例如，给出
+```
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+```
+返回如下的二叉树：
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+2021.04.09
+
+---
+用递归做，根据前序遍历第一位是根结点的value，按照人工运算地分出左右子树的前序和中序遍历数组，然后递归地实现他们就好了。
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        TreeNode root = null;
+        if (preorder.length == 0) return root;
+        root = new TreeNode(preorder[0]);
+
+        root.left = root.right = null;
+        if (preorder.length == 1) return root;
+        int[] leftPreorder = null, leftInorder = null, rightPreorder = null, rightInorder = null;
+        for (int i = 0; i < inorder.length; i++){
+            if (inorder[i] == preorder[0]) {
+                if (i != 0) {
+                    leftInorder = Arrays.copyOfRange(inorder, 0, i);
+                }else leftInorder = new int[]{};
+                if (i + 1 != inorder.length) {
+                    rightInorder = Arrays.copyOfRange(inorder, i + 1, inorder.length);
+                }else rightInorder = new int[]{};
+
+                if (leftInorder.length != 0){
+                    leftPreorder = Arrays.copyOfRange(preorder, 1, leftInorder.length + 1);
+                    root.left = buildTree(leftPreorder, leftInorder);
+                }else leftPreorder = new int[]{};
+                if (rightInorder.length != 0){
+                    rightPreorder = Arrays.copyOfRange(preorder, leftInorder.length + 1, preorder.length);
+                    root.right = buildTree(rightPreorder, rightInorder);
+                }else rightPreorder = new int[]{};
+            }
+        }
+        return root;
     }
 }
 ```
