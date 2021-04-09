@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210409 更新/5）
+title: 剑指offer刷题记录（20210410 更新/6）
 
 author: zansy
 
@@ -307,6 +307,70 @@ class Solution {
         if (left != null && right == null) return false;
         if (left.val != right.val) return false;
         return isMirror(left.left, right.right)&&isMirror(left.right, right.left);
+    }
+}
+```
+
+## 32. I. 从上到下打印二叉树（medium）
+[I. 从上到下打印二叉树](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-lcof/)
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+ 
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回：
+```
+[3,9,20,15,7]
+```
+2021.04.09
+
+---
+难得一题不用递归的树题。。只要想到用队列先进先出地保存树的左右子树然后分别取出再保存它们各自的左右子树以后，这题就很好做了。
+
+不要用Java里自带的Queue，用LinkedList就可以了。
+
+然后用循环！最开始还想用回溯啥的。。未免也太麻烦（。
+
+队列先存入根结点，然后循环判断队列是否为空，不为空则进入循环，取出根结点并记录，队列存入其左右子树。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] levelOrder(TreeNode root) {
+        if (root != null) {
+            LinkedList<Integer> temp = new LinkedList<>();
+            LinkedList<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (queue.size() != 0){
+                TreeNode tempTree = queue.poll();
+                temp.add(tempTree.val);
+                if (tempTree.left != null) queue.add(tempTree.left);
+                if (tempTree.right != null) queue.add(tempTree.right);
+            }
+            int[] result = new int[temp.size()];
+            for (int i = 0; i < temp.size(); i++){
+                result[i] = temp.get(i);
+            }
+            return result;
+        }
+        return new int[]{};
     }
 }
 ```
