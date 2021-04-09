@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/6）
+title: 剑指offer刷题记录（20210410 更新/7）
 
 author: zansy
 
@@ -316,8 +316,6 @@ class Solution {
 
 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
 
- 
-
 例如:
 给定二叉树: [3,9,20,null,null,15,7],
 ```
@@ -331,7 +329,7 @@ class Solution {
 ```
 [3,9,20,15,7]
 ```
-2021.04.09
+2021.04.10
 
 ---
 难得一题不用递归的树题。。只要想到用队列先进先出地保存树的左右子树然后分别取出再保存它们各自的左右子树以后，这题就很好做了。
@@ -371,6 +369,70 @@ class Solution {
             return result;
         }
         return new int[]{};
+    }
+}
+```
+
+## 32. II. 从上到下打印二叉树 II（easy）
+[II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回其层次遍历结果：
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+2021.04.10
+
+---
+>难得一题不用递归的树题。。只要想到用队列先进先出地保存树的左右子树然后分别取出再保存它们各自的左右子树以后，这题就很好做了。
+
+>队列先存入根结点，然后循环判断队列是否为空，不为空则进入循环，取出根结点并记录，队列存入其左右子树。
+
+和前一题差不多，唯一区别就是增加一个for循环，先算出queue的size，然后循环这个树，把每层的保存下来。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (root != null){
+            LinkedList<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (queue.size() != 0){
+                LinkedList<Integer> layer = new LinkedList<>();
+                int layers = queue.size();
+                for (int i = 0; i < layers; i++){
+                    TreeNode temp = queue.poll();
+                    layer.add(temp.val);
+                    if (temp.left != null) queue.add(temp.left);
+                    if (temp.right != null) queue.add(temp.right);
+                }
+                result.add(layer);
+            }
+        }
+        return result;
     }
 }
 ```
