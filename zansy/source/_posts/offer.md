@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/8）
+title: 剑指offer刷题记录（20210410 更新/9）
 
 author: zansy
 
@@ -501,6 +501,76 @@ class Solution {
             }
         }
         return result;
+    }
+}
+```
+
+## 34. 二叉树中和为某一值的路径（medium）
+[二叉树中和为某一值的路径](https://leetcode-cn.com/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/)
+
+输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。
+
+示例:
+给定如下二叉树，以及目标和 target = 22，
+```
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+```
+返回:
+```
+[
+   [5,4,11,2],
+   [5,8,4,5]
+]
+```
+2021.04.10
+
+---
+这题感觉有点难。。但也不是不能做，其实根dfs思路差不多，既然要求的路径是从根结点到叶子结点的，就可以深度优先搜索每一种可能的路径，如果结果正好等于要求的数字，则保存并返回。
+关于dfs递归函数，首先判断终止情况，一种是失败，当根结点为null的时候返回，否则就先把这个结点加在path上。另一种终止情况是成功，当到达叶子结点的时候，判断一下是否已经达成所需目标数字，是的话就把整条path加到结果集中。然后进行剪枝回溯，回到上一层。
+
+判断完了终止情况就是函数中的主体情况，递归它的左子树和右子树，都递归完了就从path中把自己移出即可。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int target) {
+        List<List<Integer>> result = new LinkedList<>();
+        dfs(root, target, new LinkedList<>(), result);
+        return result;
+    }
+    private void dfs(TreeNode root, int rest,List<Integer> path, List<List<Integer>> result){
+        if (root == null) return;
+        path.add(root.val);
+        if (root.left == null && root.right == null){
+            if (rest == root.val) {
+                result.add(new LinkedList<>(path));
+                path.remove(path.size() - 1);
+                return;
+            }
+        }
+        dfs(root.left, rest - root.val, path, result);
+        dfs(root.right, rest - root.val, path, result);
+        path.remove(path.size() - 1);
     }
 }
 ```
