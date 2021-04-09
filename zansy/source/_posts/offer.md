@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210409 更新/2）
+title: 剑指offer刷题记录（20210409 更新/3）
 
 author: zansy
 
@@ -53,8 +53,6 @@ class Solution {
 [重建二叉树](https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/)
 
 输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
-
- 
 
 例如，给出
 ```
@@ -112,6 +110,83 @@ class Solution {
             }
         }
         return root;
+    }
+}
+```
+## 26. 树的子结构（medium）
+[树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+
+例如:
+给定的树 A:
+```
+     3
+    / \
+   4   5
+  / \
+ 1   2
+```
+给定的树 B：
+```
+   4 
+  /
+ 1
+```
+返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。
+
+示例 1：
+```
+输入：A = [1,2,3], B = [3,1]
+输出：false
+```
+示例 2：
+```
+输入：A = [3,4,5,1,2], B = [4,1]
+输出：true
+```
+2021.04.09
+
+---
+用递归做。
+
+先从根结点对比，看是否AB树相同，这里涉及到一个新的函数isEqual，同样也是递归，如果B树递归到了叶结点还没有因为终止条件被返回false，就说明之前的结点都是相同的，可以返回true，说明B树和A树相同。否则，如果A树到了叶子结点，而B树没有，则说明B必不是A的子树，返回false。如果都没有到叶子结点，就继续比较左右子树。
+
+这时回到主函数，因为会出现情况一个结点对上了但左右子树没对上，因此需要继续针对A结点的别的子树进行递归找到和B树根结点相同的结点，继续进行比较。
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+        boolean result = false;
+        if (A != null && B != null){
+            if (A.val == B.val){
+                result = isEqual(A, B);
+            }
+            if (!result){
+                result = isSubStructure(A.left, B);
+            }
+            if (!result){
+                result = isSubStructure(A.right, B);
+            }
+        }
+
+        return result;
+    }
+    private boolean isEqual(TreeNode A, TreeNode B) {
+        if (B == null) return true;
+        if (A == null || A.val != B.val)
+            return false;
+        return isEqual(A.left, B.left) && isEqual(A.right, B.right);
     }
 }
 ```
