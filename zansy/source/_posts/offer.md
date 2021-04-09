@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/7）
+title: 剑指offer刷题记录（20210410 更新/8）
 
 author: zansy
 
@@ -403,6 +403,74 @@ class Solution {
 >队列先存入根结点，然后循环判断队列是否为空，不为空则进入循环，取出根结点并记录，队列存入其左右子树。
 
 和前一题差不多，唯一区别就是增加一个for循环，先算出queue的size，然后循环这个树，把每层的保存下来。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (root != null){
+            LinkedList<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+            while (queue.size() != 0){
+                LinkedList<Integer> layer = new LinkedList<>();
+                int layers = queue.size();
+                for (int i = 0; i < layers; i++){
+                    TreeNode temp = queue.poll();
+                    layer.add(temp.val);
+                    if (temp.left != null) queue.add(temp.left);
+                    if (temp.right != null) queue.add(temp.right);
+                }
+                result.add(layer);
+            }
+        }
+        return result;
+    }
+}
+```
+
+## 32. III. 从上到下打印二叉树 III（medium）
+[III. 从上到下打印二叉树 III](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回其层次遍历结果：
+```
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+```
+2021.04.10
+
+---
+>难得一题不用递归的树题。。只要想到用队列先进先出地保存树的左右子树然后分别取出再保存它们各自的左右子树以后，这题就很好做了。
+
+>队列先存入根结点，然后循环判断队列是否为空，不为空则进入循环，取出根结点并记录，队列存入其左右子树。
+
+>(2)和前一题差不多，唯一区别就是增加一个for循环，先算出queue的size，然后循环这个树，把每层的保存下来。
+
+在（2）的基础上再增加一笔，判断result中已经加了的层次是否是偶数，如果是偶数说明当前正在保存的层数是奇数层，因此将结点以addLast函数保存；否则以addFirst函数保存。
+
+不用想得太复杂，要知道所有的题都可以靠观察和用笔画下来以帮助理解和编码，例如第二题中以层数型展示，就应该想到能不能保存层数，正好queue里每次都是当前层的结点，就可以循环queue的当前个数。例如这题要之字型，实际上就是保存结果的方式不一样，一个从尾部推进当前结点，一个从头部推进当前结点。判断奇偶数也可以用观察result中的size判断。
 
 ```java
 /**
