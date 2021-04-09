@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210409 更新/4）
+title: 剑指offer刷题记录（20210409 更新/5）
 
 author: zansy
 
@@ -219,11 +219,8 @@ class Solution {
 2021.04.09
 
 ---
-用递归做。
-
-先从根结点对比，看是否AB树相同，这里涉及到一个新的函数isEqual，同样也是递归，如果B树递归到了叶结点还没有因为终止条件被返回false，就说明之前的结点都是相同的，可以返回true，说明B树和A树相同。否则，如果A树到了叶子结点，而B树没有，则说明B必不是A的子树，返回false。如果都没有到叶子结点，就继续比较左右子树。
-
-这时回到主函数，因为会出现情况一个结点对上了但左右子树没对上，因此需要继续针对A结点的别的子树进行递归找到和B树根结点相同的结点，继续进行比较。
+遇到树就用递归吧
+先判断root是不是null，null的话不存在左右子树直接返回就ok。然后开始交换左右子树，然后如果左子树存在就递归到左子树，如果右子树存在就递归到右子树。
 ```java
 /**
  * Definition for a binary tree node.
@@ -235,27 +232,81 @@ class Solution {
  * }
  */
 class Solution {
-    public boolean isSubStructure(TreeNode A, TreeNode B) {
-        boolean result = false;
-        if (A != null && B != null){
-            if (A.val == B.val){
-                result = isEqual(A, B);
-            }
-            if (!result){
-                result = isSubStructure(A.left, B);
-            }
-            if (!result){
-                result = isSubStructure(A.right, B);
-            }
+    public TreeNode mirrorTree(TreeNode root) {
+        if (root != null) {
+            TreeNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+            if (root.left != null) mirrorTree(root.left);
+            if (root.right != null) mirrorTree(root.right);
         }
-
-        return result;
+        return root;
     }
-    private boolean isEqual(TreeNode A, TreeNode B) {
-        if (B == null) return true;
-        if (A == null || A.val != B.val)
-            return false;
-        return isEqual(A.left, B.left) && isEqual(A.right, B.right);
+}
+```
+
+## 28. 对称的二叉树（easy）
+[对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+```
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+```
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+```
+    1
+   / \
+  2   2
+   \   \
+   3    3
+```
+示例 1：
+```
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+```
+示例 2：
+```
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+```
+2021.04.09
+
+---
+这题其实和之前的镜面翻转挺像的。。
+
+总之看到二叉树先考虑递归递归递归！
+
+因为这棵对称二叉树其实不用考虑根结点，那么其实就是看它的左右子树是否是镜面对称的就ok，那么可以新引入一个函数isMirror分析且方便递归。
+
+函数就可以思考返回值处理，如果是完全镜面的情况，那么二者都会走到叶子结点，否则，如果其中一方先走到叶子结点或者结点上的值不相等则都会返回false，最后分别递归对比左树的左子树和右树的右子树以及左树的右子树和右树的左子树即可。
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root != null) return isMirror(root.left, root.right);
+        return true;
+    }
+    boolean isMirror(TreeNode left, TreeNode right){
+        if (left == null && right == null) return true;
+        if (left == null && right != null) return false;
+        if (left != null && right == null) return false;
+        if (left.val != right.val) return false;
+        return isMirror(left.left, right.right)&&isMirror(left.right, right.left);
     }
 }
 ```
