@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/15）
+title: 剑指offer刷题记录（20210410 更新/16）
 
 author: zansy
 
@@ -1003,3 +1003,43 @@ class Solution {
 }
 ```
 
+## 04. 二维数组中的查找（medium）
+[二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
+
+在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+示例:
+```
+现有矩阵 matrix 如下：
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+给定 target = 5，返回 true。
+给定 target = 20，返回 false。
+```
+2021.04.10
+
+---
+做完了树再做这些简直就像在切菜。。
+
+说是medium但其实只要按照数组的规律去找就很方便。通过这个数组，可以根据二叉查找想到，每次比较最右上角的那个树，如果target比它大就下沉一行寻找，否则就往左获得新的比较数，直到找出那个数为止。
+
+但这里要注意while的条件，不是找出这个树，而是数组越界的时候退出。证明数组找完了都没有，返回false就ok。
+```java
+class Solution {
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return false;
+        int rows = matrix.length, cols = matrix[0].length, startRow = 0, startCol = cols - 1;
+        while (startCol >= 0 && startRow < rows){
+            if (matrix[startRow][startCol] == target) return true;
+            else if (matrix[startRow][startCol] > target) startCol--;
+            else startRow++;
+        }
+        return false;
+    }
+}
+```
