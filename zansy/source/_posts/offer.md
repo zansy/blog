@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/14）
+title: 剑指offer刷题记录（20210410 更新/15）
 
 author: zansy
 
@@ -923,6 +923,82 @@ class Solution {
             else if (root.val < Math.min(p.val, q.val)) return lowestCommonAncestor(root.right, p, q);
         }
         return root;
+    }
+}
+```
+
+## 68. II. 二叉树的最近公共祖先（easy）
+[II. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+
+定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]
+
+![pic](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png)
+
+示例 1:
+```
+输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+输出: 3
+解释: 节点 5 和节点 1 的最近公共祖先是节点 3。
+```
+示例 2:
+```
+输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+输出: 5
+解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。
+```
+2021.04.10
+
+---
+这题也一点儿不简单。。如果有针对父节点的指针的话就是一道求两个链表的公共结点的题，可以用两个指针同时走两个链表的长度，相交的时候就是公共结点。
+
+但这里没有针对父结点的指针，先考虑递归。
+递归函数想三个要点：
+1. 结束条件。
+
+当root为null的时候结束，返回null。
+当左子树和右子树分别找到给出的两个结点，这样当前root结点肯定肯定是最小公共结点（可以画一画）。
+
+2. 递归主体处理。
+
+设置left和right两个递归，判断left和right中是否存在这样两个给出的结点。
+
+3. 返回值
+
+针对left和right有多种情况，如果left找到了p或者right找到了q，那就直接返回这个结点表示找到了。
+
+如果一方没找到，那就返回另一方。
+
+如果都没找到，就返回null。
+
+----
+另外还可以用hashmap做，遍历每个结点并存储下它的父节点，然后用一个set存储两个结点之一的一个结点的所有父系结点。最后遍历另一个结点的父系结点，如果有存在于set中就直接返回。
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) return null;
+        if (root == p || root == q) return root;
+        TreeNode ifLeftExists = lowestCommonAncestor(root.left, p, q);
+        TreeNode ifRightExists = lowestCommonAncestor(root.right, p, q);
+        if (ifLeftExists == null && ifRightExists != null)
+            return ifRightExists;
+        if (ifRightExists == null && ifLeftExists != null)
+            return ifLeftExists;
+        if (ifLeftExists != null && ifRightExists != null) 
+            return root;
+        return null;
     }
 }
 ```
