@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/10）
+title: 剑指offer刷题记录（20210410 更新/11）
 
 author: zansy
 
@@ -573,6 +573,93 @@ class Solution {
         path.remove(path.size() - 1);
     }
 }
+```
+
+## 37. 序列化二叉树（hard）
+[序列化二叉树](https://leetcode-cn.com/problems/xu-lie-hua-er-cha-shu-lcof/)
+
+请实现两个函数，分别用来序列化和反序列化二叉树。
+
+示例: 
+```
+你可以将以下二叉树：
+
+    1
+   / \
+  2   3
+     / \
+    4   5
+
+序列化为 "[1,2,3,null,null,4,5]"
+```
+2021.04.10
+
+---
+这题其实感觉主要是字符串处理？然后比较麻烦的是反序列。
+
+通过观察可以看出，序列化其实就是之前的从上到下打印二叉树中的每个结点。继续用那个方法做就ok了，唯一的区别是如果treeNode是null的时候，例如左右子树不存在，那就可以用stringBuilder的append方法写上null，完了之后做一下字符串处理就可以。
+
+反序列化有点麻烦，需要把数组中每个数字读出来，第一个数字是根结点，就先把建立起的根结点放入队列。遇到null的时候就跳过这一string数组的值。例如题中正常建立完根结点1和它的左右子树2，3后，2，3又存入队列中，首先弹出的是2，但是之后连续的两个都是null，那就再弹出3，建立它的左右子树。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null) return "[]";
+        StringBuilder result = new StringBuilder("[");
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (queue.size() != 0){
+            TreeNode treeNode = queue.poll();
+            if (treeNode != null){
+                result.append(treeNode.val+",");
+                queue.add(treeNode.left);
+                queue.add(treeNode.right);
+            }else result.append("null,");
+        }
+        result.deleteCharAt(result.length() - 1);
+        result.append("]");
+        return result.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data.equals("[]")) return null;
+        String[] values = data.substring(1, data.length() - 1).split(",");
+        TreeNode treeNode = new TreeNode(Integer.parseInt(values[0]));
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(treeNode);
+        int i = 1;
+        while (queue.size() != 0){
+            TreeNode node = queue.poll();
+            if (!values[i].equals("null")){
+                node.left = new TreeNode(Integer.parseInt(values[i]));
+                queue.add(node.left);
+            }
+            i++;
+            if (!values[i].equals("null")){
+                node.right = new TreeNode(Integer.parseInt(values[i]));
+                queue.add(node.right);
+            }
+            i++;
+        }
+        return treeNode;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
 ```
 
 ## 54. 二叉搜索树的第k大节点（easy）
