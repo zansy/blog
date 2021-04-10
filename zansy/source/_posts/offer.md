@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/13）
+title: 剑指offer刷题记录（20210410 更新/14）
 
 author: zansy
 
@@ -865,6 +865,64 @@ class Solution {
         
         if (Math.abs(left - right) > 1) depth =  -1;
         return depth;
+    }
+}
+```
+
+## 68. 二叉搜索树的最近公共祖先（easy）
+[二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+
+![pic](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/binarysearchtree_improved.png)
+
+示例 1:
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+```
+示例 2:
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+```
+2021.04.10
+
+---
+无语死啦这题我也觉得不能算简单。。。这难度和那些按层打印二叉树的显然不一样啊。
+
+既然题目里给出的是二叉搜索树，首先要想到的是二叉搜索树的特点：每个结点上的左子树小于它本身，右子树大于它本身。
+
+通过观察很容易就能发现，如果一个结点处在给出的两个结点值的中间，说明这个结点就是他们的最近公共祖先。
+
+想到这后面就很好写了，只要判断当前结点是否是两个给出结点的中间就行了，是的话就返回，不是的话就转成它的左或者右子树继续判断。
+
+注意要return要return！就算是转到左右子树也要return！
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root != null) {
+            if (root.val >= Math.min(p.val, q.val) && root.val <= Math.max(p.val, q.val)) return root;
+            else if (root.val > Math.max(p.val, q.val)) return lowestCommonAncestor(root.left, p, q);
+            else if (root.val < Math.min(p.val, q.val)) return lowestCommonAncestor(root.right, p, q);
+        }
+        return root;
     }
 }
 ```
