@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/12）
+title: 剑指offer刷题记录（20210410 更新/13）
 
 author: zansy
 
@@ -748,37 +748,27 @@ class Solution {
 }
 ```
 
-## 54. 二叉搜索树的第k大节点（easy）
-[二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
+## 55. I. 二叉树的深度（easy）
+[I. 二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
 
-给定一棵二叉搜索树，请找出其中第k大的节点。
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
 
-示例 1:
+例如：
+
+给定二叉树 [3,9,20,null,null,15,7]，
 ```
-输入: root = [3,1,4,null,2], k = 1
-   3
-  / \
- 1   4
-  \
-   2
-输出: 4
+    3
+   / \
+  9  20
+    /  \
+   15   7
 ```
-示例 2:
-```
-输入: root = [5,3,6,2,4,null,null,1], k = 3
-       5
-      / \
-     3   6
-    / \
-   2   4
-  /
- 1
-输出: 4
-```
+返回它的最大深度 3 。
+
 2021.04.10
 
 ---
-自己动手画一画，想到先右子树再根再左子树就很好做了。设立一个函数遍历，我最开始是用一个list存下来遍历的每个结点的值，因为是二叉搜索树，所以其实存下来就是一个递减序列，那么第k大就直接返回list的第k个数字就ok。
+这题其实就是分层打印二叉树的分支题，只要额外加个result就ok，每到新的一层就++。
 
 ```java
 /**
@@ -791,16 +781,91 @@ class Solution {
  * }
  */
 class Solution {
-    public int kthLargest(TreeNode root, int k) {
-        LinkedList<Integer> re = gothrough(root, new LinkedList<>());
-        return re.get(k - 1);
-    }
-    LinkedList<Integer> gothrough(TreeNode root, LinkedList<Integer> result){
-        if (root == null) return result;
-        gothrough(root.right, result);
-        result.add(root.val);
-        gothrough(root.left, result);
+    public int maxDepth(TreeNode root) {
+        int result = 0;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        if (root != null){
+            queue.add(root);
+            while (queue.size() != 0){
+                int layerNodeNum = queue.size();
+                for (int i = 0; i < layerNodeNum; i++){
+                    TreeNode temp = queue.poll();
+                    if (temp.left != null)queue.add(temp.left);
+                    if (temp.right != null)queue.add(temp.right);
+                }
+                result++;
+            }
+        }
         return result;
     }
 }
 ```
+
+## 55. II. 平衡二叉树（easy）
+[II. 平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
+
+输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+示例 1:
+```
+给定二叉树 [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+```
+示例 2:
+```
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+```
+2021.04.10
+
+---
+这题凭什么算简单啊，我觉得挺难的呀。。至少也得是个medium吧，一般人就算是画图也想不到是自底向上呀。
+
+这题判断二叉树是否平衡，可以分解为它的左右子树之间的高度差是否没有超过1。既然要算高度，那当然要写一个函数算一个树的高度了。这个函数是个递归函数，因为求一个树的高度得求它的左右子树的高度。函数先判断返回值，如果为null的时候是个空树，没有高度，返回0。否则就是它的左右子树的最大值+1（它本身的层）。到了这一步一个计算高度的函数已经完成了。
+但是如果在计算的过程中，发现了左右子树相差比较大，那其实它自己当前的高度是多少已经不重要了，因为这一题问的是是否平衡二叉树，而不是具体问树的高度。因此，如果在计算高度的过程中，发现自己就是个不平衡二叉树，那就返回-1。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null)return true;
+        if (treeDepth(root) != -1)return true;
+        else return false;
+    }
+    private int treeDepth(TreeNode root){
+        if (root == null) return 0;
+        int left = treeDepth(root.left);
+        int right = treeDepth(root.right);
+        int depth = 0;
+        
+        if (left != -1 && right != -1) depth = Math.max(left, right) + 1;
+        else depth = -1;
+        
+        if (Math.abs(left - right) > 1) depth =  -1;
+        return depth;
+    }
+}
+```
+
