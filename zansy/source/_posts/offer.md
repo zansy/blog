@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/16）
+title: 剑指offer刷题记录（20210410 更新/17）
 
 author: zansy
 
@@ -1003,7 +1003,7 @@ class Solution {
 }
 ```
 
-## 04. 二维数组中的查找（medium）
+## 4. 二维数组中的查找（medium）
 [二维数组中的查找](https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/)
 
 在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
@@ -1042,4 +1042,49 @@ class Solution {
         return false;
     }
 }
+```
+
+## 5. 替换空格（easy）
+[替换空格](https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/)
+
+请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+
+示例 1：
+```
+输入：s = "We are happy."
+输出："We%20are%20happy."
+```
+2021.04.10
+
+---
+这道题用库函数replaceAll是真的没意思，剑指Offer上为C语言提供了一种方法，先把字符串中所有的空格统计出来，那么更改后的字符串长度就应该在原先的基础上再加空格数*2。
+
+然后用两个指针，一个指针1指向扩展后的字符串最后一位，另一个指针2指向原先字符串的最后一位，指针1复制指针2的内容，如果指针2是空格的话，指针1自行修改为%20，并往前跳三步。
+
+两个指针在他们相遇的时候停止，这说明前面已经没有要替换的空格了。
+```C++
+class Solution {
+public:
+    string replaceSpace(string s) {
+        int count = 0, len = s.size();
+        // 统计空格数量
+        for (char c : s) {
+            if (c == ' ') count++;
+        }
+        // 修改 s 长度
+        s.resize(len + 2 * count);
+        // 倒序遍历修改
+        for(int i = len - 1, j = s.size() - 1; i < j; i--, j--) {
+            if (s[i] != ' ')
+                s[j] = s[i];
+            else {
+                s[j - 2] = '%';
+                s[j - 1] = '2';
+                s[j] = '0';
+                j -= 2;
+            }
+        }
+        return s;
+    }
+};
 ```
