@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210411 更新/20）
+title: 剑指offer刷题记录（20210411 更新/21）
 
 author: zansy
 
@@ -1218,35 +1218,60 @@ F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
 基础的斐波那契数列，可以用递归，也可以用动态规划一维数组。
 另外看到一个有意思的解法，不用数组 只用ab两个数代表所求数字的前两位，另外再来个sum数算作它俩的和，然后不停往下挪舍去a中的数字，a变成原来的b，b变成原来的sum，继续求接下去的sum。
 ```Java
-class CQueue {
-    LinkedList<Integer> addStack, deleteStack;
-    public CQueue() {
-        addStack =  new LinkedList<>();
-        deleteStack = new LinkedList<>();
-    }
-    
-    public void appendTail(int value) {
-        addStack.push(value);
-    }
-    
-    public int deleteHead() {
-        if (deleteStack.size() != 0) {
-            return deleteStack.pop();
-        }
-        else if (addStack.size() != 0){
-            while (addStack.size() != 0){
-                deleteStack.push(addStack.pop());
+class Solution {
+    public int fib(int n) {
+        if (n > 0){
+            int[] dic = new int[n + 1];
+            dic[0] = 0; dic[1] = 1;
+            for (int i = 2; i < dic.length; i++){
+                dic[i] = dic[i - 1] + dic[i - 2];
+                if (dic[i] > 1000000007) dic[i] %= 1000000007;
             }
-            return deleteStack.pop();
+            return dic[n];
         }
-        else return -1;
+        return 0;
     }
 }
+```
+## 10. II. 青蛙跳台阶问题（easy）
+[II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
 
-/**
- * Your CQueue object will be instantiated and called as such:
- * CQueue obj = new CQueue();
- * obj.appendTail(value);
- * int param_2 = obj.deleteHead();
- */
+一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+示例 1：
+```
+输入：n = 2
+输出：2
+```
+示例 2：
+```
+输入：n = 7
+输出：21
+```
+示例 3：
+```
+输入：n = 0
+输出：1
+```
+2021.04.11
+
+---
+因为其实和上一题一模一样，就用了上面提到的比较有趣的解法。
+
+剑指offer里还提到另一个变形题，如果一只青蛙可以跳1级2级3级4级...n级，请问跳n级台阶有几种可能。这个根据数学归纳法可得是2^(n-1)。
+
+```Java
+class Solution {
+    public int numWays(int n) {
+        int a = 0, b = 1, sum = 0;
+        while (n-- >= 0){
+            sum = (a + b)%1000000007;
+            a = b;
+            b = sum;
+        }
+        return a;
+    }
+}
 ```
