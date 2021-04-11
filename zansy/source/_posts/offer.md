@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210411 更新/19）
+title: 剑指offer刷题记录（20210411 更新/20）
 
 author: zansy
 
@@ -1133,8 +1133,6 @@ class Solution {
 
 用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )
 
- 
-
 示例 1：
 ```
 输入：
@@ -1159,6 +1157,66 @@ class Solution {
 举例，当需要删除的时候，首先看栈B是否为空，如果为空，那就把栈A中添加的`[abc`添加到栈B成为`abc]`，此时再弹出栈B最顶上的元素就可以实现a的先进先出。
 之后对于bc的取，只要关注当栈B不为空直接返回栈B最顶上元素即可。
 特殊情况，如果在弹出a后又加入了d，但此时d并不需要被先推出，因此，仍要等到栈B为空了再由栈A将d送入栈B中再推出。
+```Java
+class CQueue {
+    LinkedList<Integer> addStack, deleteStack;
+    public CQueue() {
+        addStack =  new LinkedList<>();
+        deleteStack = new LinkedList<>();
+    }
+    
+    public void appendTail(int value) {
+        addStack.push(value);
+    }
+    
+    public int deleteHead() {
+        if (deleteStack.size() != 0) {
+            return deleteStack.pop();
+        }
+        else if (addStack.size() != 0){
+            while (addStack.size() != 0){
+                deleteStack.push(addStack.pop());
+            }
+            return deleteStack.pop();
+        }
+        else return -1;
+    }
+}
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * CQueue obj = new CQueue();
+ * obj.appendTail(value);
+ * int param_2 = obj.deleteHead();
+ */
+```
+
+## 10. I. 斐波那契数列（easy）
+[I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+
+写一个函数，输入 n ，求斐波那契（Fibonacci）数列的第 n 项（即 F(N)）。斐波那契数列的定义如下：
+
+F(0) = 0,   F(1) = 1
+F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
+斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+示例 1：
+```
+输入：n = 2
+输出：1
+```
+示例 2：
+```
+输入：n = 5
+输出：5
+```
+2021.04.11
+
+---
+基础的斐波那契数列，可以用递归，也可以用动态规划一维数组。
+另外看到一个有意思的解法，不用数组 只用ab两个数代表所求数字的前两位，另外再来个sum数算作它俩的和，然后不停往下挪舍去a中的数字，a变成原来的b，b变成原来的sum，继续求接下去的sum。
 ```Java
 class CQueue {
     LinkedList<Integer> addStack, deleteStack;
