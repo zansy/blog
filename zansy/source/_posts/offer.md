@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210410 更新/18）
+title: 剑指offer刷题记录（20210411 更新/19）
 
 author: zansy
 
@@ -1126,4 +1126,69 @@ class Solution {
         return result;
     }
 }
+```
+
+## 9. 用两个栈实现队列（easy）
+[用两个栈实现队列](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
+
+用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )
+
+ 
+
+示例 1：
+```
+输入：
+["CQueue","appendTail","deleteHead","deleteHead"]
+[[],[3],[],[]]
+输出：[null,null,3,-1]
+```
+示例 2：
+```
+输入：
+["CQueue","deleteHead","appendTail","appendTail","deleteHead","deleteHead"]
+[[],[],[5],[2],[],[]]
+输出：[null,-1,null,null,5,2]
+```
+2021.04.11
+
+---
+这题读懂了题意以后会好做很多，输入的第一组的每一个元素对应第二组的每一格元素，可以看到append的时候不需要输出，delete的时候如果存在元素则返回该元素，否则返回-1。
+
+用两个栈模拟队列，栈的特点是先进后出，队列的特点是先进先出，这个时候一定要画图，画了图以后通过观察和设计，需要掌握一个关键点：两个栈，一个栈A用于添加操作，另一个栈B用于删除操作。
+
+举例，当需要删除的时候，首先看栈B是否为空，如果为空，那就把栈A中添加的`[abc`添加到栈B成为`abc]`，此时再弹出栈B最顶上的元素就可以实现a的先进先出。
+之后对于bc的取，只要关注当栈B不为空直接返回栈B最顶上元素即可。
+特殊情况，如果在弹出a后又加入了d，但此时d并不需要被先推出，因此，仍要等到栈B为空了再由栈A将d送入栈B中再推出。
+```Java
+class CQueue {
+    LinkedList<Integer> addStack, deleteStack;
+    public CQueue() {
+        addStack =  new LinkedList<>();
+        deleteStack = new LinkedList<>();
+    }
+    
+    public void appendTail(int value) {
+        addStack.push(value);
+    }
+    
+    public int deleteHead() {
+        if (deleteStack.size() != 0) {
+            return deleteStack.pop();
+        }
+        else if (addStack.size() != 0){
+            while (addStack.size() != 0){
+                deleteStack.push(addStack.pop());
+            }
+            return deleteStack.pop();
+        }
+        else return -1;
+    }
+}
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * CQueue obj = new CQueue();
+ * obj.appendTail(value);
+ * int param_2 = obj.deleteHead();
+ */
 ```
