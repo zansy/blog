@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210413 更新/22）
+title: 剑指offer刷题记录（20210414 更新/23）
 
 author: zansy
 
@@ -1299,14 +1299,75 @@ class Solution {
 
 ```Java
 class Solution {
-    public int numWays(int n) {
-        int a = 0, b = 1, sum = 0;
-        while (n-- >= 0){
-            sum = (a + b)%1000000007;
-            a = b;
-            b = sum;
+    public int minArray(int[] numbers) {
+        int start = 0, end = numbers.length - 1;
+        while (start <= end){
+            int mid = (end - start) / 2 + start;
+            if (numbers[mid] > numbers[end]) start = mid + 1;
+            else if (numbers[mid] < numbers[end])end = mid;
+            else end = end - 1;
         }
-        return a;
+        return numbers[start];
+    }
+}
+```
+
+## 12. 矩阵中的路径（medium）
+[矩阵中的路径](https://leetcode-cn.com/problems/ju-zhen-zhong-de-lu-jing-lcof/)
+
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+例如，在下面的 3×4 的矩阵中包含单词 "ABCCED"（单词中的字母已标出）。
+
+示例 1：
+```
+输入：board = [
+    ["A","B","C","E"],
+    ["S","F","C","S"],
+    ["A","D","E","E"]
+], word = "ABCCED"
+输出：true
+```
+示例 2：
+```
+输入：board = [
+    ["a","b"],
+    ["c","d"]
+], word = "abcd"
+输出：false
+```
+2021.04.14
+
+---
+这题以前做过，回溯剪枝
+要把握好回溯算法的边界值、空值、基础错误值和回溯主体，最最重要别忘了回溯的时候把痕迹都还原
+
+```Java
+class Solution {
+    public boolean exist(char[][] board, String word) {
+        if (board.length > 0){
+            boolean[][] visited = new boolean[board.length][board[0].length];
+            for (int i = 0; i < board.length; i++){
+                for (int j = 0; j < board[0].length; j++){
+                    if (existRecursive(board, i, j, word, 0, visited)) return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean existRecursive(char[][] board, int row, int col, String word, int index, boolean[][] visited){
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) return false;
+        if (visited[row][col] == true || board[row][col] != word.charAt(index))return false;
+        if (index == word.length() - 1)return true;
+        visited[row][col] = true;
+        if (existRecursive(board, row - 1, col, word, index + 1, visited) == true) return true;
+        if (existRecursive(board, row + 1, col, word, index + 1, visited) == true) return true;
+        if (existRecursive(board, row, col + 1, word, index + 1, visited) == true) return true;
+        if (existRecursive(board, row, col - 1, word, index + 1, visited) == true) return true;
+        visited[row][col] = false;
+        return false;
     }
 }
 ```
