@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210414]5 更新/24）
+title: 剑指offer刷题记录（20210414]6 更新/26）
 
 author: zansy
 
@@ -1416,6 +1416,85 @@ class Solution {
         visited[row][col] = true;
         int sum = 1 + dfs(a, b, k, col + 1, row, visited) + dfs(a, b, k, col, row + 1,visited);
         return sum;
+    }
+}
+```
+
+## 14. I. 剪绳子（medium）
+[I. 剪绳子](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/)
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+示例 1：
+```
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+```
+示例 2:
+```
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+```
+2021.04.15
+
+---
+比较难。动态规划的重点就是当前的目标结果可以通过之前的最优结果推的，用这个思路去想问题。
+
+```Java
+class Solution {
+    public int cuttingRope(int n) {
+        int[] dp = new int[n + 1];
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++){
+            int maxValue = 0;
+            for (int j = 2; j < i; j++){
+                int value = Math.max(j * (i - j), j * dp[i - j]);
+                if (value > maxValue) maxValue = value;
+            }
+            dp[i] = maxValue;
+        }
+        return dp[n];
+    }
+}
+```
+
+## 14. II. 剪绳子 II（medium）
+[II. 剪绳子 II](https://leetcode-cn.com/problems/jian-sheng-zi-ii-lcof/)
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m - 1] 。请问 k[0]*k[1]*...*k[m - 1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+示例 1：
+```
+输入: 2
+输出: 1
+解释: 2 = 1 + 1, 1 × 1 = 1
+```
+示例 2:
+```
+输入: 10
+输出: 36
+解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36
+```
+2021.04.16
+
+---
+贪心算法，每次剪3的时候乘积最大。因为大数会溢出，每次乘剪下来的3的时候都会，因此每次都要取余数。
+最后还剩下1，2，3，4；4的话最优解答案也是4，因此不必管，都乘以剩下的本身就ok。
+
+```Java
+class Solution {
+    public int cuttingRope(int n) {
+        if (n <= 3) return n - 1;
+        long result = 1;
+        while (n > 4){
+            result = result * 3 % 1000000007;
+            n -= 3;
+        }
+        return (int)(result * n % 1000000007);
     }
 }
 ```
