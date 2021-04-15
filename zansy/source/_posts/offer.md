@@ -1,4 +1,4 @@
-title: 剑指offer刷题记录（20210414]6 更新/27）
+title: 剑指offer刷题记录（20210414]6 更新/28）
 
 author: zansy
 
@@ -1538,6 +1538,53 @@ public class Solution {
             n >>>= 1;
         }
         return result;
+    }
+}
+```
+
+## 16. 数值的整数次方（medium）
+[数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
+
+实现 pow(x, n) ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题。
+
+示例 1：
+```
+输入：x = 2.00000, n = 10
+输出：1024.00000
+```
+示例 2：
+```
+输入：x = 2.10000, n = 3
+输出：9.26100
+```
+示例 3：
+```
+输入：x = 2.00000, n = -2
+输出：0.25000
+解释：2-2 = 1/22 = 1/4 = 0.25
+```
+2021.04.16
+
+---
+考虑两个输入的数字的不同的可能性，指数n为0的时候应该返回1.0，base数x为0的时候应该返回0。
+另外还要考虑到指数n为负数的情况，这个时候就是1.0/result；
+注意指数既然要取反的话，要注意用long，因为当n = -2147483648, n = −n, 会越界。
+
+```Java
+class Solution {
+    public double myPow(double x, int n) {
+        long nLong = (long)n;
+        if (n == 0) return 1.0;
+        if (x == 0) return 0.0;
+        if (n < 0){
+            return 1.0 / core(x, -nLong);
+        }else return core(x, nLong);
+
+    }
+    private double core(double x, long n){
+        if (n == 1) return x;
+        if (n % 2 == 0) return core(x*x, n / 2);
+        else return core(x*x, n/2) * x;
     }
 }
 ```
