@@ -1,4 +1,4 @@
-title: Apache Kafka Notes
+title: Apache Kafka Notes(2021/07/08 updated)
 author: zansy
 tags:
   - 唯有爱与工作不可辜负
@@ -14,3 +14,5 @@ Kafka combines three key capabilities so you can implement your use cases for ev
 - To publish (write) and subscribe to (read) streams of events, including continuous import/export of your data from other systems.
 - To store streams of events durably and reliably for as long as you want.
 - To process streams of events as they occur or retrospectively.
+
+And all this functionality is provided in a distributed, highly scalable, elastic, fault-tolerant, and secure manner. Kafka can be deployed on bare-metal hardware, virtual machines, and containers, and on-premises as well as in the cloud.
