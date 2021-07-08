@@ -47,7 +47,7 @@ public class ExcelHelperTest {
 }
 ```
 ### 结果
-![导出效果图](/images/pasted-10.png)
+![导出效果图](images/pasted-10.png)
 
 ### Maven
 ```

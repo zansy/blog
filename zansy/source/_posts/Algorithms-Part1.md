@@ -28,7 +28,7 @@ Notes from https://www.coursera.org/learn/algorithms-part1/
   - Interpretation: p and q are connected iff they have the same id.
 
 
-![0, 5 and 6 are connected](/images/image-20190608222745616.png)
+![0, 5 and 6 are connected](images/image-20190608222745616.png)
 
 - **Find**: Check if p and q have the same id.
 - **Union**: To merge components containing p and q, <font color = "red">change all entries whose id equals id[p] to id[q]</font>.
@@ -65,7 +65,7 @@ public class QuickFindUF{
   - Interpretation: id[i] is parent of i.
   - Root of i is id[id[id[...id[i]...]]].(keep going until it doesn’t change)
 
-![root of 3 is 9](/images/image-20190608224811928.png)
+![root of 3 is 9](images/image-20190608224811928.png)
 - **Find**. Check if p and q have the same root.
 - **Union**. To merge components containing p and q, <font color = 'red'>set the id of p's root to the id of q's root</font>.
 ### Java implementation
@@ -103,7 +103,7 @@ public class QuickUnionUF {
   - Keep track of size of each tree (number of objects).
   - Balance by linking root of smaller tree to root of larger tree.
 
-![weighted](/images/image-20190619143633671.png)
+![weighted](images/image-20190619143633671.png)
 
 - **Data structure**: Same as quick-union, but <font color = "red">maintain extra array sz[i] to count number of objects in the tree rooted at i</font>.
 
@@ -130,9 +130,9 @@ public class QuickUnionUF {
 
 - **Quick union with path compression**. Just after computing the root of p, set the id of each examined node to point to that root.
 
-![before](/images/image-20190619163705844.png)
+![before](images/image-20190619163705844.png)
 
-![after](/images/image-20190619163733989.png)
+![after](images/image-20190619163733989.png)
 
 - **Two-pass implementation**: <font color = 'red'>add second loop to root() to set the id[] of each examined node to the root</font>.
 - **Simpler one-pass variant**: Make every other node in path point to its<font color = 'red'> grandparent (thereby halving path length)</font>.
@@ -156,7 +156,7 @@ private int root(int i){
   - Each site is open with probability p (or blocked with probability 1 – p).
   - System percolates <u>iff top and bottom are connected by open sites</u>.
 
-![Percolation](/images/image-20190620022258204.png)
+![Percolation](images/image-20190620022258204.png)
 
 - Monte Carlo simulation:
   - Initialize N-by-N whole grid to be blocked.
@@ -168,16 +168,16 @@ private int root(int i){
   - Sites are in same component if connected by open sites.
   - Percolates iff any site on bottom row is connected to site on top row. (<font color = 'red'>brute-force algorithm: N<sup>2</sup> calls to connected()</font>)
 
-![check whether an N-by-N system percolates](/images/image-20190620022753355.png)
+![check whether an N-by-N system percolates](images/image-20190620022753355.png)
 
 - UPDATE: **Introduce 2 virtual sites** (and connections to top and bottom). Percolates iff virtual top site is connected to virtual bottom site. (<font color ='red'>efficient algorithm: only 1 call to connected()</font>)
 
-![Clever trick](/images/image-20190620023043451.png)
+![Clever trick](images/image-20190620023043451.png)
 
 >Q. How to model opening a new site?
 >A. Mark new site as open; connect it to all of its adjacent open sites. (<font color = 'red'>up to 4 calls to union()</font>)
 
-![opening a new site](/images/image-20190620023248968.png)
+![opening a new site](images/image-20190620023248968.png)
 
 ##QUIZ
 
@@ -247,7 +247,7 @@ public void push(String item){
 }
 ```
 
-![Stack push-linked-list implementation](/images/image-20190626140827899.png)
+![Stack push-linked-list implementation](images/image-20190626140827899.png)
 
 ### array implementation
 
@@ -255,7 +255,7 @@ public void push(String item){
 
 - **pop()**: remove item from s[N-1].
 
-![Use array s[] to store N items on stack](/images/image-20190626141049901.png)
+![Use array s[] to store N items on stack](images/image-20190626141049901.png)
 
 ## Queue
 
@@ -319,7 +319,7 @@ public String dequeue(){
   - <font color = 'red'>Left parenthesis: ignore</font>.
   - Right parenthesis: <font color = 'red'>pop operator and two values; push the result</font> of applying that operator to those values onto the operand stack
 
-![Arithmetic expression evaluation](/images/image-20190627132425839.png)
+![Arithmetic expression evaluation](images/image-20190627132425839.png)
 
 ```java
 public class Evaluate{
@@ -360,7 +360,7 @@ for (int i = 0; i < N; i++){
 }
 ```
 
-![Selection sort](/images/image-20190628002123641.png)
+![Selection sort](images/image-20190628002123641.png)
 
 根据位置 在数集合中找位置对应的数放入
 
@@ -385,7 +385,7 @@ public static void sort(Comparable[] a){
 
 
 
-![Insertion sort](/images/image-20190628002833173.png)
+![Insertion sort](images/image-20190628002833173.png)
 
 一个不断扩张的有序数列
 
@@ -396,9 +396,9 @@ public static void sort(Comparable[] a){
 
 - Shell sort: Move entries more than one position at a time by h-sorting the array.
 
-![an h-sorted array is h interleaved sorted subsequences](/images/image-20190628005206715.png)
+![an h-sorted array is h interleaved sorted subsequences](images/image-20190628005206715.png)
 
-![Shellsort example: increments 7, 3, 1](/images/image-20190628172255771.png)
+![Shellsort example: increments 7, 3, 1](images/image-20190628172255771.png)
 
 >finding **the best increment sequence** is a research problem that has confounded people for quite a long time.
 
@@ -447,13 +447,13 @@ public static void shuffle(Object[] a) {
 
 - The **convex hull** of a set of N points is <u>the smallest perimeter fence enclosing the points</u>.
 
-![Smallest convex set containing all the points](/images/image-20190628123254775.png)
+![Smallest convex set containing all the points](images/image-20190628123254775.png)
 
 ### application: motion planning
 
 **Robot motion planning.** Find shortest path in the plane from s to t that avoids a polygonal obstacle.
 
-![Robot motion planning](/images/image-20190628124013060.png)
+![Robot motion planning](images/image-20190628124013060.png)
 
 Shortest path is either straight line from s to t or it is one of two polygonal chains of convex hull.
 
@@ -461,7 +461,7 @@ Shortest path is either straight line from s to t or it is one of two polygonal 
 
 **Farthest pair problem.** Given N points in the plane, find a pair of points with <u>the largest Euclidean distance between them</u>.
 
-![Farthest pair problem](/images/image-20190628124429239.png)
+![Farthest pair problem](images/image-20190628124429239.png)
 
 Farthest pair of points are extreme points on convex hull.
 
@@ -474,9 +474,9 @@ Farthest pair of points are extreme points on convex hull.
 
 - Given three points a, b, and c, is a → b→ c a counterclockwise turn? equals to **is c to the left of the ray a→b ?**
 
-![Implementing ccw](/images/image-20190628131155088.png)
+![Implementing ccw](images/image-20190628131155088.png)
 
-![Determinant gives 2x signed area of planar triangle.](/images/image-20190628132255947.png)
+![Determinant gives 2x signed area of planar triangle.](images/image-20190628132255947.png)
 
 - (b<sub>x</sub> − a<sub>x</sub> )(c<sub>y</sub> − a<sub>y</sub> ) − (b<sub>y</sub> − a<sub>y</sub> )(c<sub>x</sub> − a<sub>x</sub> )    `(b - a) × (c - a)`
   - If signed area > 0, then a→ b→ c is counterclockwise.
@@ -504,7 +504,7 @@ public static int ccw(Point2D a, Point2D b, Point2D c){
 - [Mergesort](https://visualgo.net/en/sorting)
 - Goal. Given two **sorted subarrays** a[lo] to a[mid] and a[mid+1] to a[hi], replace with sorted subarray a[lo] to a[hi].
 
-![two sorted subarrays](/images/image-20190702004539414.png)
+![two sorted subarrays](images/image-20190702004539414.png)
 
 ### Java implementation (Merging)
 
@@ -535,7 +535,7 @@ private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
 }
 ```
 
-![result after recursive call](/images/image-20190702005145903.png)
+![result after recursive call](images/image-20190702005145903.png)
 
 # Quicksort
 
@@ -592,7 +592,7 @@ public class Quick {
 } 
 ```
 
-![Quicksort trace](/images/image-20190705095059876.png)
+![Quicksort trace](images/image-20190705095059876.png)
 
 - Quicksort is **not stable**.
 

@@ -9,10 +9,10 @@ date: 2018-12-04 00:23:00
 <!--more-->
 
 ### 原始数据
-![Excel 中数据-目录](/images/pasted-13.png)
-![Excel 中数据-具体表](/images/pasted-14.png)
-![目标表“元数据表信息表”表设计](/images/pasted-16.png)
-![目标表“元数据表字段信息表”表设计](/images/pasted-15.png)
+![Excel 中数据-目录](images/pasted-13.png)
+![Excel 中数据-具体表](images/pasted-14.png)
+![目标表“元数据表信息表”表设计](images/pasted-16.png)
+![目标表“元数据表字段信息表”表设计](images/pasted-15.png)
 
 ### Maven
 ```
@@ -155,4 +155,4 @@ public void InsertExcel(String path) {
 ```
 
 ### 最终效果
-![数据库中数据](/images/pasted-17.png)
+![数据库中数据](images/pasted-17.png)
