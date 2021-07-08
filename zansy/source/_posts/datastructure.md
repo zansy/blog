@@ -100,9 +100,9 @@ public void hanoi(int n, char x, char y, char z){
 	- 空的链队列的判决条件为头指针和尾指针均指向头结点
 	- 当队列中最后一个元素被删后，队列尾指针也丢失了，因此需对尾指针重新赋值：指向头结点
 
- ![链队列](/images/pasted-22.png)
+ ![链队列](images/pasted-22.png)
 - 循环队列：队列的顺序表示和实现。
- ![循环队列](/images/pasted-23.png)
+ ![循环队列](images/pasted-23.png)
 - 顺序循环队列各状态判决：
 	- 进队：`rear = (rear + 1) % n`
 	- 出队：`front = (front + 1) % n`
@@ -116,7 +116,7 @@ public void hanoi(int n, char x, char y, char z){
                                                                                                                                                                                                               
 ## 数组
 ### 数组的顺序存储和实现
-![二维数组](/images/pasted-24.png)
+![二维数组](images/pasted-24.png)
 
 假设数组中每个元素占用L个存储单元，求数组中元素Aij存储位置的地址：
 - 按行优先存储：address(Aij) = address(A00) + (i * n + j) * L;
@@ -127,7 +127,7 @@ public void hanoi(int n, char x, char y, char z){
 所谓的压缩存储即为：多个相同的结点只分配一个存储空间，值为0的结点不分配存储空间
 
 
-![特殊矩阵的压缩存储](/images/pasted-25.png)
+![特殊矩阵的压缩存储](images/pasted-25.png)
 
 ### 稀疏矩阵的压缩存储
 一个三元组(i, j, Aij) 唯一确定了稀疏矩阵的一个非零元。

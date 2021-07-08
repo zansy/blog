@@ -89,7 +89,7 @@ Creative destruction – waves that restructure entire industries and markets in
 
 ### Innovation Cycle
 
-![Innovation Cycle](/images/image-20190806020423392.png)
+![Innovation Cycle](images/image-20190806020423392.png)
 
 ### Innovation active Businesses
 
@@ -109,7 +109,7 @@ Creative destruction – waves that restructure entire industries and markets in
 
 ### Five strategic policy imperatives
 
-![Five strategic policy imperatives](/images/image-20190806020949340.png)
+![Five strategic policy imperatives](images/image-20190806020949340.png)
 
 ## 4. **Tutorial #1** Importance of innovation to a Country 
 

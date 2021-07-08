@@ -44,7 +44,7 @@ date: 2018-06-30 22:21:00
 
 1. 先得到两表的笛卡尔积
 2. 从中筛选符合条件c的元组
-![θ连接](/images/pasted-20.png)
+![θ连接](images/pasted-20.png)
 
 ## 设计理论
 - **函数依赖 Functional Dependency**：ABC—>DEF（如果两元组在属性 ABC 上一致，则它们在 DEF 上也一致）
