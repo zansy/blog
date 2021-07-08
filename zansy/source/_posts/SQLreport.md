@@ -11,7 +11,7 @@ date: 2018-09-02 14:01:00
 目前实现了从数据库中读取特定表的存放SQL语句特定字段，分解SQL语句，提取出所需信息形成字段，并与“元数据表信息”表、“元数据表字段信息”表进行关联，形成新的“表信息映射”表。新表的字段分别为“表ID”、“表中文名”、“表英文名”、“字段ID”、“字段中文名”、“字段英文名”、“字段来源”、“字段处理过程”。
 
 ### 测试样例：
- ![SQL语句表](/images/pasted-18.png)
+ ![SQL语句表](images/pasted-18.png)
 
 在status为0的SQL语句字段批量读取、分析、存入成功后，重点设立了STATUS为2的SQL语句字段进行检验整个程序。
 该字段完整内容：
@@ -82,7 +82,7 @@ SELECT uuid(), a.NAME, a.ROAD_NAME, a.ORIGIN_INSERTION, a.LENGTH
 FROM INFO_GIS_CURB_AND_GUTTER a;
 ```
 ### 最终映射表成果：
-![映射表](/images/pasted-19.png)
+![映射表](images/pasted-19.png)
  
 ## 存在问题
 1.	测试样本量不多。

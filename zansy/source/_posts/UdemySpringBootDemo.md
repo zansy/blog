@@ -25,7 +25,7 @@ public class HelloController {
 }
 ```
 
-![映射结果](/images/image-20190808133256078.png)
+![映射结果](images/image-20190808133256078.png)
 
 - 也可以应用在根部（注意可以设置方法）：
 
@@ -40,7 +40,7 @@ public class HelloController {
 }
 ```
 
-![注意地址栏的变更](/images/image-20190808133611628.png)
+![注意地址栏的变更](images/image-20190808133611628.png)
 
 - 注解的另一种写法：`@GetMapping("/say")`，同理@PostMapping等
 - @RestController和@Controller的区别：
@@ -74,7 +74,7 @@ public class HelloController {
 
 （或许需要在pom文件右击使其成为maven项目）这样之后访问的就是文件了：
 
-![@Controller访问效果](/images/image-20190808144844976.png)
+![@Controller访问效果](images/image-20190808144844976.png)
 
 - 在方法名后加上@ResponseBody可以获得@RestController的效果。
 
