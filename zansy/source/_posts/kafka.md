@@ -1,5 +1,6 @@
 title: Apache Kafka Notes(2021/07/08 updated 1/9)
 author: zansy
+toc: true
 tags:
   - 唯有爱与工作不可辜负
 categories:
@@ -101,10 +102,11 @@ This is my second event
     1. Stop the producer and consumer clients with Ctrl-C, if you haven't done so already.
     2. Stop the Kafka broker with Ctrl-C.
     3. Lastly, stop the ZooKeeper server with Ctrl-C.
-    4. ```bash
-        # If you also want to delete any data of your local Kafka environment including any events you have created along the way, run the command:
-        $ rm -rf /tmp/kafka-logs /tmp/zookeeper
-        ```
+    4. 
+    ```bash
+    # If you also want to delete any data of your local Kafka environment including any events you have created along the way, run the command:
+    $ rm -rf /tmp/kafka-logs /tmp/zookeeper
+    ```
 
 ## 1.4 Ecosystem
 [Here is a list of tools about integrate with Kafka outside the main distribution](https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem)
@@ -112,3 +114,16 @@ This is my second event
 # 2. APIS
 
 # 8. KAFKA CONNECT
+## 8.1 Overview
+Kafka Connect is a tool for scalably and reliably streaming data between Apache Kafka and other systems. It makes it simple to quickly define connectors that move large collections of data into and out of Kafka. Kafka Connect can ingest entire databases or collect metrics from all your application servers into Kafka topics, making the data available for stream processing with low latency. 
+
+Kafka Connect features include:
+
+- **A common framework for Kafka connectors** - Kafka Connect standardizes integration of other data systems with Kafka, simplifying connector development, deployment, and management
+Distributed and standalone modes - scale up to a large, centrally managed service supporting an entire organization or scale down to development, testing, and small production deployments
+- **REST interface** - submit and manage connectors to your Kafka Connect cluster via an easy to use REST API
+- **Automatic offset management** - with just a little information from connectors, Kafka Connect can manage the offset commit process automatically so connector developers do not need to worry about this error prone part of connector development
+- **Distributed and scalable by default** - Kafka Connect builds on the existing group management protocol. More workers can be added to scale up a Kafka Connect cluster.
+- **Streaming/batch integration** - leveraging Kafka's existing capabilities, Kafka Connect is an ideal solution for bridging streaming and batch data systems
+
+## 8.2 User Guide
