@@ -2,9 +2,9 @@ title: Docker Notes(2021/07/09 updated)
 author: zansy
 toc: true
 tags:
-  - 唯有爱与工作不可辜负
+  - Docker
 categories:
-  - 女娲补天
+  - 唯有爱与工作不可辜负
 date: 2021-07-09 17:32:00
 ---
 Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files. Notes by Docker official website.

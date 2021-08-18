@@ -1,9 +1,9 @@
 title: Salesforce notes(2021/06/21 updated 1/26)
 author: zansy
 tags:
-  - 唯有爱与工作不可辜负
+  - Salesforce
 categories:
-  - 女娲补天
+  - 唯有爱与工作不可辜负
 date: 2021-06-21 09:55:00
 ---
 Some simplefor salesforce learning. Mainly on salesforce trailhead.

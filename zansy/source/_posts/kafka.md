@@ -2,9 +2,9 @@ title: Apache Kafka Notes(2021/07/08 updated 1/9)
 author: zansy
 toc: true
 tags:
-  - 唯有爱与工作不可辜负
+  - Kafka
 categories:
-  - 女娲补天
+  - 唯有爱与工作不可辜负
 date: 2021-07-08 21:13:00
 ---
 Apache Kafka is an open-source distributed event streaming platform for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. Notes by Kafka official website.
