@@ -175,6 +175,7 @@ After completing this unit, you’ll be able to:
 In the Lightning Platform world, code executes within an **execution context**. In a nutshell, this context represents the time between when the code is executed and when it ends.
 
 **Methods of Invoking Apex**
+
 | Method                         | Description    |
 |--------------------------------|----------|
 | Database Trigger  | Invoked for a specific event on a custom or standard object. |
@@ -272,3 +273,275 @@ global class MyBatchableClass implements
     }
 }
 ```
+
+You could then invoke the batch class using anonymous code such as this:
+```Java
+MyBatchableClass myBatchObject = new MyBatchableClass();
+Database.executeBatch(myBatchObject);
+```
+**Batchable Limitations**
+The batchable interface is great, but as with just about everything, consider its limitations.
+
+- Troubleshooting can be troublesome.
+- Jobs are queued and subject to server availability, which can sometimes take longer than anticipated.
+
+**Queueable Apex**
+It represents the best of future methods and the batchable interface, all rolled up into one super-duper asynchronous tool. Developers forced to use the slower batchable interface to get around limitations of future methods could now return to a tool that made more sense. Queueable Apex provides the following benefits to future methods.
+- **Non-primitive types** - Classes can accept parameter variables of non-primitive data types, such as sObjects or custom Apex types.
+- **Monitoring** - When you submit your job, a jobId is returned that you can use to identify the job and monitor its progress.
+- **Chaining jobs** - You can chain one job to another job by starting a second job from a running job. Chaining jobs is useful for sequential processing.
+
+```Java
+public class MyQueueableClass implements Queueable {
+    private List<Contact> contacts;
+    // Constructor for the class, where we pass
+    // in the list of contacts that we want to process
+    public MyQueueableClass(List<Contact> myContacts) {
+        contacts = myContacts;
+    }
+    public void execute(QueueableContext context) {
+        // Loop through the contacts passed in through
+        // the constructor and call a method
+        // which contains the code to do the actual callout
+        for (Contact con: contacts) {
+            String response = anotherClass.calloutMethod(con.Id,
+                    con.FirstName,
+                    con.LastName,
+                    con.Email);
+            // May still want to add some code here to log
+            // the response to a custom object
+        }
+    }
+}
+```
+To invoke Queueable Apex, you need something like the following:
+```Java
+List<Contact> contacts = [SELECT Id, LastName, FirstName, Email
+    FROM Contact WHERE Is_Active__c = true];
+Id jobId = System.enqueueJob(new MyQueueableClass(contacts));
+```
+
+### Debug and Run Diagnostics
+Learning Objectives
+After completing this unit, you’ll be able to:
+
+- Understand which debugging features are available on the Lightning Platform
+- Use the Log Inspector in Developer Console to examine debug logs
+
+you can write to the debug log. That is done with something like the following.
+```Java
+System.debug('My Debug Message');
+```
+You can also specify one of the following logging levels.
+- NONE
+- ERROR
+- WARN
+- INFO
+- DEBUG
+- FINE
+- FINER
+- FINEST
+
+**Use the Log Inspector**
+
+1. From Setup, select Your Name > Developer Console to open Developer Console.
+2. Select Debug > Change Log Levels.
+3. Click the Add/Change link in General Trace Setting for You.
+4. Select INFO as the debug level for all columns.
+5. Click Done.
+6. Click Done.
+7. Select Debug > Perspective Manager.
+8. Select All (Predefined) and click Set Default.
+9.  Click Yes to change this to your default perspective.
+10. Close the Developer Console Perspective window.
+11. Select Debug > Open Execute Anonymous Window.
+12. Delete the existing code, and insert the following snippet:
+```java
+System.debug(LoggingLevel.INFO, 'My Info Debug Message');
+System.debug(LoggingLevel.FINE, 'My Fine Debug Message');
+List<Account> accts = [SELECT Id, Name FROM Account];
+for(Account a : accts) {
+    System.debug('Account Name: ' + a.name);
+    System.debug('Account Id: ' + a.Id);
+}
+```
+
+13. Make sure that Open Log is selected, and click Execute.
+14. Select Debug > Switch Perspective > All (Predefined).
+15. Examine the results in the Timeline and Executed Units tabs.
+16. Under Execution Log, select the Filter option, and enter FINE. Because we set the debug level t INFO for Apex Code, no results appear.
+17. Select Debug > Change Log Levels.
+18. Click the Add/Change link in General Trace Setting for You.
+19. Change the DebugLevel for ApexCode and Profiling to FINEST.
+20. Click Done.
+21. Click Done.
+22. Select Debug > Open Execute Anonymous Window.
+23. Leave t
+24. Under Execution Log, select the Filter option, and enter FINE. The filter search is case 1. sensitive. You now see "My Fine Debug Message" displayed. You should also notice a size 1. difference between the two latest logs in the Logs tab.
+
+**Set Checkpoints**
+Checkpoints are similar to breakpoints in that they reveal a lot of detailed execution information about a line of code. They just don’t stop execution on that line.
+
+## Aura Components Core Concepts
+### Learn About Bundles and the Request Lifecycle
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Describe the difference between a Visualforce page and an Aura component bundle, and how each is represented in resources locally and on Salesforce.
+- Describe basic differences in the Visualforce and Aura component request lifecycle, and where component code runs.
+
+**Concept: Page vs. Bundle**
+Visualforce pages (and Visualforce components, but let’s set those aside for now) are stored on Salesforce as a single entity, an ApexPage. When you use Salesforce Extensions for Visual Studio Code or another tool to copy your Visualforce pages to your local storage to work on them, an individual Visualforce page is represented as two files in the metadata/pages directory:
+
+- yourPageName.page
+- yourPageName.page-meta.xml
+
+The first is the code for the page, and the second is the page metadata (API version, mobile settings, and so on).
+
+Although your page might have dependencies on other artifacts, like an Apex controller or extension, static resources, and so on, they are separate from the page. Your page references them, but doesn’t include them.
+
+**Concept: Server-Side vs. Client-Side**
+<u>Classic Visualforce</u> runs “on the server side.” That is, when a page is requested, a Salesforce server processes the markup, and then the resulting HTML is sent to the requesting user’s browser for display. If the page has an expression (those things inside “ {! }” delimiters), it’s evaluated by the server. References to global variables are resolved on the server. If the page accesses a controller property, that’s processed on the server. And so on. For the purposes of this conversation, all of the “framework processing” happens **on the server**. (Note that we’re setting aside using Visualforce + JavaScript remoting as a mere container for your JavaScript app. But then you’re not really using Visualforce, except as a web server.)
+
+The process for <u>Aura components</u> is the opposite. When a component is requested, the component’s resources are packaged up and sent to the requesting user’s browser. Most of this is JavaScript, with some markup providing structure. The browser runs that JavaScript, which renders the resulting HTML and inserts it into the existing “page.” Expression evaluation, global variables, controller properties—those are all resolved **on the client**.
+
+Visualforce Request Cycle
+1. User requests a page
+1. The server executes the page’s underlying code and sends the resulting HTML to the browser
+1. The browser displays the HTML
+1. When the user interacts with the page, return to step one
+
+Aura Components Request Cycle
+- The user requests an application or a component
+- The application or component bundle is returned to the client
+- The browser loads the bundle
+- The JavaScript application generates the UI
+- When the user interacts with the page, the JavaScript application modifies the user interface as needed (return to previous step)
+
+With classic Visualforce that interaction would come with a new, visible page request and reload. With an Aura component, the user’s interaction with client-side JavaScript feels more “live,” more responsive, so when the time comes to load new data, the latency of a server request can suddenly feel slow to the user—even if the overall experience takes less time than a Visualforce request!
+
+You’ll find that Aura components perform well overall. However, without careful design of your server requests and how they affect the user experience, your users might very well think an app is “slow.”
+
+### Learn Architectural Concepts
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Describe how the Visualforce page paradigm and the Aura component paradigm are different.
+- Explain the concept of different containers, and how you insert an Aura app or component into a container.
+
+**Concept: Page-by-Page vs. Single-Page Application**
+When you design a traditional Visualforce-based app, you usually create a set of pages, and users of the app navigate by moving from one page to another page. You start on a list view page, click a view link to go to a record view page, click an edit button to go to an edit record page, and so on.
+
+Aura components apps are very different. There’s only one “page” for the entire app! We call these “single-page applications” (SPAs). SPAs load a single page and a whole lot of JavaScript. Once that’s loaded, the JavaScript runs and updates the user interface of the “page” from then on.
+
+Instead of navigating from page to page, users navigate from state to state. A state represents a mode that your app is currently in. The list view state, the view record state, and so on.
+
+The SPA knows which components to load for each state, and those components know how to draw, or render, themselves.
+
+**Concept: Page vs. Component**
+A Visualforce page is a “large” building block. While you can include it as a “widget” in a page layout, or pull one page into another with the `<apex:include>` tag, you’d only do this with a handful of pages. You don’t put together a collection of “small” pages to build a “medium” page, and then assemble a bunch of those to build a “large” page. Visualforce isn’t designed for that, and if you try you’ll get...problematic behavior.
+
+An Aura component is different. A “large” Aura component can be composed of dozens or even hundreds of smaller components, which themselves can be composed of many even smaller components. The Aura programming model is designed to handle thousands of components assembled together into a single app.
+
+Taking small, fine-grained components and assembling them into a “next level up” component, and then repeating, and repeating, and repeating is the fundamental design process when using Aura components. In software design, this is called composition.
+
+### Learn Coding Concepts
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Map fundamental concepts, such as controllers and requests, from Visualforce to Aura components.
+- Avoid the #1 syntax error in Aura components code.
+- Describe the advantage of loosely coupled components, and how loose coupling is accomplished.
+
+**Concept: Controllers**
+Visualforce controllers run on the server side, while Aura component controllers run on the client side. And sometimes on the server side, too. Visualforce controllers are written in Apex, while Aura component controllers are written in JavaScript. And sometimes also in Apex.
+
+# Data Modeling and Management(13%) 7-8
+## Data Modeling 
+### Understand Custom & Standard Objects
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+
+- Describe the perks of using objects on the Salesforce platform.
+- Explain the difference between standard objects and custom objects.
+- List the types of custom fields an object can have.
+
+**Standard objects** are objects that are included with Salesforce. Common business objects like Account, Contact, Lead, and Opportunity are all standard objects.
+
+**Custom objects** are objects that you create to store information that’s specific to your company or industry.
+
+**Create a Custom Object**
+Object Manager -> Create | Custom Object
+
+**Create a Custom Field**
+In the sidebar, click Fields & Relationships.
+
+### Create Object Relationships
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Define the different types of object relationships and their typical use cases.
+- Create or modify a lookup relationship.
+- Create or modify a master-detail relationship.
+
+Object relationships are a special field type that connects two objects together.
+
+There are two main types of object relationships: lookup and master-detail.
+- **Lookup Relationships**. A lookup relationship essentially links two objects together so that you can “look up” one object from the related items on another object. Lookup relationships can be one-to-one or one-to-many. The Account to Contact relationship is one-to-many because a single account can have many related contacts.
+- **Master-Detail Relationships**. While lookup relationships are fairly casual, master-detail relationships are a bit tighter. In this type of relationship, one object is the master and another is the detail. The master object controls certain behaviors of the detail object, like who can view the detail’s data. For example, let’s say the owner of a property wanted to take their home off the market. DreamHouse wouldn’t want to keep any offers made on that property. With a master-detail relationship between Property and Offer, you can delete the property and all its associated offers from your system.
+
+### Work with Schema Builder
+
+Learning Objectives
+Describe the advantages of using Schema Builder for data modeling.
+- Use Schema Builder to create a schema for a given object model.
+- Use Schema Builder to add a custom object to your schema.
+- Use Schema Builder to add a custom field to your schema.
+
+## Data Management
+### Import Data
+
+Learning Objectives
+After completing this unit, you'll be able to:
+- Describe and compare the different options for importing data into Salesforce.
+- List the steps involved in preparing and importing data from a sample .csv file using the Data Import Wizard.
+
+Salesforce offers two main methods for importing data.
+
+- **Data Import Wizard**—this tool, accessible through the Setup menu, lets you import data in common standard objects, such as contacts, leads, accounts, as well as data in custom objects. It can import up to 50,000 records at a time. It provides a simple interface to specify the configuration parameters, data sources, and the field mappings that map the field names in your import file with the field names in Salesforce.
+- **Data Loader**—this is a client application that can import up to five million records at a time, of any data type, either from files or a database connection. It can be operated either through the user interface or the command line. In the latter case, you need to specify data sources, field mappings, and other parameters via configuration files. This makes it possible to automate the import process, using API calls.
+
+Use the Data Import Wizard When:
+- You need to load less than 50,000 records.
+- The objects you need to import are supported by the wizard.
+- You don’t need the import process to be automated.
+
+Use Data Loader When:
+- You need to load 50,000 to five million records. If you need to load more than 5 million records, we recommend you work with a Salesforce partner or visit the AppExchange for a suitable partner product.
+- You need to load into an object that is not supported by the Data Import Wizard.
+- You want to schedule regular data loads, such as nightly imports.
+
+### Export Data
+
+Learning Objectives
+After completing this unit, you'll be able to:
+- Describe and compare the two methods of exporting data from Salesforce.
+- Export data manually using the Data Export Service.
+- Set up automatic export of data on a weekly or monthly schedule.
+
+Salesforce offers two main methods for exporting data.
+
+- **Data Export Service**—an in-browser service, accessible through the Setup menu. It allows you to export data manually once every 7 days (for weekly export) or 29 days (for monthly export). You can also export data automatically at weekly or monthly intervals. Weekly exports are available in Enterprise, Performance, and Unlimited Editions. In Professional Edition and Developer Edition, you can generate backup files only every 29 days, or automatically at monthly intervals only.
+- **Data Loader**—a client application that you must install separately. It can be operated either through the user interface or the command line. The latter option is useful if you want to automate the export process, or use APIs to integrate with another system.
+
+## Formulas and Validations
+### Use Formula Fields
+
+Learning Objectives
+After completing this unit, you'll be able to:
+- Create a custom formula field and use the formula editor.
+- Explain why formula fields are useful.
+- Outline at least one use case for formula fields.
+- Create simple formulas.
+
+You’ve got a lot of data in your organization. Your users need to access and understand this data at a glance without doing a bunch of calculations in their heads. Enter formula fields, the powerful tool that gives you control of how your data is displayed.
+
+Let’s say you wanted to take two numeric fields on a record and divide them to create a percentage. Or perhaps you want to turn a field into a clickable hyperlink for easy access to important information from a record’s page layout. Maybe you want to take two dates and calculate the number of days between them. All these things and more are possible using formula fields.
