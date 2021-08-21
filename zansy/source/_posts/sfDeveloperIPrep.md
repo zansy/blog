@@ -1,4 +1,4 @@
-title: Prepare for Salesforce Developer I Credential (update 2021/08/19)
+title: Prepare for Salesforce Developer I Credential (update 2021/08/21)
 author: zansy
 toc: true
 tags:
@@ -60,6 +60,15 @@ Prepare for Salesforce Platform Developer I Credential
  - Passing score: 65%
 
 # Salesforce Fundamentals(7%) 4-5
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+
+- Describe the considerations for developing in a multitenant environment.
+- Understand design frameworks and how to build applications using declarative and programmatic tools.
+- Recognize use cases for declarative versus programmatic customizations.
+
+
 ## Platform Development Basics
 ### Get Started with Platform Development
 Learning Objectives
@@ -545,3 +554,48 @@ After completing this unit, you'll be able to:
 You’ve got a lot of data in your organization. Your users need to access and understand this data at a glance without doing a bunch of calculations in their heads. Enter formula fields, the powerful tool that gives you control of how your data is displayed.
 
 Let’s say you wanted to take two numeric fields on a record and divide them to create a percentage. Or perhaps you want to turn a field into a clickable hyperlink for easy access to important information from a record’s page layout. Maybe you want to take two dates and calculate the number of days between them. All these things and more are possible using formula fields.
+
+### Implement Roll-Up Summary Fields
+
+Learning Objectives
+After completing this unit, you'll be able to:
+- Describe what a roll-up summary field is.
+- Create a roll-up summary field.
+- Apply field-level security to your roll-up summary field.
+
+**Introduction to Roll-Up Summary Fields**
+While formula fields calculate values using fields within a single record, roll-up summary fields calculate values from a set of related records, such as those in a related list. You can create roll-up summary fields that automatically display a value on a master record based on the values of records in a detail record. These detail records must be directly related to the master through a master-detail relationship.
+
+You can perform different types of calculations with roll-up summary fields. You can count the number of detail records related to a master record, or calculate the sum, minimum value, or maximum value of a field in the detail records. For example, you might want:
+- A custom account field that calculates the total of all related pending opportunities.
+- A custom order field that sums the unit prices of products that contain a description you specify.
+
+**Defining a Roll-Up Summary Field**
+Since roll-up summary fields are based on master-detail relationships, it’s useful to review object relationships before creating a roll-up summary field.
+
+**Master-Detail Relationships**
+Master-detail relationships closely link objects together so that the master record controls specific behaviors of the detail and subdetail record.
+
+You define a roll-up summary field on the object that is on the master side of a master-detail relationship. For example, you can create a roll-up summary field on the Account object, summarizing related opportunities.
+
+There are a few different types of summaries you can use.
+
+| Type  | Description |
+|-------|-------|
+| COUNT | Totals the number of related records.     |
+| SUM   | Totals the values in the field you select in the Field to Aggregate option. Only number, currency, and percent fields are available.  |
+| MIN   | Displays the lowest value of the field you select in the Field to Aggregate option for all directly related records. Only number, currency, percent, date, and date/time fields are available.  |
+| MAX   | Displays the highest value of the field you select in the Field to Aggregate option for all directly related records. Only number, currency, percent, date, and date/time fields are available. |
+
+### Create Validation Rules
+
+Learning Objectives
+After completing this unit, you'll be able to:
+- Describe two use cases for validation rules.
+- List the elements of a validation rule.
+- Create a validation rule.
+
+**Introduction to Validation Rules**
+Validation rules verify that data entered by users in records meets the standards you specify before they can save it. A validation rule can contain a formula or expression that evaluates the data in one or more fields and returns a value of “True” or “False.”
+
+[Examples of Validation Rules](https://trailhead.salesforce.com/content/learn/modules/point_click_business_logic/validation_rules?trailmix_creator_id=strailhead&trailmix_slug=prepare-for-your-salesforce-platform-developer-i-credential)
