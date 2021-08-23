@@ -658,6 +658,49 @@ Validation rules verify that data entered by users in records meets the standard
 
 # Logic and Process Automation(40%) 24
 
+>Which two users can edit a record after it has been locked for approval? 
+
+An administrator and a user who is assigned as the current approver 
+
+>What happens to changes in the result when a Visualforce page calls an Apex controller, which calls another Apex class, and then hits a governor limit? 
+
+Any changes up to the error are rolled back. 
+
+>Which data structure is returned to a developer when performing a SOSL search? 
+
+A list of lists of sObjects 
+
+>A developer writes a before insert trigger. Which context variable can the developer use to access the incoming records in the trigger body? 
+
+The Trigger.new context variable 
+
+>Which method can a developer use to determine, from the DescribeSObjectResult, if the current user will be able to create records for an object in Apex? 
+
+The isCreatable() method 
+
+>In the execution order of triggers, what three steps happen after the before triggers execute, and before the after triggers execute? 
+
+The Before triggers are executed System validation steps are run again and user-defined validation rules are checked. Executes duplicate rules. The record is saved to the database but doesnâ€™t commit yet. Executes all after triggers. 
+
+>True or False: Workflows support publishing platform events. 
+
+False 
+
+![logic-1.png](/images/logic-1.png)
+
+![logic-2.png](/images/logic-2.png)
+
+![logic-3.png](/images/logic-3.png)
+
+![logic-4.png](/images/logic-4.png)
+
+![logic-5.png](/images/logic-5.png)
+
+![logic-6.png](/images/logic-6.png)
+
+![logic-7.png](/images/logic-7.png)
+
+![logic-8.png](/images/logic-8.png)
 ## Salesforce Flow
 ### Choose the Right Automation Tool
 
@@ -1468,6 +1511,18 @@ the next step is promoted search terms for Knowledge articles.
 
 ## [Triggers and Order of Execution](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_triggers_order_of_execution.htm)
 
+- Runs system validation check.
+- Executes all before triggers.
+- Runs most system validation steps again, such as verifying that all required fields have a non-null value, and runs any user-defined validation rules. The only system validation that Salesforce doesn't run a second time (when the request comes from a standard UI edit page) is the enforcement of layout-specific rules.
+- Executes duplicate rules. If the duplicate rule identifies the record as a duplicate and uses the block action, the record is not saved and no further steps, such as after triggers and workflow rules, are taken.
+- Saves the record to the database, but doesn't commit yet.
+- Executes all after triggers.
+- Executes assignment rules.
+- Executes auto-response rules.
+- Executes workflow rules.
+- If there are workflow field updates, updates the record again.
+- If the record was updated with workflow field updates, fires before update triggers and after update triggers one more time (and only one more time), in addition to standard validations. Custom validation rules, duplicate rules, and escalation rules are not run again.
+
 ## Platform Events Basics
 ### Understand Event-Driven Software Architecture
 
@@ -1668,3 +1723,5 @@ Unlike triggers on standard or custom objects, triggers on platform events donâ€
 1. For Debug Level, enter * and click Search.
 1. Select a predefined debug level, such as SFDC_DevConsole or click New to create your own debug level.
 1. Click Save.
+
+# User Interface(23%) 13-14
