@@ -701,6 +701,7 @@ False
 ![logic-7.png](/images/logic-7.png)
 
 ![logic-8.png](/images/logic-8.png)
+![logic-9.png](/images/logic-9.png)
 ## Salesforce Flow
 ### Choose the Right Automation Tool
 
@@ -1725,3 +1726,47 @@ Unlike triggers on standard or custom objects, triggers on platform events don�
 1. Click Save.
 
 # User Interface(23%) 13-14
+
+## Visualforce Basics
+### Get Started with Visualforce
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Describe what Visualforce is and what it’s used for.
+- List three or more places where Visualforce can be used.
+
+### Create & Edit Visualforce Pages
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Explain what a Visualforce page is and describe its key attributes.
+- List and open existing Visualforce pages in your organization.
+- Create and edit a Visualforce page using the Developer Console.
+- Identify, add, and customize Visualforce tags and attributes in the editor.
+
+### Use Simple Variables and Formulas
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Explain what a Visualforce expression is and describe where it’s used.
+- List three or more global variables available for use in Visualforce expressions.
+- Add a Visualforce expression to a Visualforce page.
+- Use a function in a Visualforce expression.
+
+Use Standard Controllers
+
+Learning Objectives
+After completing this unit, you’ll be able to:
+- Explain what a Visualforce standard controller is and describe its key attributes.
+- Add a standard controller to a Visualforce page.
+- Display data from a record retrieved by a page’s standard controller.
+- Write an expression that uses dot notation to access fields on a related record.
+
+## Lightning Experience Development
+### User Interface Development Considerations
+Learning Objectives
+After completing this module, you’ll be able to:
+
+- Name and describe the difference between the two models for developing web applications.
+- Describe two different ways of approaching building web apps with Visualforce.
+- Describe strengths and trade-offs of building web apps with Visualforce or with Lightning components.
+- List at least three different scenarios where it makes sense to use either Lightning components or Visualforce.
