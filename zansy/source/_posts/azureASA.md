@@ -45,3 +45,6 @@ Stream Analytics clusters are powered by the same engine that powers Stream Anal
 [by using Visual Studio](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-quick-create-vs)
 [by Visual Studio Code](https://docs.microsoft.com/en-us/azure/stream-analytics/quick-create-visual-studio-code)
 
+## Create a dedicated Azure Stream Analytics cluster
+[using Azure portal](https://docs.microsoft.com/en-us/azure/stream-analytics/create-cluster)
+
