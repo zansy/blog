@@ -1,4 +1,4 @@
-title: Azure Stream Analytics Notes(2021/10/09 updated)
+title: Azure Stream Analytics Notes(2021/10/11 updated)
 author: zansy
 toc: true
 tags:
@@ -48,3 +48,14 @@ Stream Analytics clusters are powered by the same engine that powers Stream Anal
 ## Create a dedicated Azure Stream Analytics cluster
 [using Azure portal](https://docs.microsoft.com/en-us/azure/stream-analytics/create-cluster)
 
+# Tutorial
+## [Analyze fraudulent call data with Stream Analytics and visualize results in Power BI dashboard](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-real-time-fraud-detection)
+
+- Create an Azure Event Hub
+- Start the event generator application(sends data to the event hub)
+- Create a Stream Analytics job
+- Configure job input/output
+- Create queries to transform real-time data
+- Start the job and visualize output
+
+## [Run Azure Functions from Azure Stream Analytics jobs](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-with-azure-functions)
