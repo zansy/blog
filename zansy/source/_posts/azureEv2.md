@@ -1,4 +1,4 @@
-title: Azure Ev2 Notes(2021/10/21 updated)
+title: Azure Ev2 Notes
 author: zansy
 toc: true
 tags:
@@ -228,3 +228,132 @@ Final service model file looks like:
 }
 ```
 ## Rollout spec
+So far, you've **defined the resources to deploy in the ARM template**. You've **defined the topology of your service in the service model**. Now, you need to **lay out the steps to take to create the topology. You create the steps in the rollout spec.**
+```JSON
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/rolloutSpecification.json",
+  "rolloutMetadata": {
+    //The service model path is the path to the file you just created.
+    "serviceModelPath": "ServiceModel.json",
+    //The scope binding path is the path to the file.
+    "scopeBindingsPath": "ScopeBindings.json",
+    //The name is any name you would like to use for the rollout.
+    "name": "Contoso WebApp 1.0.1",
+    //The rollout type indicates whether it is a major, minor, hotfix release.
+    "rolloutType": "Major",
+    "buildSource": {
+      "parameters": {
+        "versionFile": "buildver.txt"
+      }
+    },
+    //For email, add your email.
+    "notification": {
+      "email": {
+        "to": "demo@contoso.org"
+      }
+    }
+  },
+  //Define the steps. The target names refer to service resources that you created in the service model. 
+  "orchestratedsteps": [
+    {
+      "name": "West Region",
+      "targetType": "ServiceResource",
+      "targetName": "ContosoWebAppWestUS",
+      //The first action deploys and the second action waits. 
+      "actions": [
+        "Deploy",
+        "Wait/wait3Minutes"
+      ]
+    },
+    {
+      "name": "East Region",
+      "targetType": "ServiceResource",
+      "targetName": "ContosoWebAppEastUS",
+      "actions": [
+        "Deploy"
+      ],
+      //The "East Region" step depends on the "West Region" step, which means it starts only after that step has completed. If the West region deployment fails, the East region deployment is not run.
+      "dependsOn": [
+        "West Region"
+      ]
+    }
+  ]
+}
+```
+
+## Scope Bindings
+In the scope bindings file, you **define common values to use for different scopes**(those placeholder values you've added to files). These values are used for matching scope tags in the service groups.
+
+Full scope bindings file is:
+```JSON
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/scopeBindings.json",
+  "contentVersion": "0.0.0.1",
+
+  "scopeBindings": [
+  {
+    //To see where you used the MyAppCompute tag, open your service model. You'll see it's used for the service resource group.
+    "scopeTagName": "MyAppCompute",
+    "bindings": [
+    {
+      //The value for this parameter is dynamically set to S1 for those deployments.
+      "find": "__SAMPLE_SKU__",
+      "replaceWith": "S1"
+    }]
+  },
+  //Add scope bindings for values that need to vary by region.
+  {
+    "scopeTagName": "WestUSRegion",
+    "bindings": [
+    {
+      "find": "__LOCATION_ABBR__",
+      "replaceWith": "wus"
+    },
+    {
+      "find": "__LOCATION__",
+      "replaceWith": "West US"
+    },
+    {
+      "find": "__WESTUS_WAIT_TIME__",
+      "replaceWith": "PT3M"
+    }]
+  },
+  {
+    "scopeTagName": "EastUSRegion",
+    "bindings": [
+    {
+      "find": "__LOCATION_ABBR__",
+      "replaceWith": "eus"
+    },
+    {
+      "find": "__LOCATION__",
+      "replaceWith": "East US"
+    }]
+  }]
+}
+```
+personal note(please correct me if I am wrong):
+
+A search-replace file for replace some parameter setted before by searching <u>scope tag names and placeholder strings</u> to swich different scope.
+
+## Rollout parameters 
+
+Rollout parameters define the parameters for any actions to be run for the service resource. In the rollout spec, you have an action for Wait/wait3Minutes.
+```JSON
+{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/rolloutParameters.json",
+  "contentVersion": "1.0.0.0",
+  "wait": [
+  {
+    //The placeholder text refers to a value in your scope bindings file.
+    "name": "wait3Minutes",
+    "properties": 
+    {
+      "duration": "__WESTUS_WAIT_TIME__"
+    }
+  }]
+}
+```
+
+## Rollout
+You're ready to run the staged rollout. [Use either PowerShell or CLI](https://ev2docs.azure.net/overview/tutorial.html#rollout).
