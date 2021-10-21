@@ -1,4 +1,4 @@
-title: Azure Stream Analytics Notes(2021/10/11 updated)
+title: Azure Stream Analytics Notes(2021/10/13 updated)
 author: zansy
 toc: true
 tags:
@@ -59,3 +59,15 @@ Stream Analytics clusters are powered by the same engine that powers Stream Anal
 - Start the job and visualize output
 
 ## [Run Azure Functions from Azure Stream Analytics jobs](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-with-azure-functions)
+Stream Analytics invokes Functions through HTTP triggers. The Functions output adapter allows users to connect Functions to Stream Analytics, such that the events can be triggered based on Stream Analytics queries.
+
+## [Write a C# user-defined function for Azure Stream Analytics job (Preview)](https://docs.microsoft.com/en-us/azure/stream-analytics/stream-analytics-edge-csharp-udf)
+
+C# user-defined functions (UDFs) created in Visual Studio allow you to extend the Azure Stream Analytics query language with your own functions. You can reuse existing code (including DLLs) and use mathematical or complex logic with C#. There are three ways to implement UDFs: CodeBehind files in a Stream Analytics project, UDFs from a local C# project, or UDFs from an existing package from a storage account.
+
+## [Custom .NET deserializers for Azure Stream Analytics](https://docs.microsoft.com/en-us/azure/stream-analytics/custom-deserializer)
+
+## [Deploy Azure Stream Analytics as an IoT Edge module](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-deploy-stream-analytics)
+Many IoT solutions use analytics services to gain insight about data as it arrives in the cloud from IoT devices. With Azure IoT Edge, you can take Azure Stream Analytics logic and move it onto the device itself. By processing telemetry streams at the edge, you can reduce the amount of uploaded data and reduce the time it takes to react to actionable insights.
+
+Azure IoT Edge and Azure Stream Analytics are integrated to simplify your workload development. You can create an Azure Stream Analytics job in the Azure portal and then deploy it as an IoT Edge module with no additional code.
