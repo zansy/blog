@@ -1,4 +1,4 @@
-title: Microsoft Ignite: Azure Developer Challenge(2021/11/22 updated)
+title: Microsoft Ignite-Azure Developer Challenge(2021/11/23 updated)
 author: zansy
 toc: true
 tags:
@@ -87,3 +87,180 @@ App service plan
 >An organization wants to implement a serverless workflow to solve a business problem. One of the requirements is the solution needs to a designer-first (declarative) development model. Which of the choices below meets the requirements?
 
 Azure Logic Apps
+
+# Develop Azure Functions
+## Explore Azure Functions development
+
+A function contains two important pieces - your code, which can be written in a variety of languages, and some config, the function.json file. For compiled languages, this config file is generated automatically from annotations in your code. For scripting languages, you must provide the config file yourself.
+
+The function.json file defines the function's trigger, bindings, and other configuration settings. Every function has one and only one trigger. The runtime uses this config file to determine the events to monitor and how to pass data into and return data from a function execution. The following is an example function.json file.
+
+```Json
+{
+    "disabled":false,
+    "bindings":[
+        // ... bindings here
+        {
+            "type": "bindingType",
+            "direction": "in",
+            "name": "myParamName",
+            // ... more depending on binding
+        }
+    ]
+}
+```
+
+### Function app
+A function app provides an execution context in Azure in which your functions run. As such, it is the unit of deployment and management for your functions. A function app is comprised of one or more individual functions that are managed, deployed, and scaled together. 
+
+### Folder structure
+The code for all the functions in a specific function app is located in a root project folder that contains a host configuration file. The host.json file contains runtime-specific configurations and is in the root folder of the function app. A bin folder contains packages and other library files that the function app requires. 
+
+### Local development environments
+Functions makes it easy to use your favorite code editor and development tools to create and test functions on your local computer. Your local functions can connect to live Azure services, and you can debug them on your local computer using the full Functions runtime.
+
+## Create triggers and bindings
+**Triggers** are what cause a function to run. A trigger defines how a function is invoked and a function must have exactly one trigger. Triggers have associated data, which is often provided as the payload of the function.
+
+**Binding** to a function is a way of declaratively connecting another resource to the function; bindings may be connected as *input bindings, output bindings*, or both. Data from bindings is provided to the function as parameters.
+
+
+### Trigger and binding definitions
+
+| Language                                | Triggers and bindings are configured by...              |
+|-----------------------------------------|---------------------------------------------------------|
+| C# class library                        | decorating methods and parameters with C# attributes    |
+| Java                                    | decorating methods and parameters with Java annotations |
+| JavaScript/PowerShell/Python/TypeScript | updating function.json schema                           |
+
+For languages that rely on function.json, the portal provides a UI for adding bindings in the **Integration** tab. You can also edit the file directly in the portal in the **Code + test** tab of your function.
+
+In .NET and Java, the parameter type defines the data type for input data. For instance, use to bind to the text of a queue trigger, a byte array to read as binary, and a custom type to de-serialize to an object. Since .NET class library functions and Java functions don't rely on function.json for binding definitions, they can't be created and edited in the portal. C# portal editing is based on C# script, which uses function.json instead of attributes.
+
+For languages that are dynamically typed such as JavaScript, use the property in the function.json file. For example, to read the content of an HTTP request in binary format, set to :
+```JSON
+{
+    "dataType": "binary",
+    "type": "httpTrigger",
+    "name": "req",
+    "direction": "in"
+}
+```
+
+### Binding direction
+All triggers and bindings have a direction property in the function.json file:
+
+- For triggers, the direction is always `in`
+- Input and output bindings use and `in out`
+- Some bindings support a special direction . If you use , only the Advanced editor is available via the Integrate tab in the portal. `inout`
+
+### Azure Functions trigger and binding example
+Suppose you want to **write a new row to Azure Table storage whenever a new message appears in Azure Queue storage**. This scenario can be implemented using an Azure Queue storage trigger and an Azure Table storage output binding.
+
+Here's a *function.json* file for this scenario.
+```JSON
+{
+  "bindings": [
+    {
+      "type": "queueTrigger",
+      "direction": "in",
+      "name": "order",
+      "queueName": "myqueue-items",
+      "connection": "MY_STORAGE_ACCT_APP_SETTING"
+    },
+    {
+      "type": "table",
+      "direction": "out",
+      "name": "$return",
+      "tableName": "outTable",
+      "connection": "MY_TABLE_STORAGE_ACCT_APP_SETTING"
+    }
+  ]
+}
+```
+
+### C# script example
+Here's C# script code that works with this trigger and binding.
+```C#
+#r "Newtonsoft.Json"
+
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+
+// From an incoming queue message that is a JSON object, add fields and write to Table storage
+// The method return value creates a new row in Table Storage
+public static Person Run(JObject order, ILogger log)
+{
+    return new Person() { 
+            PartitionKey = "Orders", 
+            RowKey = Guid.NewGuid().ToString(),  
+            Name = order["Name"].ToString(),
+            MobileNumber = order["MobileNumber"].ToString() };  
+}
+
+public class Person
+{
+    public string PartitionKey { get; set; }
+    public string RowKey { get; set; }
+    public string Name { get; set; }
+    public string MobileNumber { get; set; }
+}
+```
+
+### JavaScript example
+```JS
+// From an incoming queue message that is a JSON object, add fields and write to Table Storage
+// The second parameter to context.done is used as the value for the new row
+module.exports = function (context, order) {
+    order.PartitionKey = "Orders";
+    order.RowKey = generateRandomId(); 
+
+    context.done(null, order);
+};
+
+function generateRandomId() {
+    return Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15);
+}
+```
+
+### Class library example
+```C#
+public static class QueueTriggerTableOutput
+{
+    [FunctionName("QueueTriggerTableOutput")]
+    [return: Table("outTable", Connection = "MY_TABLE_STORAGE_ACCT_APP_SETTING")]
+    public static Person Run(
+        [QueueTrigger("myqueue-items", Connection = "MY_STORAGE_ACCT_APP_SETTING")]JObject order,
+        ILogger log)
+    {
+        return new Person() {
+                PartitionKey = "Orders",
+                RowKey = Guid.NewGuid().ToString(),
+                Name = order["Name"].ToString(),
+                MobileNumber = order["MobileNumber"].ToString() };
+    }
+}
+
+public class Person
+{
+    public string PartitionKey { get; set; }
+    public string RowKey { get; set; }
+    public string Name { get; set; }
+    public string MobileNumber { get; set; }
+}
+```
+
+## Connect functions to Azure services
+Your function project references connection information by name from its configuration provider. It does not directly accept the connection details, allowing them to be changed across environments. For example, a trigger definition might include a connection property. This might refer to a connection string, but you cannot set the connection string directly in a function.json. Instead, you would set connection to the name of an environment variable that contains the connection string.
+
+The default configuration provider uses environment variables. These might be set by Application Settings when running in the Azure Functions service, or from the local settings file when developing locally.
+
+## Knowledge check
+>Which of the following is required for a function to run?
+
+Trigger
+
+>Which of the following supports both the in and out direction settings?
+
+Bindings
