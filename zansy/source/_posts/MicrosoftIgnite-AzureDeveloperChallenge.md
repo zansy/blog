@@ -1,4 +1,4 @@
-title: Microsoft Ignite-Azure Developer Challenge(2021/11/23 updated)
+title: Microsoft Ignite-Azure Developer Challenge(2021/11/24 updated)
 author: zansy
 toc: true
 tags:
@@ -264,3 +264,78 @@ Trigger
 >Which of the following supports both the in and out direction settings?
 
 Bindings
+
+# Implement Durable Functions
+## Explore Durable Functions app patterns
+The **durable functions** extension lets you define stateful workflows by writing **orchestrator functions** and stateful entities by writing **entity functions** using the Azure Functions programming model.
+
+### Application patterns
+The primary use case for Durable Functions is simplifying complex, stateful coordination requirements in serverless applications. The following sections describe typical application patterns that can benefit from Durable Functions:
+- **Function chaining:** In the function chaining pattern, a sequence of functions executes in a specific order.
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/implement-durable-functions/media/function-chaining.png)
+- **Fan-out/fan-in:** In the fan out/fan in pattern, you execute multiple functions in parallel and then wait for all functions to finish. 
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/implement-durable-functions/media/fan-out-fan-in.png)
+- **Async HTTP APIs:** The async HTTP API pattern addresses the problem of coordinating the state of long-running operations with external clients. A common way to implement this pattern is by having an HTTP endpoint trigger the long-running action. Then, redirect the client to a status endpoint that the client polls to learn when the operation is finished.
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/implement-durable-functions/media/async-http-api.png)
+- **Monitor:** The monitor pattern refers to a flexible, recurring process in a workflow. An example is polling until specific conditions are met. 
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/implement-durable-functions/media/monitor.png)
+- **Human interaction:** Involving humans in an automated process is tricky because people aren't as highly available and as responsive as cloud services. An automated process might allow for this interaction by using timeouts and compensation logic.
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/implement-durable-functions/media/human-interaction-pattern.png)
+
+## Discover the four function types
+There are currently four durable function types in Azure Functions: **orchestrator, activity, entity, and client**.
+
+### Orchestrator functions
+Orchestrator functions describe how actions are executed and the order in which actions are executed.
+
+### Activity functions
+Activity functions are the basic unit of work in a durable function orchestration. For example, you might create an orchestrator function to process an order. The tasks involve checking the inventory, charging the customer, and creating a shipment. Each task would be a separate activity function. These activity functions may be executed serially, in parallel, or some combination of both.
+
+Unlike orchestrator functions, activity functions aren't restricted in the type of work you can do in them. Activity functions are frequently used to make network calls or run CPU intensive operations. An activity function can also return data back to the orchestrator function.
+
+### Entity functions
+Entity functions define operations for reading and updating small pieces of state. We often refer to these stateful entities as durable entities. Like orchestrator functions, entity functions are functions with a special trigger type, entity trigger. They can also be invoked from client functions or from orchestrator functions. Unlike orchestrator functions, entity functions do not have any specific code constraints.
+
+### Client functions
+Orchestrator and entity functions are triggered by their bindings and both of these triggers work by reacting to messages that are enqueued in a task hub. The primary way to deliver these messages is by using an orchestrator client binding, or an entity client binding, from within a client function. Any non-orchestrator function can be a client function. For example, You can trigger the orchestrator from an HTTP-triggered function, an Azure Event Hub triggered function, etc. What makes a function a client function is its use of the durable client output binding.
+
+Unlike other function types, orchestrator and entity functions cannot be triggered directly using the buttons in the Azure portal. If you want to test an orchestrator or entity function in the Azure portal, you must instead run a client function that starts an orchestrator or entity function as part of its implementation. For the simplest testing experience, a manual trigger function is recommended.
+
+## Explore task hubs
+A task hub in Durable Functions is a logical container for durable storage resources that are used for orchestrations and entities. Orchestrator, activity, and entity functions can only directly interact with each other when they belong to the same task hub.
+
+If multiple function apps share a storage account, each function app must be configured with a separate task hub name. A storage account can contain multiple task hubs. This restriction generally applies to other storage providers as well.
+
+## Explore durable orchestrations
+You can use an orchestrator function to orchestrate the execution of other Durable functions within a function app. Orchestrator functions have the following characteristics:
+
+- Orchestrator functions define function workflows using procedural code. No declarative schemas or designers are needed.
+- Orchestrator functions can call other durable functions synchronously and asynchronously. Output from called functions can be reliably saved to local variables.
+- Orchestrator functions are durable and reliable. Execution progress is automatically checkpointed when the function "awaits" or "yields". Local state is never lost when the process recycles or the VM reboots.
+- Orchestrator functions can be long-running. The total lifespan of an orchestration instance can be seconds, days, months, or never-ending.
+
+### Reliability
+Orchestrator functions reliably maintain their execution state by using the event sourcing design pattern. Instead of directly storing the current state of an orchestration, the Durable Task Framework uses an append-only store to record the full series of actions the function orchestration takes.
+
+## Control timing in Durable Functions
+Durable Functions provides durable timers for use in orchestrator functions to **implement delays or to set up timeouts on async actions**. Durable timers should be used in orchestrator functions instead of Thread.Sleep and Task.Delay (C#), or setTimeout() and setInterval() (JavaScript), or time.sleep() (Python).
+
+You create a durable timer by calling the CreateTimer (.NET) method or the createTimer (JavaScript) method of the orchestration trigger binding. The method returns a task that completes on a specified date and time.
+
+## Send and wait for events
+Orchestrator functions have the ability to wait and listen for external events. This feature of Durable Functions is often useful for handling human interaction or other external triggers.
+
+## Knowledge check
+>Which of the following durable function types is used to read and update small pieces of state?
+
+Entity
+
+>Which application pattern would you use for a durable function that is polling a resource until a specific condition is met?
+
+Monitor
+
