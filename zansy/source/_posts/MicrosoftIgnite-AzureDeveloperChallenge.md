@@ -1,4 +1,4 @@
-title: Microsoft Ignite-Azure Developer Challenge(2021/11/24 updated)
+title: Microsoft Ignite-Azure Developer Challenge(2021/12/19 updated)
 author: zansy
 toc: true
 tags:
@@ -475,3 +475,37 @@ Physical partitions are collections of logical partitions
 Key path, key value
 
 # Work with Azure Cosmos DB
+
+# Manage the Azure Blob storage lifecycle
+
+# React to state changes in your Azure services by using Event Grid
+In a complex cloud environment, you might need to respond to events from many different sources both automatically and manually.
+
+Suppose you work on an operations team for a large healthcare organization. You have a system with virtual machines that are under strict regulatory and change control. **You want to be notified of any changes to the configuration of these virtual machines in Azure by email**. To accomplish this, **you'll use Azure Event Grid to receive events that happen to virtual machines and Azure Logic Apps to send emails that alert your team of any changes**.
+
+## Respond to Azure events by using Event Grid
+### What is Event Grid?
+**Event Grid aggregates all your events and provides routing from any source to any destination.** Event Grid is **a service that manages the routing and delivery of events from many sources and subscribers.** This process eliminates the need for polling, and results in minimized cost and latency.
+
+Event publishers and subscribers are decoupled by using the publisher/subscriber pattern.
+![](https://docs.microsoft.com/en-us/learn/modules/react-to-state-changes-using-event-grid/media/2-eventgrid-pub-sub.svg)
+
+### Event sources and event handlers
+Sources can be configured from anywhere, and include on-premises custom applications or virtual machines within your Azure account. A source allows a single mechanism for event management through all your systems, whether they're in an on-premises datacenter or with other cloud providers.
+
+### Topics and event subscriptions
+When the topics have been defined, you can subscribe to them. Subscriptions convey which events on a topic you're interested in receiving. These events can then be filtered by type or subject.
+
+### Subscribe to events
+You can use the Azure Logic Apps Designer service as an example subscriber. A logic app is a way of scheduling or orchestrating tasks. It's a solution that you use to orchestrate a set of jobs when a trigger is run.
+
+### Configure connectors and triggers
+After creating an event handler that deals with an event, you can configure the connectors and triggers associated to it.
+
+## Exercise - Trigger a logic app by using Event Grid
+1. Create a virtual machine
+2. Create a logic app
+3. Add an Event Grid trigger to the logic app
+
+## Build logic that responds to an event
+learn how to create actions and conditions to respond to events
