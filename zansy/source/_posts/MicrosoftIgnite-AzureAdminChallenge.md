@@ -1,4 +1,4 @@
-title: Microsoft Ignite-Azure Admin Challenge(2022/01/10 updated)
+title: Microsoft Ignite-Azure Admin Challenge(2022/01/11 updated)
 author: zansy
 toc: true
 tags:
@@ -120,3 +120,60 @@ Azure **Storage Service Encryption (SSE)** for data at rest protects your data b
 SSE automatically encrypts your data before persisting it to Azure-managed Disks, Azure Blob, Queue, Table storage, or Azure Files, and decrypts the data before retrieval.
 
 SSE encryption, encryption at rest, decryption, and key management are transparent to users. All data written to the Azure storage platform is encrypted through 256-bit AES encryption, one of the strongest block ciphers available.
+
+## Create customer managed keys
+The Azure Key Vault can manage your encryption keys. You can create your own encryption keys and store them in a key vault, or you can use Azure Key Vault's APIs to generate encryption keys.
+
+Customer-managed keys give you more flexibility and control. You can create, disable, audit, rotate, and define access controls.
+
+# Configure Azure files and Azure File Sync
+## Compare files to blobs
+File storage offers shared storage for applications using the industry standard SMB protocol. Microsoft Azure virtual machines and cloud services can share file data across application components via mounted shares, and on-premises applications can also access file data in the share.
+
+Applications running in Azure virtual machines or cloud services can mount a file storage share to access file data. This process is similar to how a desktop application would mount a typical SMB share. Any number of Azure virtual machines or roles can mount and access the File storage share simultaneously.
+
+| Feature     | Description                                                                                                                               | When to use                                                                                                                                                                                                                                                                     |   |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| Azure Files | Provides an SMB interface, client libraries, and a REST interface that allows access from anywhere to stored files.                       | You want to "lift and shift" an application to the cloud that already **uses the native file system APIs to share data between it and other applications running in Azure**. You want to store development and debugging tools that need to be accessed from many virtual machines. |   |
+| Azure Blobs | Provides client libraries and a REST interface that allows unstructured data to be stored and accessed at a massive scale in block blobs. | You want your application to **support streaming and random-access scenarios**. You want to be able to access application data from anywhere.                                                                                                                                       |   |
+
+Other distinguishing features, when selecting Azure files.
+
+- Azure files are true directory objects. Azure blobs are a flat namespace.
+- Azure files are accessed through file shares. Azure blobs are accessed through a container.
+- Azure files provide shared access across multiple virtual machines. Azure disks are exclusive to a single virtual machine.
+
+## Manage file shares
+To access your files, you will need a storage account. After the storage account is created, provide the file share **Name** and the **Quota**. Quota refers to total size of files on the share.
+- **Mapping file shares (Windows)**. You can connect to your Azure file share with Windows or Windows Server. Just select Connect from your file share page.
+- **Mounting file shares (Linux)**. Azure file shares can be mounted in Linux distributions using the CIFS kernel client. File mounting can be done on-demand with the mount command or on-boot (persistent) by creating an entry in /etc/fstab.
+
+## Create file share snapshots
+Azure Files provides the capability to take share snapshots of file shares. Share snapshots capture a point-in-time, read-only copy of your data.
+
+**Share snapshots are incremental in nature**. Only the data that has changed after your most recent share snapshot is saved. Incremental snapshots minimizes the time required to create the share snapshot and saves on storage costs. Even though share snapshots are saved incrementally, you need to retain only the most recent share snapshot in order to restore the share.
+
+## Implement file sync
+Use Azure File Sync to centralize your organization's file shares in Azure Files, while keeping the flexibility, performance, and compatibility of an on-premises file server. Azure File Sync transforms Windows Server into a quick cache of your Azure file share. You can use any protocol that's available on Windows Server to access your data locally, including SMB, NFS, and FTPS. You can have as many caches as you need across the world.
+
+## Identify file sync components
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/configure-azure-files-file-sync/media/file-sync-components-c6561274.png)
+
+## Deploy Azure File Sync
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/configure-azure-files-file-sync/media/file-sync-steps-b6fa9fd9.png)
+
+# Configure storage with tools
+## Use Azure Storage Explorer
+Azure Storage Explorer is a standalone app that makes it easy to work with Azure Storage data on Windows, macOS, and Linux. With Storage Explorer, you can access multiple accounts and subscriptions and manage all your storage content.
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/configure-storage-tools/media/storage-explorer-304e94f3.png)
+
+## Use the import and export service
+Azure Import/Export service is used to securely import large amounts of data to Azure Blob storage and Azure Files by shipping disk drives to an Azure datacenter. This service can also be used to transfer data from Azure Blob storage to disk drives and ship to your on-premises sites. Data from one or more disk drives can be imported either to Azure Blob storage or Azure Files. With the Azure Import/Export service, you supply your own disk drives and transfer data yourself.
+
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/configure-storage-tools/media/import-jobs-3dd387ae.png)
+![](https://docs.microsoft.com/en-us/learn/wwl-azure/configure-storage-tools/media/export-jobs-850746e1.png)
+
+**Import/Export Tool (WAImportExport)**
+
+## Use AzCopy
+An alternative method for transferring data is AzCopy. AzCopy v10 is the next-generation command-line utility for **copying data to/from Microsoft Azure Blob and File storage, which offers a redesigned command-line interface and new architecture for high-performance reliable data transfers**. Using AzCopy, you can copy data between a file system and a storage account, or between storage accounts.
