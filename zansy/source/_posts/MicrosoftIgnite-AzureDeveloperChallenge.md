@@ -10,6 +10,79 @@ date: 2021-11-22 17:04:00
 [This challenge](https://docs.microsoft.com/zh-cn/learn/challenges?id=af95eabc-aafa-4ba1-8ec7-1c6444102f70) is for developers interested in designing, building, testing, and maintaining cloud applications and services on Microsoft Azure.
 <!--more-->
 
+# Explore Azure App Service
+
+## Examine Azure App Service
+*Azure App Service* is **an HTTP-based service for hosting web applications, REST APIs, and mobile back ends**. You can develop in your favorite language, be it .NET, .NET Core, Java, Ruby, Node.js, PHP, or Python. Applications run and scale with ease on both Windows and Linux-based environments.
+
+### Built-in auto scale support
+Depending on the usage of the web app, you can **scale your app up/down** the resources of the underlying machine that is hosting your web app. Resources include the number of cores or the amount of RAM available. **Scaling out/in** is the ability to increase, or decrease, the number of machine instances that are running your web app.
+
+### Continuous integration/deployment support
+The Azure portal provides out-of-the-box continuous integration and deployment with Azure DevOps, GitHub, Bitbucket, FTP, or a local Git repository on your development machine. Connect your web app with any of the above sources and App Service will **do the rest for you by auto-syncing code and any future changes on the code into the web app**.
+
+### Deployment slots
+Using the Azure portal, or command-line tools, you can easily add deployment slots to an App Service web app. For instance, you can create a staging deployment slot where you can push your code to test on Azure. Once you are happy with your code, **you can easily swap the staging deployment slot with the production slot**.
+
+## Examine Azure App Service plans
+In App Service, **an app (Web Apps, API Apps, or Mobile Apps) always runs in an App Service plan. An App Service plan defines a set of compute resources for a web app to run.** One or more apps can be configured to run on the same computing resources (or in the same App Service plan).
+
+### How does my app run and scale
+In the Free and Shared tiers, an app receives CPU minutes on a shared VM instance and can't scale out. In other tiers, an app runs and scales as follows:
+- An app runs on all the VM instances configured in the App Service plan.
+- If multiple apps are in the same App Service plan, they all share the same VM instances.
+- If you have multiple deployment slots for an app, all deployment slots also run on the same VM instances.
+- If you enable diagnostic logs, perform backups, or run WebJobs, they also use CPU cycles and memory on these VM instances.
+
+In this way, the App Service plan is the scale unit of the App Service apps. If the plan is configured to run five VM instances, then all apps in the plan run on all five instances. If the plan is configured for autoscaling, then all apps in the plan are scaled out together based on the autoscale settings.
+
+### What if my app needs more capabilities or features?
+Your App Service plan can be scaled up and down at any time. It is as simple as changing the pricing tier of the plan. If your app is in the same App Service plan with other apps, you may want to improve the app's performance by isolating the compute resources. You can do it by moving the app into a separate App Service plan.
+
+## Deploy to App Service
+Every development team has unique requirements that can make implementing an efficient deployment pipeline difficult on any cloud service. App Service supports both automated and manual deployment.
+
+### Automated deployment
+Automated deployment, or continuous integration, is a process used to push out new features and bug fixes in a fast and repetitive pattern with minimal impact on end users.
+
+Azure supports automated deployment directly from several sources.
+- Azure DevOps
+- GitHub
+- Bitbucket
+
+### Manual deployment
+There are a few options that you can use to manually push your code to Azure:
+- Git
+- CLI
+- Zip deploy
+- FTP/S
+
+### Use deployment slots
+Whenever possible, use deployment slots when deploying a new production build. When using a Standard App Service Plan tier or better, you can deploy your app to a staging environment and then swap your staging and production slots. The swap operation warms up the necessary worker instances to match your production scale, thus eliminating downtime.
+
+## Explore authentication and authorization in App Service
+Azure App Service provides built-in authentication and authorization support, so you can sign in users and access data by writing minimal or no code in your web app, API, and mobile back end, and also Azure Functions.
+
+### Identity providers
+App Service uses federated identity, in which a third-party identity provider manages the user identities and authentication flow for you. The following identity providers are available by default:
+
+| Provider                    | Sign-in endpoint      | How-To guidance                               |
+|-----------------------------|-----------------------|-----------------------------------------------|
+| Microsoft Identity Platform | /.auth/login/aad      | App Service Microsoft Identity Platform login |
+| Facebook                    | /.auth/login/facebook | App Service Facebook login                    |
+| Google                      | /.auth/login/google   | App Service Google login                      |
+| Twitter                     | /.auth/login/twitter  | App Service Twitter login                     |
+
+### How it works
+The authentication and authorization module runs in the same sandbox as your application code. When it's enabled, every incoming HTTP request passes through it before being handled by your application code. This module handles several things for your app:
+
+- Authenticates users with the specified provider
+- Validates, stores, and refreshes tokens
+- Manages the authenticated session
+- Injects identity information into request headers
+
+### Authentication flow
+
 #  Explore Azure Functions
 ## Discover Azure Functions
 **Azure Functions** are a great solution for processing data, integrating systems, working with the internet-of-things (IoT), and building simple APIs and microservices. Consider Functions for tasks like image or order processing, file maintenance, or for any tasks that you want to run on a schedule.
