@@ -91,3 +91,32 @@ A blob can be any type and size file. Azure Storage offers three types of blobs:
 - **Block blobs (default)** consist of blocks of data assembled to make a blob. Most scenarios using Blob storage employ block blobs. Block blobs are ideal for storing text and binary data in the cloud, like files, images, and videos.
 - **Append blobs** are like block blobs in that they are made up of blocks, but they are optimized for append operations, so they are useful for logging scenarios.
 - **Page blobs** can be up to 8 TB in size and are more efficient for frequent read/write operations. Azure virtual machines use page blobs as OS and data disks.
+
+# Configure storage security
+## Review storage security strategies
+Azure Storage provides a comprehensive set of security capabilities that together enable developers to build secure applications.
+
+- **Encryption**. All data written to Azure Storage is automatically encrypted using Storage Service Encryption (SSE).
+
+- **Authentication**. Azure Active Directory (Azure AD) and Role-Based Access Control (RBAC) are supported for Azure Storage for both resource management operations and data operations, as follows:
+  - You can assign RBAC roles scoped to the storage account to security principals and use Azure AD to authorize resource management operations such as key management.
+  - Azure AD integration is supported for data operations on the Blob and Queue services.
+  
+- **Data in transit**. Data can be secured in transit between an application and Azure by using Client-Side Encryption, HTTPS, or SMB 3.0.
+
+- **Disk encryption**. OS and data disks used by Azure virtual machines can be encrypted using Azure Disk Encryption.
+
+- **Shared Access Signatures**. Delegated access to the data objects in Azure Storage can be granted using Shared Access Signatures.
+
+## Create shared access signatures
+A **shared access signature (SAS)** is a <u>URI that grants restricted access rights to Azure Storage resources</u>. You can provide a SAS to clients who shouldn't have access to your storage account key. By distributing a SAS URI to these clients, <u>you grant them access to a resource for a specified period of time</u>. SAS is a secure way to share your storage resources without compromising your account keys.
+
+## Identify URI and SAS parameters
+When you create your SAS, a URI is created using parameters and tokens. The URI consists of your Storage Resource URI and the SAS token.
+
+## Determine storage service encryption
+Azure **Storage Service Encryption (SSE)** for data at rest protects your data by ensuring your organizational security and compliance commitments are met.
+
+SSE automatically encrypts your data before persisting it to Azure-managed Disks, Azure Blob, Queue, Table storage, or Azure Files, and decrypts the data before retrieval.
+
+SSE encryption, encryption at rest, decryption, and key management are transparent to users. All data written to the Azure storage platform is encrypted through 256-bit AES encryption, one of the strongest block ciphers available.
