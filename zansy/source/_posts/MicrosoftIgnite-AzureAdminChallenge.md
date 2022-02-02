@@ -177,3 +177,25 @@ Azure Import/Export service is used to securely import large amounts of data to 
 
 ## Use AzCopy
 An alternative method for transferring data is AzCopy. AzCopy v10 is the next-generation command-line utility for **copying data to/from Microsoft Azure Blob and File storage, which offers a redesigned command-line interface and new architecture for high-performance reliable data transfers**. Using AzCopy, you can copy data between a file system and a storage account, or between storage accounts.
+
+# Create an Azure Storage account
+## Decide how many storage accounts you need
+
+Azure groups four of these data services together under the name Azure Storage. The four services are **Azure Blobs, Azure Files, Azure Queues, and Azure Tables**. The following illustration shows the elements of **Azure Storage**.
+![](https://docs.microsoft.com/en-us/learn/modules/create-azure-storage-account/media/2-azure-storage.png)
+
+A **storage account** is a container that groups a set of Azure Storage services together. Only data services from Azure Storage can be included in a storage account (Azure Blobs, Azure Files, Azure Queues, and Azure Tables).
+
+A storage account represents a collection of settings like location, replication strategy, and subscription owner. You need one storage account for each group of settings that you want to apply to your data. The following illustration shows two storage accounts that differ in one setting; that one difference is enough to require separate storage accounts.
+![](https://docs.microsoft.com/en-us/learn/modules/create-azure-storage-account/media/2-multiple-storage-accounts.png)
+
+## Choose your account settings
+The storage account settings we've already covered apply to the data services in the account. Here, we will discuss the three settings that apply to the account itself, rather than to the data stored in the account:
+
+- Name
+- Deployment model: Microsoft recommends that you use **Resource Manager** for all new resources.
+- Account kind: Microsoft recommends that you use the **General-purpose v2** option for new storage accounts.
+
+These settings impact how you manage your account and the cost of the services within it.
+
+# Control access to Azure Storage with shared access signatures
