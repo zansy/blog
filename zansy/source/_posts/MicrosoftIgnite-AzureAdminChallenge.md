@@ -1,4 +1,4 @@
-title: Microsoft Ignite-Azure Admin Challenge(2022/01/11 updated)
+title: Microsoft Ignite-Azure Admin Challenge(2022/02/05 updated)
 author: zansy
 toc: true
 tags:
@@ -199,3 +199,80 @@ The storage account settings we've already covered apply to the data services in
 These settings impact how you manage your account and the cost of the services within it.
 
 # Control access to Azure Storage with shared access signatures
+
+## Authorization options for Azure Storage
+Files stored in Azure Storage are accessed by clients over HTTP/HTTPS. Azure checks each client request for authorization to access stored data. Four options are available for blob storage:
+- Public access
+- Azure Active Directory (Azure AD)
+- Shared key
+- Shared access signature (SAS)
+
+### Shared access signature
+A SAS lets you grant granular access to files in Azure Storage, such as **read-only or read-write access**, **expiration time**, after which the SAS no longer enables the client to access the chosen resources. A shared access signature is a key that grants permission to a storage resource, and should be protected in the same manner as an account key.
+
+Azure Storage supports three types of shared access signatures:
+
+- **User delegation SAS**: Can only be used for Blob storage and is secured with Azure AD credentials.
+- **Service SAS**: A service SAS is secured using a storage account key. A service SAS delegates access to a resource in any one of four Azure Storage services: Blob, Queue, Table, or File.
+- **Account SAS**: An account SAS is secured with a storage account key. An account SAS has the same controls as a service SAS, but can also control access to service-level operations, such as Get Service Stats.
+
+
+You can create a SAS ad-hoc by specifying all the options you need to control, including **start time, expiration time**, and permissions.
+
+If you plan to create a service SAS, there is also an option to associate it with a **stored access policy**. A stored access policy can be associated with up to five active SASs. You can control access and expiration at the stored access policy level. This is a good approach if you need to have granular control to change the expiration, or to revoke a SAS. The only way to revoke or change an ad-hoc SAS is to change the storage account keys.
+
+## Use shared access signatures to delegate access to Azure Storage
+[More details](https://docs.microsoft.com/en-us/learn/modules/control-access-to-azure-storage-with-sas/3-use-shared-access-signatures)
+
+## Exercise - Use shared access signatures to delegate access to Azure Storage
+RECOMMAND
+[More details](https://docs.microsoft.com/en-us/learn/modules/control-access-to-azure-storage-with-sas/4-exercise-use-shared-access-signatures)
+
+## Use stored access policies to delegate access to Azure Storage
+A shared access signature (SAS) is a secure way to give access to clients without having to share your Azure credentials. This ease of use comes with a downside. Anyone with the correct SAS can access the file while it's still valid. **The only way you can revoke access to the storage is to regenerate access keys**. Regeneration requires you to update all apps that are using the old shared key to use the new one. **Another option is to associate the SASs with a stored access policy**.
+
+![](https://docs.microsoft.com/en-us/learn/modules/control-access-to-azure-storage-with-sas/media/5-shared-acces-policy.png)
+
+### Create stored access policies
+You can create a stored access policy with C# code by using the Azure portal or Azure CLI commands.
+
+#### With C# .NET code
+```C#
+BlobSignedIdentifier identifier = new BlobSignedIdentifier
+{
+    Id = "stored access policy identifier",
+    AccessPolicy = new BlobAccessPolicy
+    {
+        ExpiresOn = DateTimeOffset.UtcNow.AddHours(1),
+        Permissions = "rw"
+    }
+};
+
+blobContainer.SetAccessPolicy(permissions: new BlobSignedIdentifier[] { identifier });
+```
+
+#### With the portal
+![](https://docs.microsoft.com/en-us/learn/modules/control-access-to-azure-storage-with-sas/media/5-add-a-policy.png)
+
+#### With Azure CLI commands
+```Azure CLI
+az storage container policy create \
+    --name <stored access policy identifier> \
+    --container-name <container name> \
+    --start <start time UTC datetime> \
+    --expiry <expiry time UTC datetime> \
+    --permissions <(a)dd, (c)reate, (d)elete, (l)ist, (r)ead, or (w)rite> \
+    --account-key <storage account key> \
+    --account-name <storage account name> \
+```
+
+## Exercise - Use stored access policies to delegate access to Azure Storage
+[More details](https://docs.microsoft.com/en-us/learn/modules/control-access-to-azure-storage-with-sas/6-exercise-use-stored-access-policies)
+
+# Upload, download, and manage data with Azure Storage Explorer
+In this module, you'll learn about the features of Azure Storage Explorer, how to install it, and what it can connect to. Finally, you'll use Storage Explorer to connect to Azure Cosmos DB and Data Lake, to create a database and upload data.
+
+By the end of this module, you'll know how to use Storage Explorer to manipulate data in multiple Azure services.
+
+## Connect Azure Storage Explorer to a storage account
+### What is Storage Explorer?
